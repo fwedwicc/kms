@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import cors from 'cors'
 import connectDB from './db.js'
 import faqsRoutes from './routes/faqsRoute.js'
+import contactRoutes from './routes/contactRoute.js'
 
 dotenv.config()
 
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/api/faqs", faqsRoutes)
+app.use("/api/contact", contactRoutes)
 
 app.listen(port, () => {
   connectDB()

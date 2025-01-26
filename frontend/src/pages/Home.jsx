@@ -2,35 +2,28 @@ import React, { useEffect, useState } from 'react'
 
 const Home = () => {
   const [faqs, setFaqs] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+
+  // Function to fetch FAQs
+  const fetchFaqs = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/faqs`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch FAQs')
+      }
+      const data = await response.json()
+      setFaqs(data.data)
+    } catch (error) {
+      console.error('Error fetching FAQs:', error)
+    }
+  }
 
   useEffect(() => {
-    const fetchFaqs = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/faqs`)
-        if (!response.ok) {
-          throw new Error('Failed to fetch FAQs')
-        }
-        const data = await response.json()
-        setFaqs(data.data)
-      } catch (error) {
-        setError(error.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-
     fetchFaqs()
+
+    const intervalId = setInterval(fetchFaqs, 5000)
+
+    return () => clearInterval(intervalId)
   }, [])
-
-  if (loading) {
-    return <div>Loading...</div>
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>
-  }
 
   return (
     <div>

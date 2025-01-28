@@ -1,5 +1,7 @@
 import Contact from "./Contact"
+import FAQs from './FAQs'
 
 export {
-  Contact
+  FAQs,
+  Contact,
 }

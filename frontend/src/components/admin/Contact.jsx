@@ -30,6 +30,7 @@ const Contact = () => {
           <li key={contact._id}>
             <h2>Firstname: {contact.firstName}</h2>
             <p>Lastname: {contact.lastName}</p>
+            <p>Email: {contact.email}</p>
             <p>Message: {contact.message}</p>
           </li>
         ))}

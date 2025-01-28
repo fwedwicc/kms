@@ -9,9 +9,10 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    email: '',
     message: '',
     termsAgreed: false
-  });
+  })
 
   // Handle Change
   const handleChange = (e) => {
@@ -22,15 +23,27 @@ const Contact = () => {
     }))
   }
 
+  // Validate Email
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return re.test(String(email).toLowerCase())
+  }
+
   // HandleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!formData.firstName || !formData.lastName || !formData.message || formData.termsAgreed === false) {
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.message || formData.termsAgreed === false) {
       setError('Please fill in all fields and agree to the terms')
       return
     }
+
+    if (!validateEmail(formData.email)) {
+      setError('Please enter a valid email address')
+      return
+    }
     setLoading(true)
+    setError('')
 
     try {
       const response = await fetch(`${API_URL}/contact`, {
@@ -49,6 +62,7 @@ const Contact = () => {
       setFormData({
         firstName: '',
         lastName: '',
+        email: '',
         message: '',
         termsAgreed: false
       })
@@ -72,6 +86,7 @@ const Contact = () => {
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
+            className="rounded-md px-3 py-1.5 border"
           />
         </fieldset>
         {/* Lastname */}
@@ -82,6 +97,18 @@ const Contact = () => {
             name="lastName"
             value={formData.lastName}
             onChange={handleChange}
+            className="rounded-md px-3 py-1.5 border"
+          />
+        </fieldset>
+        {/* Email */}
+        <fieldset>
+          <legend>Email</legend>
+          <input
+            type="text"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="rounded-md px-3 py-1.5 border"
           />
         </fieldset>
         {/* Message */}
@@ -91,6 +118,7 @@ const Contact = () => {
             name="message"
             value={formData.message}
             onChange={handleChange}
+            className="rounded-md px-3 py-1.5 border"
           />
         </fieldset>
         {/* Terms Agreed */}
@@ -107,10 +135,9 @@ const Contact = () => {
           </label>
         </fieldset>
         {/* Error Message */}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-
+        {error && <p className='text-red-500'>{error}</p>}
         {/* Submit Button */}
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className='rounded-md px-3 py-1.5 border'>
           {loading ? 'Submitting...' : 'Submit'}
         </button>
 

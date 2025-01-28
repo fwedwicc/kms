@@ -1,5 +1,4 @@
 import Contact from "../models/contactModel.js"
-import mongoose from "mongoose"
 
 // Get all Contacts
 export const getContacts = async (req, res) => {
@@ -14,9 +13,9 @@ export const getContacts = async (req, res) => {
 
 // Add a new Contact
 export const addContacts = async (req, res) => {
-  const { firstName, lastName, message, termsAgreed } = req.body
+  const { firstName, lastName, email, message, termsAgreed } = req.body
 
-  if (!firstName || !lastName || !message || termsAgreed === undefined) {
+  if (!firstName || !lastName || !email || !message || termsAgreed === undefined) {
     return res.status(400).json({ success: false, message: "All fields are required" })
   }
 
@@ -28,6 +27,7 @@ export const addContacts = async (req, res) => {
     const newContact = new Contact({
       firstName,
       lastName,
+      email,
       message,
       termsAgreed
     })

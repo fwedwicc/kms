@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 const Admin = () => {
   const [contact, setContact] = useState([])
 
-  // Function to fetch Contact
   const fetchContacts = async () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`)
@@ -19,10 +18,8 @@ const Admin = () => {
 
   useEffect(() => {
     fetchContacts()
-
-    const intervalId = setInterval(fetchContacts, 5000)
-
-    return () => clearInterval(intervalId)
+    const interval = setInterval(fetchContacts, 5000) // Polling interval: 5 seconds
+    return () => clearInterval(interval)
   }, [])
 
   return (

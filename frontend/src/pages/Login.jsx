@@ -3,29 +3,29 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  // const [username, setUsername] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [error, setError] = useState('');
+  // const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    try {
-      const { data } = await axios.post('/api/users/login', {
-        username,
-        password,
-      });
+  //   try {
+  //     const { data } = await axios.post('/api/users/login', {
+  //       username,
+  //       password,
+  //     });
 
-      // Save token to local storage
-      localStorage.setItem('token', data.token);
+  //     // Save token to local storage
+  //     localStorage.setItem('token', data.token);
 
-      // Redirect to admin dashboard
-      navigate('/admin');
-    } catch (err) {
-      setError('Invalid credentials');
-    }
-  };
+  //     // Redirect to admin dashboard
+  //     navigate('/admin');
+  //   } catch (err) {
+  //     setError('Invalid credentials');
+  //   }
+  // };
 
   return (
     <div>

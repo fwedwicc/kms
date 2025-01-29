@@ -5,6 +5,8 @@ import cors from 'cors'
 import connectDB from './db.js'
 import faqsRoutes from './routes/faqsRoute.js'
 import contactRoutes from './routes/contactRoute.js'
+import userRoutes from './routes/userRoute.js'; // Adjust the path
+import adminRoutes from './routes/adminRoute.js'; // Adjust the path
 
 dotenv.config()
 
@@ -20,8 +22,10 @@ app.get("/", (req, res) => {
   res.send("Server is ready")
 })
 
+app.use('/api', adminRoutes)
 app.use("/api/faqs", faqsRoutes)
 app.use("/api/contact", contactRoutes)
+app.use('/api/users', userRoutes)
 
 app.listen(port, () => {
   connectDB()

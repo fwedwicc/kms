@@ -1,10 +1,11 @@
 import React from 'react'
-import { Contact, FAQs } from '../components/admin'
+import { Notification, Contact, FAQs } from '../components/admin'
 
 const Admin = () => {
 
   return (
     <>
+      <Notification />
       <Contact />
       <FAQs />
     </>

@@ -1,5 +1,6 @@
 import express from "express"
 import { getFAQs, addFAQs, updateFAQs, deleteFAQs } from "../controllers/faqsController.js"
+import { authenticate } from '../middlewares/authMiddleware.js'
 
 const router = express.Router()
 
@@ -7,12 +8,12 @@ const router = express.Router()
 router.get('/', getFAQs)
 
 // Define the POST route to CREATE a new FAQs entry
-router.post('/', addFAQs)
+router.post('admin/', addFAQs, authenticate)
 
 // Define the PUT route to UPDATE an existing FAQ entry
-router.put('/:id', updateFAQs)
+router.put('admin/:id', updateFAQs, authenticate)
 
 // Define the DELETE route to DELETE an existing FAQ entry
-router.delete('/:id', deleteFAQs)
+router.delete('admin/:id', deleteFAQs, authenticate)
 
 export default router

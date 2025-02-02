@@ -1,31 +1,27 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import API from '../api.js'
 
 const Login = () => {
-  // const [username, setUsername] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [error, setError] = useState('');
-  // const navigate = useNavigate();
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault()
 
-  //   try {
-  //     const { data } = await axios.post('/api/users/login', {
-  //       username,
-  //       password,
-  //     });
+    try {
+      const response = await API.post('/auth/login', { username, password });
+      localStorage.setItem('token', response.data.token);
 
-  //     // Save token to local storage
-  //     localStorage.setItem('token', data.token);
-
-  //     // Redirect to admin dashboard
-  //     navigate('/admin');
-  //   } catch (err) {
-  //     setError('Invalid credentials');
-  //   }
-  // };
+      // Redirect to admin dashboard
+      navigate('/admin')
+    } catch (err) {
+      setError('Invalid credentials')
+    }
+  }
 
   return (
     <div>
@@ -47,7 +43,7 @@ const Login = () => {
         <button type="submit">Login</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

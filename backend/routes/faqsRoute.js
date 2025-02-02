@@ -8,12 +8,12 @@ const router = express.Router()
 router.get('/', getFAQs)
 
 // Define the POST route to CREATE a new FAQs entry
-router.post('admin/', addFAQs, authenticate)
+router.post('/', addFAQs, authenticate)
 
 // Define the PUT route to UPDATE an existing FAQ entry
-router.put('admin/:id', updateFAQs, authenticate)
+router.put('/:id', updateFAQs, authenticate)
 
 // Define the DELETE route to DELETE an existing FAQ entry
-router.delete('admin/:id', deleteFAQs, authenticate)
+router.delete('/:id', deleteFAQs, authenticate)
 
 export default router

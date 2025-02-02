@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import API from '../api.js'
 
 const Login = () => {
@@ -9,6 +9,12 @@ const Login = () => {
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
+  const token = localStorage.getItem('token')
+
+  if (token) {
+    return <Navigate to="/admin" />
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -16,7 +22,6 @@ const Login = () => {
       const response = await API.post('/auth/login', { username, password });
       localStorage.setItem('token', response.data.token);
 
-      // Redirect to admin dashboard
       navigate('/admin')
     } catch (err) {
       setError('Invalid credentials')

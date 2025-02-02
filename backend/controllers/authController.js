@@ -27,10 +27,21 @@ export const login = async (req, res) => {
     await existingAdmin.save()
 
     // Generate token
-    const token = jwt.sign({ id: existingAdmin._id }, process.env.JWT_SECRET, { expiresIn: '1m' })
+    const token = jwt.sign({ id: existingAdmin._id }, process.env.JWT_SECRET, { expiresIn: '2h' })
 
     res.status(200).json({ message: 'Login successful', result: existingAdmin, token })
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong', error })
   }
 }
+
+// Logout Controller
+export const logout = async (req, res) => {
+  try {
+    // Optionally, you can blacklist the token here (if needed)
+    // For now, we'll just send a success response
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    res.status(500).json({ message: 'Something went wrong', error });
+  }
+};

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate, Navigate } from 'react-router-dom'
-import API from '../api.js'
+import API from '../utils/api.js'
 
 const Login = () => {
   const [username, setUsername] = useState('')

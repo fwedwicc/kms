@@ -30,10 +30,8 @@ api.interceptors.response.use(response => {
 
     // Redirect to login page
     window.location.href = '/' // Redirect to login page
-  } else if (error.response && error.response.status === 403) {
-    localStorage.removeItem('token')
-    localStorage.removeItem('username')
-    window.location.href = '/' // Redirect to login page
+  } else {
+    console.log("Error response: ", error.response)  // Log error details
   }
   return Promise.reject(error)
 })

@@ -38,8 +38,6 @@ export const login = async (req, res) => {
 // Logout Controller
 export const logout = async (req, res) => {
   try {
-    // Optionally, you can blacklist the token here (if needed)
-    // For now, we'll just send a success response
     res.status(200).json({ message: 'Logout successful' });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong', error });

@@ -9,11 +9,7 @@ const Notification = () => {
     const getContacts = async () => {
       try {
         const response = await api.get('/contact')
-        // Access the `data` property of the response object
-        const contactsArray = response.data.data
-        if (Array.isArray(contactsArray)) {
-          setContacts(contactsArray)
-        }
+        setContacts(response.data.data)
       } catch (error) {
         console.log('Error fetching users:', error)
       }

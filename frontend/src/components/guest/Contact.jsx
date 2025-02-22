@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-
-const API_URL = import.meta.env.VITE_API_URL
+import api from '../../utils/api'
 
 const Contact = () => {
 
@@ -23,40 +22,14 @@ const Contact = () => {
     }))
   }
 
-  // Validate Email
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return re.test(String(email).toLowerCase())
-  }
-
   // HandleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.message || formData.termsAgreed === false) {
-      setError('Please fill in all fields and agree to the terms')
-      return
-    }
-
-    if (!validateEmail(formData.email)) {
-      setError('Please enter a valid email address')
-      return
-    }
     setLoading(true)
     setError('')
 
     try {
-      const response = await fetch(`${API_URL}/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to submit the form')
-      }
+      await api.post(`/contact`, formData)
 
       // Reset form after successful submission
       setFormData({
@@ -68,7 +41,7 @@ const Contact = () => {
       })
       alert('Form submitted successfully')
     } catch (error) {
-      setError(error.message)
+      setError(error.response?.data?.message)
     } finally {
       setLoading(false)
     }

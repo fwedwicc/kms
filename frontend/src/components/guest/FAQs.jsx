@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import api from '../../utils/api'
 
 const FAQs = () => {
 
@@ -9,18 +10,15 @@ const FAQs = () => {
     // Function to fetch FAQs
     const fetchFaqs = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/faqs`)
-        if (!response.ok) {
-          throw new Error('Failed to fetch FAQs')
-        }
-        const data = await response.json()
+        const response = await api.get('/faqs')
+        const newData = response.data.data
 
         // Check if new data is added
-        if (lastFetchData.length > 0 && data.data.length > lastFetchData.length) {
+        if (lastFetchData.length > 0 && newData.length > lastFetchData.length) {
           alert('New data added')
         }
-        setLastFetchData(data.data)
-        setFaqs(data.data)
+        setLastFetchData(newData)
+        setFaqs(newData)
       } catch (error) {
         console.error('Error fetching FAQs:', error)
       }

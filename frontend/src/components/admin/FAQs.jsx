@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-
-const API_URL = import.meta.env.VITE_API_URL
+import api from '../../utils/api'
 
 const FAQs = () => {
 
@@ -23,35 +22,19 @@ const FAQs = () => {
   // HandleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-    if (!formData.question || !formData.answer) {
-      setError('Please fill in all fields')
-      return
-    }
     setLoading(true)
     setError('')
 
     try {
-      const response = await fetch(`${API_URL}/faqs`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      })
+      await api.post(`/faqs`, formData)
 
-      if (!response.ok) {
-        throw new Error('Failed to submit the form')
-      }
-
-      // Reset form after successful submission
       setFormData({
         question: '',
         answer: ''
       })
       alert('New FAQ added successfully!')
     } catch (error) {
-      setError(error.message)
+      setError(error.response?.data?.message)
     } finally {
       setLoading(false)
     }

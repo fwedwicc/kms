@@ -23,6 +23,16 @@ export const addContacts = async (req, res) => {
     return res.status(400).json({ success: false, message: "You must agree to the terms and conditions" })
   }
 
+  // Validate Email
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return re.test(String(email).toLowerCase())
+  }
+
+  if (!validateEmail(email)) {
+    return res.status(400).json({ success: false, message: "Please enter a valid email address." })
+  }
+
   try {
     const newContact = new Contact({
       firstName,

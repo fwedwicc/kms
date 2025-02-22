@@ -8,6 +8,7 @@ const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
   const token = localStorage.getItem('token')
@@ -26,19 +27,10 @@ const Login = () => {
 
       navigate('/admin')
     } catch (error) {
-      toast.error(error.response.data.message, {
-        style: {
-          border: "1px solid rgba(229, 231, 235, 0.8)", // border-neutral-200/80
-          boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
-          borderRadius: "10px",
-          padding: '10px',
-          color: '#ef4444',
-        },
-        iconTheme: {
-          primary: '#ef4444',
-          secondary: '#fff',
-        },
-      })
+      setError(error.response.data.message)
+      setTimeout(() => {
+        setError("")
+      }, 4000)
     } finally {
       setLoading(false)
     }
@@ -61,6 +53,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        {error && <p className='text-red-500'>{error}</p>}
         <Button type='submit'>{loading ? 'Loading bhie...' : 'Login'}</Button>
       </form>
     </div>

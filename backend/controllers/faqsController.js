@@ -59,22 +59,22 @@ export const updateFAQs = async (req, res) => {
 
 // Delete an existing FAQ
 export const deleteFAQs = async (req, res) => {
-  const id = req.params.id;
+  const id = req.params.id
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ success: false, message: "FAQ not found" });
+    return res.status(404).json({ success: false, message: "FAQ not found" })
   }
 
   try {
-    const deletedFAQ = await FAQs.findByIdAndDelete(id);
+    const deletedFAQ = await FAQs.findByIdAndDelete(id)
 
     if (!deletedFAQ) {
-      return res.status(404).json({ success: false, message: "FAQ not found" });
+      return res.status(404).json({ success: false, message: "FAQ not found" })
     }
 
-    res.status(200).json({ success: true, message: "FAQ deleted successfully" });
+    res.status(200).json({ success: true, message: "FAQ deleted successfully" })
   } catch (error) {
-    console.log("Error in deleting FAQ:", error.message);
-    res.status(500).json({ success: false, message: "Error in deleting FAQ" });
+    console.log("Error in deleting FAQ:", error.message)
+    res.status(500).json({ success: false, message: "Error in deleting FAQ" })
   }
-};
+}

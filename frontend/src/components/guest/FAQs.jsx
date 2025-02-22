@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import api from '../../utils/api'
+import Swal from 'sweetalert2'
+
 
 const FAQs = () => {
 
@@ -15,7 +17,19 @@ const FAQs = () => {
 
         // Check if new data is added
         if (lastFetchData.length > 0 && newData.length > lastFetchData.length) {
-          alert('New data added')
+          Swal.fire({
+            title: "New FAQ added!",
+            text: "Check out the new FAQ added by the admin.",
+            icon: "info",
+            iconColor: "#f97316",
+            confirmButtonText: "Sige bhie",
+            customClass: {
+              title: "swal-title",
+              text: "swal-text",
+              popup: "swal-popup",
+              confirmButton: "swal-confirm"
+            },
+          })
         }
         setLastFetchData(newData)
         setFaqs(newData)

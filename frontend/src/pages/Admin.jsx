@@ -1,13 +1,32 @@
 import React, { useState } from 'react'
+import Swal from 'sweetalert2'
 import { Notification, Contact, FAQs } from '../components/admin'
 
 const Admin = () => {
   const [isLoggedOut, setIsLoggedOut] = useState(false)
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    alert('Logged out successfully')
-    setIsLoggedOut(true)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of your account.",
+      icon: "warning",
+      iconColor: "#f97316",
+      showCancelButton: true,
+      confirmButtonText: "ilogout mo bhie",
+      cancelButtonText: "Cancel",
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem('token')
+        setIsLoggedOut(true)
+      }
+    })
   }
 
   if (isLoggedOut) {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import api from '../../utils/api'
+import toast, { Toaster } from 'react-hot-toast'
 
 const Contact = () => {
 
@@ -31,7 +32,6 @@ const Contact = () => {
     try {
       await api.post(`/contact`, formData)
 
-      // Reset form after successful submission
       setFormData({
         firstName: '',
         lastName: '',
@@ -39,7 +39,20 @@ const Contact = () => {
         message: '',
         termsAgreed: false
       })
-      alert('Form submitted successfully')
+
+      toast.success('Nasend na bhie', {
+        style: {
+          border: "1px solid rgba(229, 231, 235, 0.8)", // border-neutral-200/80
+          boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
+          borderRadius: "12px",
+          padding: '10px',
+          color: '#22c55e',
+        },
+        iconTheme: {
+          primary: '#22c55e',
+          secondary: '#fff',
+        },
+      })
     } catch (error) {
       setError(error.response?.data?.message)
     } finally {
@@ -49,6 +62,7 @@ const Contact = () => {
 
   return (
     <div className='border rounded-xl p-4'>
+      <Toaster position="top-right" />
       <h1>GUEST: Contact</h1>
       <form onSubmit={handleSubmit}>
         {/* Firstname */}

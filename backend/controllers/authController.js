@@ -5,12 +5,13 @@ import User from '../models/userModel.js'
 // Login Controller
 export const login = async (req, res) => {
 
-  const { username, password } = req.body
-
-  if (!username || !password) {
-    return res.status(400).json({ message: 'All fields are required' })
-  }
   try {
+    const { username, password } = req.body
+
+    if (!username || !password) {
+      return res.status(400).json({ message: 'All fields are required' })
+    }
+
     const existingAdmin = await User.findOne({ username })
 
     // Check if the user exists
@@ -31,15 +32,15 @@ export const login = async (req, res) => {
 
     res.status(200).json({ message: 'Login successful', result: existingAdmin, token })
   } catch (error) {
-    res.status(500).json({ message: 'Something went wrong', error })
+    res.status(500).json({ message: error.message })
   }
 }
 
 // Logout Controller
 export const logout = async (req, res) => {
   try {
-    res.status(200).json({ message: 'Logout successful' });
+    res.status(200).json({ message: 'Logout successful' })
   } catch (error) {
-    res.status(500).json({ message: 'Something went wrong', error });
+    res.status(500).json({ message: 'Something went wrong', error })
   }
-};
+}

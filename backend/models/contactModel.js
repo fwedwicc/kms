@@ -24,6 +24,8 @@ const contactSchema = new Schema({
     type: Boolean,
     required: true
   }
+}, {
+  timestamps: true
 })
 
 const Contact = model('Contact', contactSchema)

@@ -29,6 +29,7 @@ const Notification = () => {
             <p>New message from {notif.lastName}, {notif.firstName}</p>
             <p>Email: {notif.email}</p>
             <p>Message: {notif.message}</p>
+            <p>Sent At: {new Date(notif.createdAt).toLocaleString()}</p>
           </li>
         ))}
       </ul>

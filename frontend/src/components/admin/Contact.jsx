@@ -32,6 +32,7 @@ const Contact = () => {
             <p>Lastname: {contact.lastName}</p>
             <p>Email: {contact.email}</p>
             <p>Message: {contact.message}</p>
+            <p>Sent At: {new Date(contact.createdAt).toLocaleString()}</p>
           </li>
         ))}
       </ul>

@@ -5,6 +5,7 @@ import connectDB from './db.js'
 import faqsRoutes from './routes/faqsRoute.js'
 import contactRoutes from './routes/contactRoute.js'
 import authRoutes from './routes/authRoute.js'
+import articleRoutes from './routes/articleRoute.js'
 
 dotenv.config()
 
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 app.use("/api/faqs", faqsRoutes)
 app.use("/api/auth", authRoutes)
 app.use("/api/contact", contactRoutes)
+app.use("/api/article", articleRoutes)
 
 app.listen(port, () => {
   connectDB()

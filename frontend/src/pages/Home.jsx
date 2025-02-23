@@ -1,5 +1,5 @@
 import React from 'react'
-import { FAQs, Contact } from '../components/guest'
+import { FAQs, Contact, Article } from '../components/guest'
 
 const Home = () => {
   const token = localStorage.getItem('token')
@@ -14,6 +14,7 @@ const Home = () => {
         )}
       </div>
       <FAQs />
+      <Article />
       <Contact />
     </>
   )

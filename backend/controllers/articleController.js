@@ -1,4 +1,5 @@
 import Article from "../models/articleModel.js"
+import mongoose from 'mongoose'
 
 // Get all Articles
 export const getArticles = async (req, res) => {
@@ -32,5 +33,27 @@ export const addArticle = async (req, res) => {
   } catch (error) {
     console.log("Error in adding Article:", error.message)
     res.status(500).json({ success: false, message: "Error in adding Article" })
+  }
+}
+
+// Delete an existing Article
+export const deleteArticle = async (req, res) => {
+  const id = req.params.id
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ success: false, message: "Article not found" })
+  }
+
+  try {
+    const deletedArticle = await Article.findByIdAndDelete(id)
+
+    if (!deletedArticle) {
+      return res.status(404).json({ success: false, message: "Article not found" })
+    }
+
+    res.status(200).json({ success: true, message: "Article deleted successfully" })
+  } catch (error) {
+    console.log("Error in deleting Article:", error.message)
+    res.status(500).json({ success: false, message: "Error in deleting Article" })
   }
 }

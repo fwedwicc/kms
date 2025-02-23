@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Swal from 'sweetalert2'
-import { Notification, Contact, FAQs } from '../components/admin'
+import { Notification, Contact, FAQs, Article } from '../components/admin'
 
 const Admin = () => {
   const [isLoggedOut, setIsLoggedOut] = useState(false)
@@ -36,9 +36,10 @@ const Admin = () => {
   return (
     <>
       <button onClick={handleLogout}>Logout</button>
-      <Notification />
+      {/* <Notification /> */}
       <Contact />
       <FAQs />
+      <Article />
     </>
   )
 }

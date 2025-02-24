@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import api from '../../utils/api'
 import toast, { Toaster } from 'react-hot-toast'
 
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
+
 const Article = () => {
 
   const [loading, setLoading] = useState(false)
@@ -11,8 +13,10 @@ const Article = () => {
   const [formData, setFormData] = useState({
     title: '',
     body: '',
-    tags: ''
+    tags: '',
+    image: null
   })
+  const [imagePreview, setImagePreview] = useState(null)
 
   // Handle Change
   const handleChange = (e) => {
@@ -23,6 +27,19 @@ const Article = () => {
     }))
   }
 
+  // Handle Image Change
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        image: file
+      }))
+      // Create preview URL
+      setImagePreview(URL.createObjectURL(file))
+    }
+  }
+
   // HandleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -30,13 +47,28 @@ const Article = () => {
     setError('')
 
     try {
-      await api.post(`/article`, formData)
+      // Create FormData object
+      const submitFormData = new FormData()
+      submitFormData.append('title', formData.title)
+      submitFormData.append('body', formData.body)
+      submitFormData.append('tags', formData.tags)
+      if (formData.image) {
+        submitFormData.append('image', formData.image)
+      }
+
+      await api.post('/article', submitFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
 
       setFormData({
         title: '',
         body: '',
-        tags: ''
+        tags: '',
+        image: null
       })
+      setImagePreview(null)
     } catch (error) {
       setError(error.response?.data?.message)
     } finally {
@@ -53,7 +85,7 @@ const Article = () => {
 
         // Check if new data is added
         if (lastFetchData.length > 0 && newData.length > lastFetchData.length) {
-          toast.success('New Article added', {
+          toast.success('Article added successfully', {
             style: {
               border: "1px solid rgba(229, 231, 235, 0.8)", // border-neutral-200/80
               boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
@@ -116,6 +148,13 @@ const Article = () => {
               <h2>Title: {article.title}</h2>
               <p>Body: {article.body}</p>
               <p>Tags: {article.tags}</p>
+              {article.image && (
+                <img
+                  src={`${SERVER_URL}${article.image}`}
+                  alt={article.title}
+                  className="mt-2 max-w-xs rounded-lg"
+                />
+              )}
               <button onClick={() => handleDelete(article._id)} className="text-red-500">
                 Delete
               </button>
@@ -156,6 +195,23 @@ const Article = () => {
             onChange={handleChange}
             className="rounded-md px-3 py-1.5 border"
           />
+        </fieldset>
+        {/* Image Upload */}
+        <fieldset>
+          <legend>Image</legend>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="rounded-md px-3 py-1.5 border w-full"
+          />
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="mt-2 max-w-xs rounded-lg"
+            />
+          )}
         </fieldset>
         {/* Error Message */}
         {error && <p className='text-red-500'>{error}</p>}

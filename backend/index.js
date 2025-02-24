@@ -15,7 +15,8 @@ const port = process.env.PORT
 app.use(cors())
 
 // Middleware to parse JSON
-app.use(express.json());
+app.use(express.json())
+app.use('/uploads', express.static('uploads'))
 
 app.get("/", (req, res) => {
   res.send("Server is ready")

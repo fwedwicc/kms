@@ -24,7 +24,8 @@ export const addArticle = async (req, res) => {
     const newArticle = new Article({
       title,
       body,
-      tags
+      tags,
+      image: req.file ? `/uploads/${req.file.filename}` : null
     })
 
     const savedArticle = await newArticle.save()

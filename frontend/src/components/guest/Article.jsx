@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import api from '../../utils/api'
 import Swal from 'sweetalert2'
+
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
 
 const Article = () => {
 
@@ -48,8 +51,16 @@ const Article = () => {
         {articles.map((article) => (
           <li key={article._id}>
             <h2>Title: {article.title}</h2>
+            {article.image && (
+              <img
+                src={`${SERVER_URL}${article.image}`}
+                alt={article.title}
+                className="mt-2 max-w-xs rounded-lg"
+              />
+            )}
             <p>Body: {article.body}</p>
             <p>Tags: {article.tags}</p>
+            <Link to={`/article/${article._id}`} className='px-3 py-2 border rounded-md inline-block'>Read More</Link>
           </li>
         ))}
       </ul>

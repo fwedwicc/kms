@@ -12,6 +12,18 @@ export const getArticles = async (req, res) => {
   }
 }
 
+// Get current Article
+export const getCurrentArticle = async (req, res) => {
+  try {
+    const article = await Article.findById(req.params.id)
+    if (!article) return res.status(404).json({ message: "Article not found" })
+    res.status(200).json({ success: true, data: article })
+  } catch (error) {
+    console.log("Error in fetching Article:", error.message)
+    res.status(500).json({ success: false, message: "Error in fetching Article" })
+  }
+}
+
 // Add a new Article
 export const addArticle = async (req, res) => {
   const { title, body, tags } = req.body

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import api from '../../utils/api'
 import toast, { Toaster } from 'react-hot-toast'
 import Swal from 'sweetalert2'
@@ -225,7 +226,7 @@ const Article = () => {
   }
 
   return (
-    <div className='border rounded-xl p-4'>
+    <section className='border rounded-xl p-4'>
       <Toaster position="top-right" />
       <h1>ADMIN: Articles</h1>
       <div className='border'>
@@ -233,8 +234,6 @@ const Article = () => {
           {article.map((article) => (
             <li key={article._id}>
               <h2>Title: {article.title}</h2>
-              <p>Body: {article.body}</p>
-              <p>Tags: {article.tags}</p>
               {article.image && (
                 <img
                   src={`${SERVER_URL}${article.image}`}
@@ -242,6 +241,9 @@ const Article = () => {
                   className="mt-2 max-w-xs rounded-lg"
                 />
               )}
+              <p>Body: {article.body}</p>
+              <p>Tags: {article.tags}</p>
+              <Link to={`/article/${article._id}`} className='px-3 py-2 border rounded-md inline-block'>Read More</Link>
               <button onClick={() => handleDelete(article._id)} className="text-red-500">
                 Delete
               </button>
@@ -310,7 +312,7 @@ const Article = () => {
           {loading ? 'Submitting...' : 'Submit'}
         </button>
       </form>
-    </div>
+    </section>
   )
 }
 

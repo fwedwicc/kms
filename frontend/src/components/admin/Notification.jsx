@@ -21,7 +21,7 @@ const Notification = () => {
   }, [])
 
   return (
-    <div className='border rounded-xl p-4'>
+    <section className='border rounded-xl p-4'>
       <h1>ADMIN: Notification</h1>
       <ul className='divide-y'>
         {contact.map((notif) => (
@@ -33,7 +33,7 @@ const Notification = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   )
 }
 

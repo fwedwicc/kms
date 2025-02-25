@@ -169,7 +169,7 @@ const FAQs = () => {
   }
 
   return (
-    <div className='border rounded-xl p-4'>
+    <section className='border rounded-xl p-4'>
       <Toaster position="top-right" />
       <h1>ADMIN: FAQs</h1>
       <div className='border'>
@@ -218,7 +218,7 @@ const FAQs = () => {
           {loading ? 'Submitting...' : 'Submit'}
         </button>
       </form>
-    </div>
+    </section>
   )
 }
 

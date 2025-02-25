@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import api from '../../utils/api'
 import toast, { Toaster } from 'react-hot-toast'
+import Swal from 'sweetalert2'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL
 
@@ -109,6 +110,92 @@ const Article = () => {
     fetchArticles()
   }, [lastFetchData])
 
+  // Handle Edit Article
+  const handleEdit = async (article) => {
+    const { value: formValues } = await Swal.fire({
+      title: 'Edit Article',
+      html: `
+        <div class="space-y-4 text-left">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Title</label>
+            <input id="swal-title" class="mt-1 block w-full p-2 border rounded-md" value="${article.title}">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Body</label>
+            <textarea id="swal-body" class="mt-1 block w-full p-2 border rounded-md" rows="3">${article.body}</textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Tags</label>
+            <input id="swal-tags" class="mt-1 block w-full p-2 border rounded-md" value="${article.tags}">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Image</label>
+            <input id="swal-image" type="file" class="mt-1 block w-full p-2 border rounded-md">
+          </div>
+          ${article.image ? `
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Current Image</label>
+            <img src="${SERVER_URL}${article.image}" alt="Current image" class="mt-1 max-w-xs rounded-lg">
+          </div>` : ''}
+        </div>
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => {
+        return {
+          title: document.getElementById('swal-title').value,
+          body: document.getElementById('swal-body').value,
+          tags: document.getElementById('swal-tags').value,
+          image: document.getElementById('swal-image').files[0]
+        }
+      }
+    })
+
+    if (formValues) {
+      try {
+        // Prepare form data for API call
+        const updateFormData = new FormData()
+        updateFormData.append('title', formValues.title)
+        updateFormData.append('body', formValues.body)
+        updateFormData.append('tags', formValues.tags)
+
+        if (formValues.image) {
+          updateFormData.append('image', formValues.image)
+        }
+
+        const response = await api.put(`/article/${article._id}`, updateFormData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+
+        // Update article state with the updated article
+        setArticles(prevArticles =>
+          prevArticles.map(item =>
+            item._id === article._id ? response.data.data : item
+          )
+        )
+
+        toast.success('Article updated successfully!', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#22c55e',
+          },
+          iconTheme: {
+            primary: '#22c55e',
+            secondary: '#fff',
+          },
+        })
+      } catch (error) {
+        console.error("Error updating article:", error)
+        toast.error('Failed to update article')
+      }
+    }
+  }
+
   // Handle Delete Article
   const handleDelete = async (id) => {
     const isConfirmed = confirm("Are you sure you want to delete this Article?")
@@ -157,6 +244,9 @@ const Article = () => {
               )}
               <button onClick={() => handleDelete(article._id)} className="text-red-500">
                 Delete
+              </button>
+              <button onClick={() => handleEdit(article)} className="text-blue-500">
+                Edit
               </button>
             </li>
           ))}

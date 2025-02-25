@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import api from '../../utils/api'
 import toast, { Toaster } from 'react-hot-toast'
+import Swal from 'sweetalert2'
 
 const FAQs = () => {
 
@@ -76,6 +77,69 @@ const FAQs = () => {
   }, [lastFetchData])
 
 
+  // Handle Edit FAQs
+  const handleEdit = async (faq) => {
+    const { value: formValues } = await Swal.fire({
+      title: 'Edit FAQ',
+      html: `
+        <div class="space-y-4 text-left">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Title</label>
+            <input id="swal-question" class="mt-1 block w-full p-2 border rounded-md" value="${faq.question}">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Body</label>
+            <textarea id="swal-answer" class="mt-1 block w-full p-2 border rounded-md" rows="3">${faq.answer}</textarea>
+          </div>
+          
+        </div>
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => {
+        return {
+          question: document.getElementById('swal-question').value,
+          answer: document.getElementById('swal-answer').value
+        }
+      }
+    })
+
+    if (formValues) {
+      try {
+        const updateFormData = {
+          question: formValues.question,
+          answer: formValues.answer
+        }
+
+        const response = await api.put(`/faqs/${faq._id}`, updateFormData)
+
+        // Update FAQ state with the updated FAQ
+        setFaqs(prevFaqs =>
+          prevFaqs.map(item =>
+            item._id === faq._id ? response.data.data : item
+          )
+        )
+
+        toast.success('FAQ updated successfully!', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#22c55e',
+          },
+          iconTheme: {
+            primary: '#22c55e',
+            secondary: '#fff',
+          },
+        })
+      } catch (error) {
+        console.error("Error updating FAQ:", error)
+        toast.error('Failed to update FAQ')
+      }
+    }
+  }
+
   // Handle Delete FAQ
   const handleDelete = async (id) => {
     const isConfirmed = confirm("Are you sure you want to delete this FAQ?")
@@ -116,6 +180,9 @@ const FAQs = () => {
               <p>Answer: {faq.answer}</p>
               <button onClick={() => handleDelete(faq._id)} className="text-red-500">
                 Delete
+              </button>
+              <button onClick={() => handleEdit(faq)} className="text-blue-500">
+                Edit
               </button>
             </li>
           ))}

@@ -9,10 +9,6 @@
 /* Title styling */
 .swal-title {
   @apply text-neutral-800 font-bold text-3xl;
-  font-family: "Nunito", serif;
-  font-optical-sizing: auto;
-  font-weight: auto;
-  font-style: normal;
 }
 
 /* Text styling */

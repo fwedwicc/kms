@@ -5,6 +5,6 @@ import { authenticate } from '../middlewares/authMiddleware.js'
 const router = express.Router()
 
 router.post('/login', login)
-router.post('/logout', authenticate, logout); // Add logout route
+router.post('/logout', authenticate, logout)
 
 export default router

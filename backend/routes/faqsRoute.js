@@ -4,16 +4,16 @@ import { authenticate } from '../middlewares/authMiddleware.js'
 
 const router = express.Router()
 
-// Define the GET route to VIEW a existing FAQs entry
+// Get all FAQs
 router.get('/', getFAQs)
 
-// Define the POST route to CREATE a new FAQs entry
+// Create a new FAQ - ADMIN ONLY
 router.post('/', authenticate, addFAQs)
 
-// Define the PUT route to UPDATE an existing FAQ entry
+// Edit an existing FAQ - ADMIN ONLY
 router.put('/:id', authenticate, updateFAQs)
 
-// Define the DELETE route to DELETE an existing FAQ entry
+// Delete an FAQ - ADMIN ONLY
 router.delete('/:id', authenticate, deleteFAQs)
 
 export default router

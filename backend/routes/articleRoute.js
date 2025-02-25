@@ -1,20 +1,23 @@
 import express from "express"
-import { getArticles, getCurrentArticle, addArticle, deleteArticle } from "../controllers/articleController.js"
+import { getArticles, getCurrentArticle, addArticle, updateArticle, deleteArticle } from "../controllers/articleController.js"
 import { authenticate } from '../middlewares/authMiddleware.js'
 import { upload } from '../middlewares/uploadMiddleware.js'
 
 const router = express.Router()
 
-// Define the GET route to VIEW a existing Article
+// Get all articles
 router.get('/', getArticles)
 
-// Get the current Article
+// Get the current article
 router.get('/:id', getCurrentArticle)
 
-// Define the POST route to CREATE a new Article
+// Create a new Article - ADMIN ONLY
 router.post('/', authenticate, upload.single('image'), addArticle)
 
-// Define the POST route to DELETE an Article
+// Update an article - ADMIN ONLY
+router.put('/:id', authenticate, upload.single('image'), updateArticle)
+
+// Delete an Article - ADMIN ONLY
 router.delete('/:id', authenticate, deleteArticle)
 
 

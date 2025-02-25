@@ -4,10 +4,10 @@ import { authenticate } from '../middlewares/authMiddleware.js'
 
 const router = express.Router()
 
-// Define the GET route to VIEW a existing Contact entry
+// Get all Contacts - ADMIN ONLY
 router.get('/', authenticate, getContacts)
 
-// Define the POST route to CREATE a new Contact entry
+// Submit a contact
 router.post('/', addContacts)
 
 

@@ -7,6 +7,7 @@ import { Button } from '../components/ui'
 const Admin = () => {
   const [isLoggedOut, setIsLoggedOut] = useState(false)
   const location = useLocation()
+  const [isNavOpen, setIsNavOpen] = useState(false)
 
   const handleLogout = () => {
     Swal.fire({
@@ -36,6 +37,10 @@ const Admin = () => {
     window.location.href = '/login'
   }
 
+  const handleNavToggle = () => {
+    setIsNavOpen(!isNavOpen)
+  }
+
   const renderComponent = () => {
     switch (location.pathname) {
       case '/admin/contact':
@@ -49,21 +54,81 @@ const Admin = () => {
     }
   }
 
+  const ButtonLink = ({ link, icon, label, isNavOpen }) => {
+    return (
+      <Link to={link}>
+        <Button className={`justify-start w-full ease-in-out transition duration-300 ${!isNavOpen ? 'size-11.5' : ''}`}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d={icon} />
+          </svg>
+          {isNavOpen && <span>{label}</span>}
+        </Button>
+      </Link>
+    )
+  }
+
   return (
     <>
       {/* Side Nav */}
-      <nav className='border border-blue-500 bg-blue-200 fixed w-24 h-screen p-4'>
-        <h2>Admin Panel</h2>
-        <Button onClick={handleLogout}>Logout</Button>
-        <Link to="/">Home</Link>
-        <ul className="mt-4 space-y-2">
-          <li><Link to="/admin/contact">Contact</Link></li>
-          <li><Link to="/admin/faqs">FAQs</Link></li>
-          <li><Link to="/admin/article">Article</Link></li>
-        </ul>
+      <nav className={`lg:block hidden fixed p-3 h-screen ${isNavOpen ? 'w-64' : 'w-24'} transition-all duration-300`}>
+        <div className='relative h-full flex flex-col justify-between border rounded-xl p-3'>
+          <div>
+            {/* Logo */}
+            <div className='flex items-center gap-3'>
+              <div className='flex items-center justify-center size-12 shrink-0 border rounded-[9px]'>
+                x
+              </div>
+              <span className={`${isNavOpen ? 'block' : 'hidden'} transition-all duration-300`}>Bhieee</span>
+            </div>
+            <Button onClick={handleNavToggle} className={'absolute top-0 -right-20'}>Menu</Button>
+            <ul className="mt-7 flex flex-col gap-1.5">
+              <ButtonLink
+                link='/'
+                icon='m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25'
+                label='Home'
+                isNavOpen={isNavOpen}
+              >
+              </ButtonLink>
+              <ButtonLink
+                link='/admin'
+                icon='M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z'
+                label='Dashboard'
+                isNavOpen={isNavOpen}
+              >
+              </ButtonLink>
+              <ButtonLink
+                link='/admin/contact'
+                icon='M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75'
+                label='Contact'
+                isNavOpen={isNavOpen}
+              >
+              </ButtonLink>
+              <ButtonLink
+                link='/admin/faqs'
+                icon='M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z'
+                label='FAQs'
+                isNavOpen={isNavOpen}
+              >
+              </ButtonLink>
+              <ButtonLink
+                link='/admin/article'
+                icon='M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0 1 20.25 6v12A2.25 2.25 0 0 1 18 20.25H6A2.25 2.25 0 0 1 3.75 18V6A2.25 2.25 0 0 1 6 3.75h1.5m9 0h-9'
+                label='Article'
+                isNavOpen={isNavOpen}
+              >
+              </ButtonLink>
+            </ul>
+          </div>
+          <Button onClick={handleLogout} className={`w-full text-red-500 border-black ease-in-out transition duration-300 ${!isNavOpen ? 'size-11.5' : null}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+            </svg>
+            {isNavOpen && 'Logout'}
+          </Button>
+        </div>
       </nav>
       {/* Content */}
-      <main className='border border-green-500 w-full p-4 pl-28 md:min-h-screen'>
+      <main className={`w-full md:min-h-screen pt-12 lg:pt-0 pl-0 ${isNavOpen ? 'lg:pl-64' : 'lg:pl-24'} transition-all duration-300`}>
         {renderComponent()}
       </main>
     </>

@@ -226,7 +226,7 @@ const Article = () => {
   }
 
   return (
-    <section className='border rounded-xl p-4'>
+    <section className='p-12'>
       <Toaster position="top-right" />
       <h1>ADMIN: Articles</h1>
       <div className='border'>

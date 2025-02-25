@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { Contact, FAQs, Article } from '../components/admin'
+import { Contact, FAQs, Article, Dashboard } from '../components/admin'
 import { Button } from '../components/ui'
 
 const Admin = () => {
@@ -50,19 +50,20 @@ const Admin = () => {
       case '/admin/article':
         return <Article />
       default:
-        return <>admin dasbord</>
+        return <Dashboard />
     }
   }
 
   const ButtonLink = ({ link, icon, label, isNavOpen }) => {
     return (
-      <Link to={link}>
-        <Button className={`justify-start w-full ease-in-out transition duration-300 ${!isNavOpen ? 'size-11.5' : ''}`}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+      <Link to={link} className='relative group'>
+        <Button className={`justify-start w-full ease-in-out transition duration-300 ${location.pathname === link ? 'border' : 'border-none'} ${!isNavOpen ? 'size-11.5' : ''}`}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="shrink-0 size-5">
             <path strokeLinecap="round" strokeLinejoin="round" d={icon} />
           </svg>
           {isNavOpen && <span>{label}</span>}
         </Button>
+        {!isNavOpen && <span className='border bg-white rounded-md text-sm px-2 py-1 absolute opacity-0 group-hover:opacity-100 transform -translate-y-1/2 top-1/2 left-13 transition-opacity duration-200 ease-in-out'>{label}</span>}
       </Link>
     )
   }
@@ -80,8 +81,12 @@ const Admin = () => {
               </div>
               <span className={`${isNavOpen ? 'block' : 'hidden'} transition-all duration-300`}>Bhieee</span>
             </div>
-            <Button onClick={handleNavToggle} className={'absolute top-0 -right-20'}>Menu</Button>
-            <ul className="mt-7 flex flex-col gap-1.5">
+            <Button onClick={handleNavToggle} className={'absolute top-0 -right-9 size-7'}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`shrink-0 size-3 ${isNavOpen ? 'rotate-180' : ''}`}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+              </svg>
+            </Button>
+            <ul className="mt-7 flex flex-col gap-1">
               <ButtonLink
                 link='/'
                 icon='m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25'
@@ -119,12 +124,15 @@ const Admin = () => {
               </ButtonLink>
             </ul>
           </div>
-          <Button onClick={handleLogout} className={`w-full text-red-500 border-black ease-in-out transition duration-300 ${!isNavOpen ? 'size-11.5' : null}`}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
-            </svg>
-            {isNavOpen && 'Logout'}
-          </Button>
+          <div className='relative group'>
+            <Button onClick={handleLogout} className={`w-full text-red-500 border-black ease-in-out transition duration-300 ${!isNavOpen ? 'size-11.5' : null}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+              </svg>
+              {isNavOpen && 'Logout'}
+            </Button>
+            {!isNavOpen && <span className='border bg-white rounded-md text-sm px-2 py-1 absolute opacity-0 group-hover:opacity-100 transform -translate-y-1/2 top-1/2 left-13 transition-opacity duration-200 ease-in-out'>Logout</span>}
+          </div>
         </div>
       </nav>
       {/* Content */}

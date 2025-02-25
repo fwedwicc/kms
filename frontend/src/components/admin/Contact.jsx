@@ -23,7 +23,7 @@ const Contact = () => {
 
 
   return (
-    <section className='border rounded-xl p-4'>
+    <section className='p-12'>
       <h1>ADMIN: Contact</h1>
       <ul className='divide-y'>
         {contact.map((contact) => (

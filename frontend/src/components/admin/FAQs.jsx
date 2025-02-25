@@ -169,7 +169,7 @@ const FAQs = () => {
   }
 
   return (
-    <section className='border rounded-xl p-4'>
+    <section className='p-12'>
       <Toaster position="top-right" />
       <h1>ADMIN: FAQs</h1>
       <div className='border'>

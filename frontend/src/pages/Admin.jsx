@@ -71,8 +71,8 @@ const Admin = () => {
   return (
     <>
       {/* Side Nav */}
-      <nav className={`lg:block hidden fixed p-3 h-screen ${isNavOpen ? 'w-64' : 'w-24'} transition-all duration-300`}>
-        <div className='relative h-full flex flex-col justify-between border rounded-xl p-3'>
+      <nav className={`lg:block hidden fixed p-3 h-screen ${isNavOpen ? 'w-56' : 'w-18'} transition-all duration-300`}>
+        <div className='relative h-full flex flex-col justify-between'>
           <div>
             {/* Logo */}
             <div className='flex items-center gap-3'>
@@ -136,7 +136,7 @@ const Admin = () => {
         </div>
       </nav>
       {/* Content */}
-      <main className={`w-full md:min-h-screen pt-12 lg:pt-0 pl-0 ${isNavOpen ? 'lg:pl-64' : 'lg:pl-24'} transition-all duration-300`}>
+      <main className={`w-full pl-0 ${isNavOpen ? 'lg:pl-56' : 'lg:pl-18'} transition-all duration-300`}>
         {renderComponent()}
       </main>
     </>

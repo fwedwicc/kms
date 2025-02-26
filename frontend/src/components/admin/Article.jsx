@@ -226,92 +226,94 @@ const Article = () => {
   }
 
   return (
-    <section className='p-12'>
+    <section className='py-3.5 pr-3.5 lg:pl-0 pl-3.5 bg-white border h-screen'>
       <Toaster position="top-right" />
-      <h1>ADMIN: Articles</h1>
-      <div className='border'>
-        <ul className='divide-y'>
-          {article.map((article) => (
-            <li key={article._id}>
-              <h2>Title: {article.title}</h2>
-              {article.image && (
-                <img
-                  src={`${SERVER_URL}${article.image}`}
-                  alt={article.title}
-                  className="mt-2 max-w-xs rounded-lg"
-                />
-              )}
-              <p>Body: {article.body}</p>
-              <p>Tags: {article.tags}</p>
-              <Link to={`/article/${article._id}`} className='px-3 py-2 border rounded-md inline-block'>Read More</Link>
-              <button onClick={() => handleDelete(article._id)} className="text-red-500">
-                Delete
-              </button>
-              <button onClick={() => handleEdit(article)} className="text-blue-500">
-                Edit
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <form onSubmit={handleSubmit}>
-        {/* Title */}
-        <fieldset>
-          <legend>Title</legend>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            className="rounded-md px-3 py-1.5 border"
-          />
-        </fieldset>
-        {/* Body */}
-        <fieldset>
-          <legend>Body</legend>
-          <input
-            type="text"
-            name="body"
-            value={formData.body}
-            onChange={handleChange}
-            className="rounded-md px-3 py-1.5 border"
-          />
-        </fieldset>
-        {/* Tags */}
-        <fieldset>
-          <legend>Tags</legend>
-          <input
-            type="text"
-            name="tags"
-            value={formData.tags}
-            onChange={handleChange}
-            className="rounded-md px-3 py-1.5 border"
-          />
-        </fieldset>
-        {/* Image Upload */}
-        <fieldset>
-          <legend>Image</legend>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="rounded-md px-3 py-1.5 border w-full"
-          />
-          {imagePreview && (
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="mt-2 max-w-xs rounded-lg"
+      <div className='border rounded-2xl overflow-auto h-full p-12'>
+        <h1>ADMIN: Articles</h1>
+        <div className='border'>
+          <ul className='divide-y'>
+            {article.map((article) => (
+              <li key={article._id}>
+                <h2>Title: {article.title}</h2>
+                {article.image && (
+                  <img
+                    src={`${SERVER_URL}${article.image}`}
+                    alt={article.title}
+                    className="mt-2 max-w-xs rounded-lg"
+                  />
+                )}
+                <p>Body: {article.body}</p>
+                <p>Tags: {article.tags}</p>
+                <Link to={`/article/${article._id}`} className='px-3 py-2 border rounded-md inline-block'>Read More</Link>
+                <button onClick={() => handleDelete(article._id)} className="text-red-500">
+                  Delete
+                </button>
+                <button onClick={() => handleEdit(article)} className="text-blue-500">
+                  Edit
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <form onSubmit={handleSubmit}>
+          {/* Title */}
+          <fieldset>
+            <legend>Title</legend>
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              className="rounded-md px-3 py-1.5 border"
             />
-          )}
-        </fieldset>
-        {/* Error Message */}
-        {error && <p className='text-red-500'>{error}</p>}
-        {/* Submit Button */}
-        <button type="submit" disabled={loading} className='rounded-md px-3 py-1.5 border'>
-          {loading ? 'Submitting...' : 'Submit'}
-        </button>
-      </form>
+          </fieldset>
+          {/* Body */}
+          <fieldset>
+            <legend>Body</legend>
+            <input
+              type="text"
+              name="body"
+              value={formData.body}
+              onChange={handleChange}
+              className="rounded-md px-3 py-1.5 border"
+            />
+          </fieldset>
+          {/* Tags */}
+          <fieldset>
+            <legend>Tags</legend>
+            <input
+              type="text"
+              name="tags"
+              value={formData.tags}
+              onChange={handleChange}
+              className="rounded-md px-3 py-1.5 border"
+            />
+          </fieldset>
+          {/* Image Upload */}
+          <fieldset>
+            <legend>Image</legend>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="rounded-md px-3 py-1.5 border w-full"
+            />
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="mt-2 max-w-xs rounded-lg"
+              />
+            )}
+          </fieldset>
+          {/* Error Message */}
+          {error && <p className='text-red-500'>{error}</p>}
+          {/* Submit Button */}
+          <button type="submit" disabled={loading} className='rounded-md px-3 py-1.5 border'>
+            {loading ? 'Submitting...' : 'Submit'}
+          </button>
+        </form>
+      </div>
     </section>
   )
 }

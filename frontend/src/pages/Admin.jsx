@@ -57,7 +57,7 @@ const Admin = () => {
   const ButtonLink = ({ link, icon, label, isNavOpen }) => {
     return (
       <Link to={link} className='relative group'>
-        <Button className={`justify-start w-full ease-in-out transition duration-300 ${location.pathname === link ? 'border' : 'border-none'} ${!isNavOpen ? 'size-11.5' : ''}`}>
+        <Button className={`justify-start w-full ease-in-out transition-all duration-300 ${location.pathname === link ? 'border bg-green-600 text-white' : 'border-none'} ${!isNavOpen ? 'size-11.5 rounded-xl' : 'rounded-lg'}`}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="shrink-0 size-5">
             <path strokeLinecap="round" strokeLinejoin="round" d={icon} />
           </svg>
@@ -76,7 +76,7 @@ const Admin = () => {
           <div>
             {/* Logo */}
             <div className='flex items-center gap-3'>
-              <div className='flex items-center justify-center size-12 shrink-0 border rounded-[9px]'>
+              <div className='flex items-center justify-center size-12 shrink-0 bg-green-600 text-white border-4 border-green-200 rounded-2xl'>
                 x
               </div>
               <span className={`${isNavOpen ? 'block' : 'hidden'} transition-all duration-300`}>Bhieee</span>
@@ -136,8 +136,12 @@ const Admin = () => {
         </div>
       </nav>
       {/* Content */}
-      <main className={`w-full pl-0 ${isNavOpen ? 'lg:pl-56' : 'lg:pl-18'} transition-all duration-300`}>
-        {renderComponent()}
+      <main className={`w-full bg-stone-50/50 pl-0 ${isNavOpen ? 'lg:pl-56' : 'lg:pl-18'} transition-all duration-300`}>
+        <section className='py-3.5 pr-3.5 lg:pl-0 pl-3.5 bg-stone-50/50 h-screen'>
+          <div className='bg-white border border-stone-200/50 rounded-2xl overflow-auto lg:h-full h-[93%] lg:mt-0 mt-12 p-12'>
+            {renderComponent()}
+          </div>
+        </section>
       </main>
     </>
   )

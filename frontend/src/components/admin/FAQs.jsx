@@ -169,7 +169,7 @@ const FAQs = () => {
   }
 
   return (
-    <section className='p-12'>
+    <>
       <Toaster position="top-right" />
       <h1>ADMIN: FAQs</h1>
       <div className='border'>
@@ -218,7 +218,7 @@ const FAQs = () => {
           {loading ? 'Submitting...' : 'Submit'}
         </button>
       </form>
-    </section>
+    </>
   )
 }
 

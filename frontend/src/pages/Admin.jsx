@@ -57,13 +57,13 @@ const Admin = () => {
   const ButtonLink = ({ link, icon, label, isNavOpen }) => {
     return (
       <Link to={link} className='relative group'>
-        <Button className={`justify-start w-full ease-in-out transition-all duration-300 ${location.pathname === link ? 'border bg-green-600 text-white' : 'border-none'} ${!isNavOpen ? 'size-11.5 rounded-xl' : 'rounded-lg'}`}>
+        <Button className={`justify-start w-full ease-in-out transition-all duration-300 gap-3 ${location.pathname === link ? 'border border-neutral-100 bg-neutral-50/50 text-neutral-600' : 'border-none text-neutral-700'} ${!isNavOpen ? 'size-11.5 rounded-xl' : 'rounded-lg'}`}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="shrink-0 size-5">
             <path strokeLinecap="round" strokeLinejoin="round" d={icon} />
           </svg>
           {isNavOpen && <span>{label}</span>}
         </Button>
-        {!isNavOpen && <span className='border bg-white rounded-md text-sm px-2 py-1 absolute opacity-0 group-hover:opacity-100 transform -translate-y-1/2 top-1/2 left-13 transition-opacity duration-200 ease-in-out'>{label}</span>}
+        {!isNavOpen && <span className='border bg-white rounded-md text-sm px-1.5 py-1 absolute opacity-0 group-hover:opacity-100 transform -translate-y-1/2 top-1/2 left-13 transition-opacity duration-200 ease-in-out'>{label}</span>}
       </Link>
     )
   }
@@ -76,7 +76,7 @@ const Admin = () => {
           <div>
             {/* Logo */}
             <div className='flex items-center gap-3'>
-              <div className='flex items-center justify-center size-12 shrink-0 bg-green-600 text-white border-4 border-green-200 rounded-2xl'>
+              <div className='flex items-center justify-center size-12 shrink-0 bg-neutral-600 text-white border-4 border-neutral-200 rounded-2xl'>
                 x
               </div>
               <span className={`${isNavOpen ? 'block' : 'hidden'} transition-all duration-300`}>Bhieee</span>

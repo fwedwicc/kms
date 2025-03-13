@@ -2,11 +2,13 @@ import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Login, Home, Admin, ArticlePage } from './pages'
 import { Contact, FAQs, Article } from './components/admin'
+import { Nav } from './components/ui'
 import Auth from './routes/Auth'
 
 const App = () => {
   return (
     <div>
+      <Nav />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/article/:id" element={<ArticlePage />} />

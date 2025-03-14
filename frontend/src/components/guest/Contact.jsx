@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Badge } from '../ui'
+import { InputText, Button, Badge } from '../ui'
 import api from '../../utils/api'
 import toast, { Toaster } from 'react-hot-toast'
 
@@ -62,79 +62,91 @@ const Contact = () => {
 
   return (
     <section id='contact' className='grid lg:grid-cols-2 grid-cols-1 border rounded-xl lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
-      <Toaster position="top-right" />
+      <Toaster position="bottom-left" />
       {/* Left Content */}
       <div className='border'>
         <h3>Lorem ips dolrsit.</h3>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <form onSubmit={handleSubmit} className='mt-4'>
+        <form onSubmit={handleSubmit} className='mt-4 grid md:grid-cols-2 grid-cols-1 gap-2 border'>
           {/* Firstname */}
-          <fieldset>
-            <legend>Firstname</legend>
-            <input
+          <fieldset className='flex flex-col border'>
+            <label htmlFor="firstName">First name</label>
+            <InputText
               type="text"
               name="firstName"
+              placeholder="E.g. John"
               value={formData.firstName}
               onChange={handleChange}
-              className="rounded-md px-3 py-1.5 border"
+              className=""
             />
           </fieldset>
           {/* Lastname */}
-          <fieldset>
-            <legend>Lastname</legend>
-            <input
+          <fieldset className='flex flex-col border'>
+            <label htmlFor="lastName">Last name</label>
+            <InputText
               type="text"
               name="lastName"
+              placeholder="E.g. Doe"
               value={formData.lastName}
               onChange={handleChange}
-              className="rounded-md px-3 py-1.5 border"
+              className=""
             />
           </fieldset>
           {/* Email */}
-          <fieldset>
-            <legend>Email</legend>
-            <input
+          <fieldset className='flex flex-col border col-span-full'>
+            <label htmlFor="email">Email Address</label>
+            <InputText
               type="text"
               name="email"
+              placeholder="E.g. john.doe.1988@email.com"
               value={formData.email}
               onChange={handleChange}
-              className="rounded-md px-3 py-1.5 border"
+              className=""
             />
           </fieldset>
           {/* Message */}
-          <fieldset>
-            <legend>Message</legend>
+          <fieldset className='flex flex-col border col-span-full'>
+            <label htmlFor="message">Your message</label>
             <textarea
               name="message"
               value={formData.message}
+              placeholder="E.g. I would like to inquire..."
               onChange={handleChange}
               className="rounded-md px-3 py-1.5 border"
             />
           </fieldset>
-          {/* Terms Agreed */}
-          <fieldset>
-            <legend>Terms Agreed</legend>
-            <label>
-              <input
-                type="checkbox"
-                name="termsAgreed"
-                checked={formData.termsAgreed}
-                onChange={handleChange}
-              />
-              I agree to the terms and conditions
-            </label>
-          </fieldset>
+          <div className='col-span-full grid md:grid-cols-2 grid-cols-1 items-end gap-4 border'>
+            {/* Terms Agreed */}
+            <fieldset>
+              <p>Terms Agreed</p>
+              <label className='flex items-center gap-2'>
+                <input
+                  type="checkbox"
+                  name="termsAgreed"
+                  checked={formData.termsAgreed}
+                  onChange={handleChange}
+                  className=''
+                />
+                I agree to the terms and conditions
+              </label>
+            </fieldset>
+            {/* Submit Button */}
+            <Button type="submit" disabled={loading} className=''>
+              {loading ? 'Submitting...' : 'Submit Form'}
+            </Button>
+          </div>
           {/* Error Message */}
-          {error && <p className='text-red-500'>{error}</p>}
-          {/* Submit Button */}
-          <button type="submit" disabled={loading} className='rounded-md px-3 py-1.5 border'>
-            {loading ? 'Submitting...' : 'Submit'}
-          </button>
+          {error && <p className='text-red-500 col-span-full'>{error}</p>}
+          {/* Note */}
+          <div className='col-span-full mt-4 px-3 py-2 rounded-2xl border'>
+            <p>Note: Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum optio, amet ipsam odio similique ut eius eaque nam.</p>
+          </div>
         </form>
       </div>
       {/* Right Content */}
       <div className='border space-y-3'>
-        <Badge styles='border-green-500/30 bg-green-400/5 text-green-600'>
+        {/* border-green-500/30 bg-green-400/5 text-green-600 */}
+        <Badge styles=''>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
           </svg>
@@ -143,7 +155,7 @@ const Contact = () => {
         <h1>Lorem ipsum dol it, met cons semp.</h1>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, debitis consequatur quisquam veritatis eos repellat quam vitae, ex, ducimus dolorum quasi dolorem consectetur voluptates. Molestiae soluta beatae totam optio vitae:</p>
         {/* More */}
-        <div className='grid md:grid-cols-3 grid-cols-2 gap-2 mt-4'>
+        <div className='grid md:grid-cols-3 grid-cols-2 gap-2 mt-4 border'>
           <a href='#' className='border p-2 rounded-2xl space-y-2'>
             <div className='flex justify-between items-start'>
               <div className='flex items-center gap-1.5'>
@@ -188,7 +200,7 @@ const Contact = () => {
           </a>
         </div>
         {/* Socials */}
-        <div className='space-y-2'>
+        <div className='space-y-2 border'>
           <p>Socials:</p>
           <div className='flex items-center gap-2'>
             <a href="" className='flex items-center justify-center size-7 rounded-full border'>

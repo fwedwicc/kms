@@ -12,7 +12,10 @@ body {
   font-weight: 400;
   font-style: normal;
 }
-
+p,
+span {
+  @apply md:text-base text-sm text-neutral-800;
+}
 h1 {
   @apply md:text-6xl text-5xl font-bold text-neutral-900;
 }

@@ -118,8 +118,7 @@ const Contact = () => {
           <div className='col-span-full grid md:grid-cols-2 grid-cols-1 items-end gap-4 border'>
             {/* Terms Agreed */}
             <fieldset>
-              <p>Terms Agreed</p>
-              <label className='flex items-center gap-2'>
+              <label className='flex items-start gap-2 leading-4'>
                 <input
                   type="checkbox"
                   name="termsAgreed"
@@ -136,9 +135,9 @@ const Contact = () => {
             </Button>
           </div>
           {/* Error Message */}
-          {error && <p className='text-red-500 col-span-full'>{error}</p>}
+          {error && <p className='text-red-500 col-span-full mt-2'>{error}</p>}
           {/* Note */}
-          <div className='col-span-full mt-4 px-3 py-2 rounded-2xl border'>
+          <div className='col-span-full mt-2 px-3 py-2 rounded-2xl border'>
             <p>Note: Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum optio, amet ipsam odio similique ut eius eaque nam.</p>
           </div>
         </form>

@@ -7,7 +7,7 @@ const Home = () => {
 
   return (
     <>
-      <div>
+      <div className='ml-64'>
         {token ? (
           <>
             <p>You are logged in as admin.</p>
@@ -17,8 +17,8 @@ const Home = () => {
           <p>You are not logged in.</p>
         )}
       </div>
-      <FAQs />
       <Article />
+      <FAQs />
       <Contact />
     </>
   )

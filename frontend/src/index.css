@@ -5,6 +5,10 @@
   @apply transition-all duration-300 ease-in-out scroll-smooth;
 } */
 
+* {
+  @apply scroll-smooth;
+}
+
 body {
   @apply bg-neutral-50/50;
   font-family: "Inter", serif;

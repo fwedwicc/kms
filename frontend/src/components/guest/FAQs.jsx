@@ -93,7 +93,7 @@ const FAQs = () => {
         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus quidem optio labore magni eveniet repellat harum recusandae ut itaque, aliquam inventore eos officias.</p>
       </div>
       {/* Right Content */}
-      <motion.div className='border'>
+      <div className='border'>
         <h2>FAQs</h2>
         <span>Lorem ipsum dolor sit amet.</span>
         <AnimatePresence mode="wait">
@@ -150,7 +150,7 @@ const FAQs = () => {
             </Button>
           </div>
         )}
-      </motion.div>
+      </div>
     </div>
   )
 }

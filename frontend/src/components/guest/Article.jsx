@@ -45,25 +45,30 @@ const Article = () => {
 
 
   return (
-    <div className='border rounded-xl p-4'>
-      <h1>GUEST: Articles</h1>
-      <ul className='divide-y'>
+    <div className='border rounded-xl lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
+      <h1>Articles rem issum</h1>
+      <p className='w-full max-w-xl'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis omnis molestiae, fugiat dolore totam repudiandae culpa at veniam dol.</p>
+      <div className='mt-8 grid md:grid-cols-3 grid-cols-1 gap-4'>
         {articles.map((article) => (
-          <li key={article._id}>
-            <h2>Title: {article.title}</h2>
-            {article.image && (
-              <img
-                src={`${SERVER_URL}${article.image}`}
-                alt={article.title}
-                className="mt-2 max-w-xs rounded-lg"
-              />
-            )}
-            <p>Body: {article.body}</p>
+          <Link to={`/article/${article._id}`} className='px-5 py-4 border rounded-2xl inline-block' key={article._id}>
+            <h4 className='break-all line-clamp-2 text-2xl font-medium'>{article.title}</h4>
+            {article.image ? (
+              <div className='mt-2 border relative h-56'>
+                <img
+                  src={`${SERVER_URL}${article.image}`}
+                  alt={article.title}
+                  className="rounded-lg absolute w-full h-full object-cover"
+                />
+              </div>
+            ) : <div className='mt-2 border w-full h-56 rounded-lg'>
+              no imeyds to
+            </div>}
+            <p className=''>{article.body}</p>
             <p>Tags: {article.tags}</p>
-            <Link to={`/article/${article._id}`} className='px-3 py-2 border rounded-md inline-block'>Read More</Link>
-          </li>
+            Read More
+          </Link>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }

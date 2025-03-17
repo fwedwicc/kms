@@ -45,7 +45,7 @@ const Article = () => {
 
 
   return (
-    <div className='border rounded-xl lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
+    <section id='article' className='border rounded-xl lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
       <h1>Articles rem issum</h1>
       <p className='w-full max-w-xl'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis omnis molestiae, fugiat dolore totam repudiandae culpa at veniam dol.</p>
       <div className='mt-8 grid md:grid-cols-3 grid-cols-1 gap-4'>
@@ -69,7 +69,7 @@ const Article = () => {
           </Link>
         ))}
       </div>
-    </div>
+    </section>
   )
 }
 

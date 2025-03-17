@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FAQs, Contact, Article } from '../components/guest'
+import { FAQs, Contact, Article, Hero, About } from '../components/guest'
 
 const Home = () => {
   const token = localStorage.getItem('token')
@@ -17,6 +17,8 @@ const Home = () => {
           <p>You are not logged in.</p>
         )}
       </div>
+      <Hero />
+      <About />
       <Article />
       <FAQs />
       <Contact />

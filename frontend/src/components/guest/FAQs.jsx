@@ -79,7 +79,7 @@ const FAQs = () => {
   }, [lastFetchData])
 
   return (
-    <div className='grid lg:grid-cols-2 grid-cols-1 border rounded-xl lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
+    <section id='faqs' className='grid lg:grid-cols-2 grid-cols-1 border rounded-xl lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
       {/* Left Content */}
       <div className='self-start flex flex-col justify-between border rounded-2xl md:space-y-36 space-y-12 p-4'>
         <div className='space-y-3'>
@@ -151,7 +151,7 @@ const FAQs = () => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   )
 }
 

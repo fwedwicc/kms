@@ -10,13 +10,34 @@ const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY
 
 const Contact = () => {
   const [contact, setContact] = useState([])
+  const [lastFetchData, setLastFetchData] = useState([])
 
   // Fetch all Contacts
   useEffect(() => {
     const getContacts = async () => {
       try {
         const response = await api.get('/contact')
-        setContact(response.data.data)
+        const newData = response.data.data
+
+        // Check if new data is added
+        if (lastFetchData.length > 0 && newData.length > lastFetchData.length) {
+          Swal.fire({
+            title: "New Contact added!",
+            text: "Check out the new Inquiry submitted by a user.",
+            icon: "info",
+            iconColor: "#f97316",
+            confirmButtonText: "Sige bhie",
+            customClass: {
+              title: "swal-title",
+              text: "swal-text",
+              popup: "swal-popup",
+              confirmButton: "swal-confirm"
+            },
+          })
+        }
+
+        setLastFetchData(newData)
+        setContact(newData)
       } catch (error) {
         console.log('Error fetching users:', error)
       }
@@ -25,7 +46,7 @@ const Contact = () => {
     getContacts()
     const interval = setInterval(getContacts, 5000)
     return () => clearInterval(interval)
-  }, [])
+  }, [lastFetchData])
 
   const handleReply = (contactData) => {
     Swal.fire({
@@ -97,7 +118,7 @@ const Contact = () => {
       <ul className='divide-y'>
         {contact.map((contact) => (
           <li key={contact._id} className="py-4">
-            <h2>Firstname: {contact.firstName}</h2>
+            <p>Firstname: {contact.firstName}</p>
             <p>Lastname: {contact.lastName}</p>
             <p>Email: {contact.email}</p>
             <p>Message: {contact.message}</p>

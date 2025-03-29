@@ -57,7 +57,7 @@ const Admin = () => {
   const ButtonLink = ({ link, icon, label, isNavOpen }) => {
     return (
       <Link to={link} className='relative group'>
-        <Button className={`justify-start w-full ease-in-out transition-all duration-300 gap-3 ${location.pathname === link ? 'border border-neutral-100 bg-neutral-50/50 text-neutral-600' : 'border-none text-neutral-700'} ${!isNavOpen ? 'size-11.5 rounded-xl' : 'rounded-lg'}`}>
+        <Button className={`justify-start w-full ease-in-out transition-all duration-300 gap-3 ${location.pathname === link ? 'border bg-neutral-50/50 text-neutral-600' : 'border-none text-neutral-700'} ${!isNavOpen ? 'size-11.5 rounded-xl' : 'rounded-lg'}`}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="shrink-0 size-5">
             <path strokeLinecap="round" strokeLinejoin="round" d={icon} />
           </svg>

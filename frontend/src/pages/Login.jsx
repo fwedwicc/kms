@@ -39,7 +39,7 @@ const Login = () => {
   return (
     <div>
       <Toaster position="bottom-right" reverseOrder={true} />
-      <h1>Login Peyds to bhie</h1>
+      <h1>Login Peyds</h1>
       <form onSubmit={handleSubmit}>
         <InputText
           type="text"

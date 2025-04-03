@@ -1,9 +1,9 @@
 import React from 'react'
 // import { Spinner } from './index'
 
-const baseButton = 'flex items-center justify-center md:text-base text-sm gap-2 px-3 py-1.5 border rounded-xl cursor-pointer transition duration-300 ease-in-out disabled:opacity-70 disabled:cursor-not-allowed'
+const baseButton = 'flex items-center justify-center md:text-base text-sm gap-2 px-3 py-1.5 rounded-[9px] cursor-pointer transition duration-300 ease-in-out disabled:opacity-70 disabled:cursor-not-allowed'
 const primaryButton = 'bg-neutral-900 hover:bg-neutral-950 disabled:hover:bg-neutral-900 text-white'
-const secondaryButton = 'bg-neutral-900 hover:bg-neutral-950 disabled:hover:bg-neutral-900 text-white' // temporary
+const secondaryButton = 'bg-neutral-200 hover:bg-neutral-300 disabled:hover:bg-neutral-200 text-neutral-950' // temporary
 const ghostButton = 'bg-neutral-900 hover:bg-neutral-950 disabled:hover:bg-neutral-900 text-white' // temporary
 
 const Button = ({

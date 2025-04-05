@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import api from '../../utils/api'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Button } from '../ui'
 import Swal from 'sweetalert2'
+import { HiOutlineChevronDown } from "react-icons/hi"
+import api from '../../utils/api'
+import { Button } from '../ui'
 
 const FAQs = () => {
   const [faqs, setFaqs] = useState([])
@@ -81,7 +82,7 @@ const FAQs = () => {
   return (
     <section id='faqs' className='grid lg:grid-cols-2 grid-cols-1 rounded-xl lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
       {/* Left Content */}
-      <div className='flex flex-col justify-between border rounded-2xl md:space-y-36 space-y-12 p-4'>
+      <div className='flex flex-col justify-between border border-neutral-300 rounded-2xl md:space-y-36 space-y-12 p-4'>
         <div className='space-y-3'>
           <h3>Lorem ipsum dolor sit, amet consectetur adipi.</h3>
           <a href='#contact' className='inline-flex'>
@@ -113,10 +114,8 @@ const FAQs = () => {
                   onClick={() => toggleAccordion(index)}
                   initial={false}
                 >
-                  <h4 className='text-lg font-medium text-left leading-6'>{faq.question}</h4>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`size-5 flex-shrink-0 transition-all duration-300 ease-in-out ${activeIndex === index ? 'rotate-180' : 'rotate-0'}`}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                  </svg>
+                  <span className='text-lg font-medium text-left leading-6'>{faq.question}</span>
+                  <HiOutlineChevronDown className={`size-5 stroke-[1.4px] flex-shrink-0 transition-all duration-300 ease-in-out ${activeIndex === index ? 'rotate-180' : 'rotate-0'}`} />
                 </motion.button>
                 {/* FAQ Answer/Content */}
                 <AnimatePresence>
@@ -144,7 +143,7 @@ const FAQs = () => {
             <Button variant='secondary' onClick={goToPreviousPage} disabled={currentPage === 1 || isChangingPage}>
               Back
             </Button>
-            <h5 className='text-sm'>Page {currentPage} of {totalPages}</h5>
+            <span className='text-sm'>Page {currentPage} of {totalPages}</span>
             <Button variant='secondary' onClick={goToNextPage} disabled={currentPage === totalPages || isChangingPage}>
               Next
             </Button>

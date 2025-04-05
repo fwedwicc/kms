@@ -15,7 +15,7 @@ export const getContacts = async (req, res) => {
 export const addContacts = async (req, res) => {
   const { firstName, lastName, email, message, termsAgreed } = req.body
 
-  if (!firstName || !lastName || !email || !message || termsAgreed === undefined) {
+  if (!firstName || !email || !message || termsAgreed === undefined) {
     return res.status(400).json({ success: false, message: "All fields are required" })
   }
 

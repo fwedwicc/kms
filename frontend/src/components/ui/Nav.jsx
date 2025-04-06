@@ -22,11 +22,11 @@ const Nav = () => {
             {/* Mid */}
             <div className='flex items-center gap-1'>
               {[
-                { link: '#home', label: 'Home' },
-                { link: '#about', label: 'About' },
-                { link: '#article', label: 'Articles' },
-                { link: '#faqs', label: 'FAQs' },
-                { link: '#contact', label: 'Contact' }
+                { link: '/#home', label: 'Home' },
+                { link: '/#about', label: 'About' },
+                { link: '/#article', label: 'Articles' },
+                { link: '/#faqs', label: 'FAQs' },
+                { link: '/#contact', label: 'Contact' }
               ].map((item, index) => (
                 <a href={item.link} key={index}>
                   <Button variant='ghost' className={`${location.hash === item.link ? 'bg-neutral-100' : ''}`}>

@@ -1,74 +1,114 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Badge, Button } from '../ui'
+import { HiOutlineLightBulb } from "react-icons/hi"
 import api from '../../utils/api'
-import Swal from 'sweetalert2'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL
 
 const Article = () => {
 
   const [articles, setArticles] = useState([])
-  const [lastFetchData, setLastFetchData] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [isChangingPage, setIsChangingPage] = useState(false)
+  const itemsPerPage = 3
+
+  // Calculate pagination values
+  const totalPages = Math.ceil(articles.length / itemsPerPage)
+  const indexOfLastArticle = currentPage * itemsPerPage
+  const indexOfFirstArticle = indexOfLastArticle - itemsPerPage
+  const currentArticle = articles.slice(indexOfFirstArticle, indexOfLastArticle)
+
+  // Navigation functions
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setIsChangingPage(true)
+      setCurrentPage(prev => prev - 1)
+      setTimeout(() => setIsChangingPage(false), 300)
+    }
+  }
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setIsChangingPage(true)
+      setCurrentPage(prev => prev + 1)
+      setTimeout(() => setIsChangingPage(false), 300)
+    }
+  }
 
   useEffect(() => {
     // Function to fetch articles
     const fetchArticles = async () => {
       try {
         const response = await api.get('/article')
-        const newData = response.data.data
-
-        // Check if new data is added
-        if (lastFetchData.length > 0 && newData.length > lastFetchData.length) {
-          Swal.fire({
-            title: "New Article added!",
-            text: "Check out the new Article added by the admin.",
-            icon: "info",
-            iconColor: "#f97316",
-            confirmButtonText: "Sige bhie",
-            customClass: {
-              title: "swal-title",
-              text: "swal-text",
-              popup: "swal-popup",
-              confirmButton: "swal-confirm"
-            },
-          })
-        }
-        setLastFetchData(newData)
-        setArticles(newData)
+        setArticles(response.data.data)
       } catch (error) {
         console.error('Error fetching articles:', error)
       }
     }
-
     fetchArticles()
-  }, [lastFetchData])
+  }, [])
 
 
   return (
-    <section id='article' className='border rounded-xl lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
+    <section id='article' className='rounded-xl lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
+      {/* Headings */}
+      <Badge variant='default' styles='mb-2'>
+        <HiOutlineLightBulb className='size-4' />
+        Wow ganern
+      </Badge>
       <h1>Articles</h1>
-      <p className='w-full max-w-xl'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis omnis molestiae, fugiat dolore totam repudiandae culpa at veniam dol.</p>
-      <div className='mt-8 grid md:grid-cols-3 grid-cols-1 gap-4'>
-        {articles.map((article) => (
-          <Link to={`/article/${article._id}`} className='px-5 py-4 border rounded-2xl inline-block' key={article._id}>
-            <h4 className='break-all line-clamp-2 text-2xl font-medium'>{article.title}</h4>
-            {article.image ? (
-              <div className='mt-2 border relative h-56'>
-                <img
-                  src={`${SERVER_URL}${article.image}`}
-                  alt={article.title}
-                  className="rounded-lg absolute w-full h-full object-cover"
-                />
+      <p className='w-full max-w-xl mt-1'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis omnis molestiae, fugiat dolore totam repudiandae culpa at veniam dol.</p>
+      {/* Articles */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentPage}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="mt-8 grid md:grid-cols-3 grid-cols-1 gap-5"
+        >
+          {currentArticle.map((article) => (
+            <Link to={`/article/${article._id}`} className='px-5 py-4 space-y-2.5 border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 rounded-2xl transition duration-300 ease-in-out' key={article._id}>
+              {/* Article Image */}
+              {article.image ? (
+                <div className='mt-2 border border-neutral-300 relative h-56 rounded-lg overflow-hidden'>
+                  <img
+                    src={`${SERVER_URL}${article.image}`}
+                    alt={article.title}
+                    className="absolute w-full h-full object-cover"
+                  />
+                </div>
+              ) : <div className='mt-2 border border-neutral-300 w-full h-56 rounded-lg'>
+                no imeyds to
+              </div>}
+              {/* Article Infos */}
+              <h4 className='break-all line-clamp-2 text-2xl font-medium'>{article.title}</h4>
+              <p className='break-all line-clamp-4'>{article.body}</p>
+              <div>
+                <p>Tags: {article.tags}</p>
+                Read More
               </div>
-            ) : <div className='mt-2 border w-full h-56 rounded-lg'>
-              no imeyds to
-            </div>}
-            <p className=''>{article.body}</p>
-            <p>Tags: {article.tags}</p>
-            Read More
-          </Link>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </motion.div>
+      </AnimatePresence>
+      {/* Pagination - Back and Next buttons only */}
+      {totalPages > 1 && (
+        <div className="flex justify-between items-center gap-4 mt-6 mb-4">
+          <span className='text-sm'>Page {currentPage} of {totalPages}</span>
+          <div className='flex gap-2'>
+            <Button variant='secondary' onClick={goToPreviousPage} disabled={currentPage === 1 || isChangingPage}>
+              Back
+            </Button>
+            <Button variant='secondary' onClick={goToNextPage} disabled={currentPage === totalPages || isChangingPage}>
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

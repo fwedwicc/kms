@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 import { HiLogout } from "react-icons/hi"
 import { Button } from './index'
@@ -9,8 +10,14 @@ const Nav = () => {
 
   return (
     <>
-      {location.pathname === '/login' || location.pathname.includes('/admin') ? null : (
-        <nav className='fixed z-50 p-3 w-full flex justify-center items-center'>
+      {!location.pathname.includes('/admin') && (
+        <motion.nav
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, delay: 0.5 }}
+          className='fixed z-50 p-3 w-full flex justify-center items-center'
+        >
           <div className='w-full max-w-7xl flex items-center justify-between border border-neutral-300/60 shadow-xl shadow-neutral-400/5 bg-white p-3 rounded-[15px]'>
             {/* Start */}
             <div className='flex items-center gap-3'>
@@ -61,7 +68,7 @@ const Nav = () => {
               }
             </div>
           </div>
-        </nav>
+        </motion.nav>
       )}
     </>
   )

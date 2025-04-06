@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
+import { motion } from 'framer-motion'
 import { InputText, Button } from '../components/ui'
 import { useNavigate, Navigate } from 'react-router-dom'
 import API from '../utils/api.js'
@@ -37,8 +37,13 @@ const Login = () => {
   }
 
   return (
-    <div>
-      <Toaster position="bottom-right" reverseOrder={true} />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className='lg:px-36 md:px-12 md:gap-8 gap-4 px-4 pt-48 pb-36'
+    >
       <h1>Login Peyds</h1>
       <form onSubmit={handleSubmit}>
         <InputText
@@ -56,7 +61,7 @@ const Login = () => {
         {error && <p className='text-red-500'>{error}</p>}
         <Button type='submit'>{loading ? 'Loading bhie...' : 'Login'}</Button>
       </form>
-    </div>
+    </motion.div>
   )
 }
 

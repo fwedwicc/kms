@@ -1,11 +1,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
 import { FAQs, Contact, Article, Hero, About } from '../components/guest'
 
 const Home = () => {
-
-  const token = localStorage.getItem('token')
 
   return (
     <motion.div

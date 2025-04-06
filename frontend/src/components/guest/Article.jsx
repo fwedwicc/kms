@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Badge, Button } from '../ui'
-import { HiOutlineLightBulb } from "react-icons/hi"
+import { HiOutlineLightBulb, HiOutlineArrowRight } from "react-icons/hi"
 import api from '../../utils/api'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL
@@ -52,7 +52,7 @@ const Article = () => {
 
 
   return (
-    <section id='article' className='rounded-xl lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
+    <section id='article' className='lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
       {/* Headings */}
       <Badge variant='default' styles='mb-2'>
         <HiOutlineLightBulb className='size-4' />
@@ -71,25 +71,47 @@ const Article = () => {
           className="mt-8 grid md:grid-cols-3 grid-cols-1 gap-5"
         >
           {currentArticle.map((article) => (
-            <Link to={`/article/${article._id}`} className='px-5 py-4 space-y-2.5 border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 rounded-2xl transition duration-300 ease-in-out' key={article._id}>
+            <Link to={`/article/${article._id}`} className='p-2.5 border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 rounded-2xl transition duration-300 ease-in-out' key={article._id}>
               {/* Article Image */}
-              {article.image ? (
-                <div className='mt-2 border border-neutral-300 relative h-56 rounded-lg overflow-hidden'>
+              {/* {article.image ? (
+                <div className='border border-neutral-300 relative h-56 rounded-lg overflow-hidden'>
                   <img
                     src={`${SERVER_URL}${article.image}`}
                     alt={article.title}
                     className="absolute w-full h-full object-cover"
                   />
                 </div>
-              ) : <div className='mt-2 border border-neutral-300 w-full h-56 rounded-lg'>
+              ) : <div className='border border-neutral-300 w-full h-56 rounded-lg'>
                 no imeyds to
-              </div>}
+              </div>} */}
+              {/* Placeholder Image */}
+              <div className='border border-neutral-300 relative h-56 rounded-lg overflow-hidden'>
+                <img src="https://placehold.co/30x30" alt="Placeholder Image" className='absolute w-full h-full object-cover' />
+              </div>
               {/* Article Infos */}
-              <h4 className='break-all line-clamp-2 text-2xl font-medium'>{article.title}</h4>
-              <p className='break-all line-clamp-4'>{article.body}</p>
-              <div>
-                <p>Tags: {article.tags}</p>
-                Read More
+              <div className='space-y-2.5 p-4'>
+                <h4 className='break-all line-clamp-2 text-2xl font-medium'>{article.title}</h4>
+                <p className='break-all line-clamp-4'>{article.body}</p>
+                <div className='flex items-end justify-between gap-2 mt-6'>
+                  {/* Tags */}
+                  {/* <div className="flex flex-wrap gap-1">
+                  {article.tags?.split(' ').map((tag, index) => (
+                    <Badge key={index} variant='default'>
+                      {tag}
+                    </Badge>
+                  ))}
+                </div> */}
+                  {/* Date */}
+                  <p>
+                    {new Date(article.createdAt).toLocaleDateString('en-PH', {
+                      month: 'short', day: '2-digit', year: 'numeric'
+                    })}
+                  </p>
+                  <div className='flex items-center gap-[1px]'>
+                    <p className='text-nowrap'>Read More</p>
+                    <HiOutlineArrowRight className='size-4.5 -rotate-45 stroke-[1.5px] mt-1' />
+                  </div>
+                </div>
               </div>
             </Link>
           ))}

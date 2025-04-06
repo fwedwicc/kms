@@ -3,6 +3,7 @@ import InputText from './InputText'
 import Button from './Button'
 import Nav from './Nav'
 import Spinner from './Spinner'
+import Footer from './Footer'
 
 export {
   Badge,
@@ -10,4 +11,5 @@ export {
   Button,
   Nav,
   Spinner,
+  Footer,
 }

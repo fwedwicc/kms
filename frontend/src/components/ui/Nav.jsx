@@ -26,9 +26,9 @@ const Nav = () => {
     }
   }, [isNavOpen])
 
-  const Links = ({ styles }) => {
+  const Links = ({ isForSideNav }) => {
     return (
-      <div className={`${styles}`}>
+      <div className={`${!isForSideNav ? 'lg:flex hidden' : ''} items-center gap-1`}>
         {[
           { link: '/#home', label: 'Home' },
           { link: '/#about', label: 'About' },
@@ -37,7 +37,7 @@ const Nav = () => {
           { link: '/#contact', label: 'Contact' }
         ].map((item, index) => (
           <a href={item.link} key={index}>
-            <Button variant='ghost' className={`${location.hash === item.link ? 'bg-neutral-100' : ''}`}>
+            <Button variant='ghost' className={`${location.hash === item.link.replace('/', '') ? 'bg-neutral-100' : ''} ${isForSideNav ? 'w-full' : 'w-auto'}`}>
               {item.label}
             </Button>
           </a>
@@ -86,7 +86,7 @@ const Nav = () => {
           transition={{ duration: 0.3, delay: 0.5 }}
           className='fixed z-50 p-3 w-full flex justify-center items-center'
         >
-          <div className='w-full max-w-7xl flex items-center justify-between border border-neutral-300/60 shadow-xl shadow-neutral-400/5 bg-white p-3 rounded-[15px]'>
+          <div className='w-full max-w-7xl flex items-center justify-between border border-neutral-300/60 shadow-xl shadow-neutral-400/5 bg-white md:p-3 p-2 rounded-[15px]'>
             {/* Start */}
             <div className='flex items-center gap-3'>
               <div className='relative flex justify-center items-center size-9 bg-neutral-800 border rounded-lg'>
@@ -95,7 +95,7 @@ const Nav = () => {
               <h5>StaySuite</h5>
             </div>
             {/* Mid */}
-            <Links styles='lg:flex hidden items-center gap-1' />
+            <Links />
             {/* End */}
             <Buttons />
             {/* End - Mobile Toggle */}
@@ -110,7 +110,7 @@ const Nav = () => {
                   <HiOutlineX className='size-4' />
                 </Button>
                 {/* Links */}
-                <Links styles='items-center gap-1' />
+                <Links isForSideNav={true} />
                 {/* Buttons */}
                 <Buttons isForSideNav={true} />
               </div>

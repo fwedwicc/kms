@@ -52,7 +52,7 @@ const Article = () => {
 
 
   return (
-    <section id='article' className='lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'>
+    <section id='article' className='lg:px-36 md:px-12 gap-4 px-4 p-4 md:pt-30 pt-20'>
       {/* Headings */}
       <Badge variant='default' styles='mb-2'>
         <HiOutlineLightBulb className='size-4' />

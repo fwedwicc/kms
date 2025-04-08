@@ -80,7 +80,7 @@ const Contact = () => {
   }
 
   return (
-    <section id='contact' className='grid lg:grid-cols-2 grid-cols-1 rounded-xl lg:px-36 md:px-12 md:gap-8 gap-4 px-4 p-4 md:p-14'>
+    <section id='contact' className='grid lg:grid-cols-2 grid-cols-1 lg:px-36 md:px-12 md:gap-8 gap-4 px-4 p-4 md:pt-30 pt-20 md:mb-0 mb-8'>
       <Toaster position="bottom-left" />
       {/* Left Content */}
       <div>

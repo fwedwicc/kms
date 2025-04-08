@@ -17,19 +17,19 @@ const Footer = () => {
           className='space-y-6 lg:px-36 md:px-12 gap-4 px-4 p-4 md:p-14'
         >
           {/* Start COntent */}
-          <div className='flex justify-between items-end pb-3'>
+          <div className='flex flex-wrap justify-between items-end gap-6 pb-3'>
             {/* Company Logo and Description */}
             <div className='flex items-center gap-6'>
-              <div className='relative flex justify-center items-center size-24 ring-2 ring-neutral-400 ring-offset-2 bg-neutral-900 border rounded-2xl'>
+              <div className='relative flex flex-shrink-0 justify-center items-center size-24 ring-2 ring-neutral-400 ring-offset-2 bg-neutral-900 border rounded-2xl'>
                 <span className='text-white font-bold md:text-3xl text-2xl'>S</span>
               </div>
               <div>
                 <h5>StaySuite</h5>
-                <p className='max-w-sm'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque odit, at, porro tempora inventore tenetur laboriosam volupta.</p>
+                <p className='max-w-sm'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque odit, at, porro tempora inventore tenetur.</p>
               </div>
             </div>
             {/* Links */}
-            <div className='flex items-start gap-12'>
+            <div className='flex items-start md:gap-12 gap-7'>
               {[
                 {
                   title: 'About Us',
@@ -48,8 +48,8 @@ const Footer = () => {
                 }
               ].map((item, index) => (
                 <div className='flex flex-col gap-2.5' key={index}>
-                  <span className='text-lg font-medium'>{item.title}</span>
-                  <div className='flex flex-col item-start gap-1.5'>
+                  <span className='font-medium md:text-lg text-md'>{item.title}</span>
+                  <div className='flex flex-col item-start gap-1'>
                     {item.labels.map((label, index) => (
                       <Link to={item.links[index]} key={index}>
                         <p>{label}</p>
@@ -62,7 +62,7 @@ const Footer = () => {
           </div>
           {/* End Content */}
           <div className='flex justify-center items-start border-t border-neutral-300 pt-6'>
-            <span className='text-neutral-500'>© StaySuite • 2024</span>
+            <span className='text-neutral-500 text-sm'>© StaySuite • 2024</span>
           </div>
         </motion.footer>
       )}

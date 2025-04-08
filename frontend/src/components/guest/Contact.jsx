@@ -70,11 +70,11 @@ const Contact = () => {
         <div className='flex justify-between items-start'>
           <div className='flex items-center gap-1.5'>
             {children}
-            <span className='leading-none font-medium'>{title}</span>
+            <span className='leading-none font-medium md:text-base text-sm'>{title}</span>
           </div>
-          {link && <HiOutlineArrowRight className='size-5 -rotate-45 stroke-[1.5px]' />}
+          {link && <HiOutlineArrowRight className='md:size-5 size-4 -rotate-45 stroke-[1.5px]' />}
         </div>
-        <p>{label}</p>
+        <p className='break-all'>{label}</p>
       </>
     )
   }
@@ -188,17 +188,17 @@ const Contact = () => {
         <div className='grid md:grid-cols-3 grid-cols-2 gap-2 mt-6'>
           <a href='mailto:' className='flex flex-col justify-between border border-neutral-300 hover:bg-neutral-100 p-2 rounded-xl h-24 transition duration-300 ease-in-out'>
             <ContactInfo title='Chat with us!' label='company.test@email.com' link>
-              <HiOutlineChat className='size-6 stroke-[1.3px]' />
+              <HiOutlineChat className='md:size-6 size-5 stroke-[1.3px]' />
             </ContactInfo>
           </a>
           <div className='flex flex-col justify-between border border-neutral-300 p-2 rounded-xl h-24'>
             <ContactInfo title='Give us a call!' label='+121 3371 172'>
-              <HiOutlinePhone className='size-6 stroke-[1.3px]' />
+              <HiOutlinePhone className='md:size-6 size-5 stroke-[1.3px]' />
             </ContactInfo>
           </div>
           <div className='flex flex-col justify-between border border-neutral-300 p-2 rounded-xl h-24'>
             <ContactInfo title='Visit our office!' label='1990 Villa Street, Manila, Philippines'>
-              <HiOutlineLocationMarker className='size-6 stroke-[1.3px]' />
+              <HiOutlineLocationMarker className='md:size-6 size-5 stroke-[1.3px]' />
             </ContactInfo>
           </div>
         </div>

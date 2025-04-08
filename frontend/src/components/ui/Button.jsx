@@ -1,6 +1,6 @@
 import React from 'react'
 
-const baseButton = 'flex items-center justify-center md:text-base text-sm gap-2 px-3 py-1.5 rounded-[9px] cursor-pointer transition duration-300 ease-in-out disabled:opacity-70 disabled:cursor-not-allowed'
+const baseButton = 'flex items-center justify-center md:text-base text-sm gap-2 rounded-[9px] cursor-pointer transition duration-300 ease-in-out disabled:opacity-70 disabled:cursor-not-allowed'
 const primaryButton = 'bg-neutral-900 hover:bg-neutral-950 disabled:hover:bg-neutral-900 text-white'
 const secondaryButton = 'bg-neutral-200 hover:bg-neutral-300 disabled:hover:bg-neutral-200 text-neutral-950' // temporary
 const ghostButton = 'hover:bg-neutral-100 disabled:hover:bg-neutral-200 text-neutral-950'
@@ -14,6 +14,7 @@ const Button = ({
   disabled = false,
   children,
   variant,
+  iconButton,
   className
 }) => {
   return (
@@ -21,7 +22,7 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`${baseButton} ${className} ${variant === 'primary' ? primaryButton : variant === 'secondary' ? secondaryButton : variant === 'ghost' ? ghostButton : variant === 'success' ? successButton : variant === 'info' ? infoButton : variant === 'danger' ? dangerButton : ''}`}
+      className={`${baseButton} ${className} ${iconButton ? 'p-2' : 'px-3 py-1.5'} ${variant === 'primary' ? primaryButton : variant === 'secondary' ? secondaryButton : variant === 'ghost' ? ghostButton : variant === 'success' ? successButton : variant === 'info' ? infoButton : variant === 'danger' ? dangerButton : ''}`}
     >
       {children}
     </button>

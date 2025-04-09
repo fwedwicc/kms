@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { InputText, Button } from '../components/ui'
+import { HiOutlineArrowRight, HiOutlineExclamationCircle } from "react-icons/hi"
+import { InputText, Button, Spinner } from '../components/ui'
 import { useNavigate, Navigate } from 'react-router-dom'
 import API from '../utils/api.js'
 
@@ -17,6 +18,15 @@ const Login = () => {
     return <Navigate to="/admin" />
   }
 
+  // Handle Change
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === 'checkbox' ? checked : value
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -28,9 +38,6 @@ const Login = () => {
       navigate('/admin')
     } catch (error) {
       setError(error.response.data.message)
-      setTimeout(() => {
-        setError("")
-      }, 4000)
     } finally {
       setLoading(false)
     }
@@ -42,25 +49,83 @@ const Login = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className='lg:px-36 md:px-12 md:gap-8 gap-4 px-4 pt-48 pb-36'
+      className='flex justify-center lg:px-36 md:px-12 md:gap-8 gap-4 px-4 md:pt-48 pt-28 pb-20'
     >
-      <h1>Login Peyds</h1>
-      <form onSubmit={handleSubmit}>
-        <InputText
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <InputText
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && <p className='text-red-500'>{error}</p>}
-        <Button type='submit'>{loading ? 'Loading bhie...' : 'Login'}</Button>
-      </form>
+      <div className='relative overflow-hidden grid lg:grid-cols-2 grid-cols-1 w-full max-w-6xl border border-neutral-300/60 p-1.5 rounded-4xl'>
+        {/* Blur */}
+        <div className='z-30 absolute -top-12 -left-12 bg-neutral-100 h-48 blur-2xl w-lg rounded-3xl' />
+        {/* Background */}
+        <img src="https://images.unsplash.com/photo-1729858445581-82386c16aaa8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Sample Background" className='z-20 absolute w-full h-full object-cover saturate-0 opacity-50' />
+        {/* Company Details */}
+        <div className='z-40 flex items-start gap-4 lg:h-auto h-48 p-4'>
+          <div className='relative flex flex-shrink-0 justify-center items-center size-18 ring-2 ring-neutral-400 ring-offset-2 bg-neutral-900 border rounded-2xl'>
+            <span className='text-white font-bold md:text-2xl text-xl'>S</span>
+          </div>
+          <div className='-space-y-1'>
+            <h5>Welcome to StaySuite!</h5>
+            <p>Lorem ipsum, dolor sit amet consectetur.</p>
+          </div>
+        </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className='z-40 bg-neutral-50 border border-neutral-300/60 rounded-3xl p-14 space-y-4'>
+          <div className='flex flex-col justify-center items-center'>
+            <h3>Welcome back :)</h3>
+            <p>Login to proceed.</p>
+          </div>
+          {/* Username */}
+          <fieldset className='flex flex-col gap-1'>
+            <label htmlFor="username">Username</label>
+            <InputText
+              type="text"
+              name='username'
+              placeholder="Your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </fieldset>
+          {/* Password */}
+          <fieldset className='flex flex-col gap-1'>
+            <label htmlFor="username">Password</label>
+            <InputText
+              name='password'
+              type="password"
+              placeholder="Your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </fieldset>
+          {/* Terms Agreed */}
+          <fieldset>
+            <label className='flex items-center gap-2 leading-4'>
+              <input
+                type="checkbox"
+                name="termsAgreed"
+                // checked={formData.termsAgreed}
+                onChange={handleChange}
+              />
+              Show password
+            </label>
+          </fieldset>
+          {/* Error Message */}
+          {error && (
+            <motion.div
+              className='flex items-center justify-center gap-1.5 rounded-md text-red-500'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <HiOutlineExclamationCircle className='size-4' />
+              {error}
+            </motion.div>
+          )}
+          {/* Login Button */}
+          <Button type="submit" disabled={loading} variant='primary' className='w-full mt-6'>
+            {loading ? 'Signing in' : <>Sign in <HiOutlineArrowRight className='size-4' /></>}
+            {loading ? <Spinner /> : null}
+          </Button>
+        </form>
+      </div>
     </motion.div>
   )
 }

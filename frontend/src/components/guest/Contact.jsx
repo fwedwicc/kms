@@ -150,7 +150,7 @@ const Contact = () => {
               {loading ? <Spinner /> : null}
             </Button>
           </div>
-          <motion.div layout className='col-span-full space-y-2'>
+          <motion.div className='col-span-full space-y-2'>
             {/* Error Message */}
             {error && (
               <motion.div

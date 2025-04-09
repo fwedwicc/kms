@@ -65,7 +65,7 @@ const Nav = () => {
           </div>
         ) : (
           <Link to="/login">
-            <Button variant='primary'>
+            <Button variant='primary' className={`${isForSideNav ? 'w-full' : ''}`}>
               Login
               <HiOutlineArrowRight className='-rotate-45 size-4' />
             </Button>
@@ -103,7 +103,7 @@ const Nav = () => {
               <HiMenuAlt3 className='size-4' />
             </Button>
             {/* Side Nav */}
-            <div className={`fixed top-0 right-0 md:w-64 w-48 h-full bg-white border-l border-neutral-200 transition-transform duration-300 ease-in-out ${isNavOpen ? 'translate-x-0' : 'translate-x-full'}`} onClick={() => setIsNavOpen(false)}>
+            <div className={`fixed z-50 top-0 right-0 md:w-64 w-48 h-full bg-white border-l border-neutral-200 transition-transform duration-300 ease-in-out ${isNavOpen ? 'translate-x-0' : 'translate-x-full'}`} onClick={() => setIsNavOpen(false)}>
               <div ref={sidebarRef} className='bg-white h-full p-4 space-y-6'>
                 {/* Close Button */}
                 <Button onClick={() => setIsNavOpen(false)} variant='ghost' iconButton className='flex place-self-end'>

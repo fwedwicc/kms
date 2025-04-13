@@ -43,6 +43,20 @@ h5 {
   @apply md:text-2xl text-xl font-bold text-neutral-900;
 }
 
+/* Custom Scrollbar - for component */
+
+.custom-scollbar::-webkit-scrollbar {
+  @apply w-2;
+}
+
+.custom-scollbar::-webkit-scrollbar-track {
+  @apply bg-neutral-100/50 my-4;
+}
+
+.custom-scollbar::-webkit-scrollbar-thumb {
+  @apply bg-neutral-400/40 rounded-md;
+}
+
 /* -------- Sweet Alert Error --------- */
 /* Popup container */
 .swal-popup {

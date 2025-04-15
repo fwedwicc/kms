@@ -84,7 +84,16 @@ const Admin = () => {
               <div className='relative flex justify-center items-center shrink-0 size-12 bg-neutral-800 border rounded-xl'>
                 <span className='text-white font-bold'>S</span>
               </div>
-              <h5 className={`${isNavOpen ? 'block' : 'hidden'} transition-all duration-300`}>StaySuite</h5>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isNavOpen ? 1 : 0 }}
+                transition={{
+                  duration: isNavOpen ? 0.2 : 0,
+                  delay: isNavOpen ? 0.2 : 0
+                }}
+              >
+                <h5>StaySuite</h5>
+              </motion.div>
             </div>
             <Button onClick={handleNavToggle} className={'absolute top-3 -right-12 size-7 bg-neutral-50 border border-neutral-100'}>
               <HiOutlineChevronDoubleRight className={`size-3 shrink-0 transition-all duration-300 ease-in-out ${isNavOpen ? 'rotate-180' : ''}`} />

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import Swal from 'sweetalert2'
 import { Link, useLocation } from 'react-router-dom'
 import { HiLogout, HiMenuAlt3, HiOutlineArrowRight, HiOutlineX } from "react-icons/hi"
 import { Button } from './index'
@@ -10,6 +11,29 @@ const Nav = () => {
   const sidebarRef = useRef(null)
   const [isNavOpen, setIsNavOpen] = useState(false)
 
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of your account.",
+      icon: "warning",
+      iconColor: "#f97316",
+      showCancelButton: true,
+      confirmButtonText: "ilogout mo bhie",
+      cancelButtonText: "Cancel",
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem('token')
+        setIsLoggedOut(true)
+      }
+    })
+  }
 
   // Close when clicking outside
   useEffect(() => {
@@ -52,7 +76,7 @@ const Nav = () => {
         {token ? (
           <div className={`flex gap-2 ${isForSideNav ? 'flex-col-reverse' : 'flex-row'}`}>
             {/* Logout Button */}
-            <Button variant='danger' className={`${isForSideNav ? 'w-full' : ''}`}>
+            <Button onClick={handleLogout} variant='danger' className={`${isForSideNav ? 'w-full' : ''}`}>
               Logout
               <HiLogout className='size-4' />
             </Button>

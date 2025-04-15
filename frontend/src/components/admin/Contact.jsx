@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 import { Button } from '../ui'
 import api from '../../utils/api'
 import Swal from 'sweetalert2'
@@ -113,23 +114,43 @@ const Contact = () => {
   }
 
   return (
-    <>
-      <h1>ADMIN: Contact</h1>
-      <ul className='divide-y'>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h3>Inquiries</h3>
+      <p>{contact.length} total inquiry</p>
+      <ul className='grid grid-cols-3 gap-4 mt-6'>
         {contact.map((contact) => (
-          <li key={contact._id} className="py-4">
-            <p>Firstname: {contact.firstName}</p>
-            <p>Lastname: {contact.lastName}</p>
-            <p>Email: {contact.email}</p>
-            <p>Message: {contact.message}</p>
-            <p>Sent At: {new Date(contact.createdAt).toLocaleString()}</p>
-            <button onClick={() => handleReply(contact)} className="text-blue-500">
-              Reply
-            </button>
-          </li>
+          <div key={contact._id} className="p-4 border border-neutral-200 rounded-2xl space-y-4 transition-all duration-300 ease-in-out hover:shadow-lg shadow-neutral-200/50 cursor-pointer">
+            <div className='flex justify-between items-start'>
+              <div>
+                <span className='text-lg font-medium'>{contact.lastName}, {contact.firstName}</span>
+                <p>{contact.email}</p>
+              </div>
+              <span className='text-sm text-neutral-500'>
+                {new Date(contact.createdAt).toLocaleString(undefined, {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                  hour12: true
+                })}
+              </span>
+            </div>
+            <p className='line-clamp-3'>Message: {contact.message} Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum repellat nisi fugit sint nobis. Reiciendis iusto recusandae facilis, laboriosam voluptatem doloremque accusantium ea error id maiores dignissimos eaque odit eveniet.</p>
+            <div className='flex justify-end'>
+              <Button variant='secondary' onClick={() => handleReply(contact)}>
+                Reply
+              </Button>
+            </div>
+          </div>
         ))}
       </ul>
-    </>
+    </motion.div>
   )
 }
 

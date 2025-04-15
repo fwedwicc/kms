@@ -2,7 +2,7 @@ import React from 'react'
 
 const baseButton = 'flex items-center justify-center md:text-base text-sm gap-2 rounded-[9px] cursor-pointer transition duration-300 ease-in-out disabled:opacity-70 disabled:cursor-not-allowed'
 const primaryButton = 'bg-neutral-900 hover:bg-neutral-950 disabled:hover:bg-neutral-900 text-white'
-const secondaryButton = 'bg-neutral-200 hover:bg-neutral-300 disabled:hover:bg-neutral-200 text-neutral-950' // temporary
+const secondaryButton = 'bg-neutral-100 hover:bg-neutral-200 disabled:hover:bg-neutral-100 text-neutral-950' // temporary
 const ghostButton = 'hover:bg-neutral-100 disabled:hover:bg-neutral-200 text-neutral-950'
 const successButton = 'bg-neutral-900 hover:bg-neutral-950 disabled:hover:bg-neutral-900 text-white' // temporary
 const infoButton = 'bg-neutral-900 hover:bg-neutral-950 disabled:hover:bg-neutral-900 text-white' // temporary

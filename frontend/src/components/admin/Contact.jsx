@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '../ui'
+import { HiOutlineArrowRight } from "react-icons/hi"
 import api from '../../utils/api'
 import Swal from 'sweetalert2'
 import emailjs from '@emailjs/browser'
@@ -48,6 +49,36 @@ const Contact = () => {
     const interval = setInterval(getContacts, 5000)
     return () => clearInterval(interval)
   }, [lastFetchData])
+
+  const handleViewContact = (contact) => {
+    Swal.fire({
+      title: `${contact.firstName} ${contact.lastName}`,
+      html: `
+      <div class="text-left">
+        <p><strong>Email:</strong> ${contact.email}</p>
+        <p><strong>Subject:</strong> ${contact.subject}</p>
+        <p><strong>Message:</strong></p>
+        <p style="white-space: pre-line;">${contact.message}</p>
+        <p class="mt-4 text-sm text-neutral-500"><strong>Submitted:</strong> ${new Date(contact.createdAt).toLocaleString(undefined, {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+      })}</p>
+      </div>
+    `,
+      showCloseButton: true,
+      confirmButtonText: 'Close',
+      customClass: {
+        popup: 'swal-popup',
+        title: 'swal-title',
+        htmlContainer: 'swal-html',
+        confirmButton: 'swal-confirm'
+      },
+    })
+  }
 
   const handleReply = (contactData) => {
     Swal.fire({
@@ -124,7 +155,7 @@ const Contact = () => {
       <p>{contact.length} total inquiry</p>
       <ul className='grid grid-cols-3 gap-4 mt-6'>
         {contact.map((contact) => (
-          <div key={contact._id} className="p-4 border border-neutral-200 rounded-2xl space-y-4 transition-all duration-300 ease-in-out hover:shadow-lg shadow-neutral-200/50 cursor-pointer">
+          <div key={contact._id} onClick={() => handleViewContact(contact)} className="group p-4 border border-neutral-200/70 rounded-2xl space-y-4 transition-all duration-300 ease-in-out hover:shadow-lg shadow-neutral-200/50 cursor-pointer">
             <div className='flex justify-between items-start'>
               <div>
                 <span className='text-lg font-medium'>{contact.lastName}, {contact.firstName}</span>
@@ -141,9 +172,18 @@ const Contact = () => {
                 })}
               </span>
             </div>
-            <p className='line-clamp-3'>Message: {contact.message} Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum repellat nisi fugit sint nobis. Reiciendis iusto recusandae facilis, laboriosam voluptatem doloremque accusantium ea error id maiores dignissimos eaque odit eveniet.</p>
-            <div className='flex justify-end'>
-              <Button variant='secondary' onClick={() => handleReply(contact)}>
+            <p className='line-clamp-3'>Message: {contact.message}</p>
+            <div className='flex justify-between items-end'>
+              <p className='flex items-center transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100'>
+                Open
+                <HiOutlineArrowRight className='-rotate-45 mt-[3px]' />
+              </p>
+              <Button
+                variant='secondary'
+                onClick={(e) => {
+                  e.stopPropagation() // prevent card click
+                  handleReply(contact)
+                }}>
                 Reply
               </Button>
             </div>

@@ -37,7 +37,6 @@ const Contact = () => {
             },
           })
         }
-
         setLastFetchData(newData)
         setContact(newData)
       } catch (error) {
@@ -52,49 +51,85 @@ const Contact = () => {
 
   const handleViewContact = (contact) => {
     Swal.fire({
-      title: `${contact.firstName} ${contact.lastName}`,
+      title: `Inquiry from ${contact.firstName}`,
       html: `
-      <div class="text-left">
-        <p><strong>Email:</strong> ${contact.email}</p>
-        <p><strong>Subject:</strong> ${contact.subject}</p>
-        <p><strong>Message:</strong></p>
-        <p style="white-space: pre-line;">${contact.message}</p>
-        <p class="mt-4 text-sm text-neutral-500"><strong>Submitted:</strong> ${new Date(contact.createdAt).toLocaleString(undefined, {
+      <div class="text-left mt-5">
+        <div class='flex justify-between items-start'>
+          <div>
+            <span class='text-xl text-neutral-900 font-semibold'>${contact.lastName}, ${contact.firstName}</span>
+            <p>${contact.email}</p>
+          </div>
+          <p class="mt-[1px]"> ${new Date(contact.createdAt).toLocaleString(undefined, {
         year: 'numeric',
         month: 'numeric',
         day: 'numeric',
         hour: 'numeric',
         minute: 'numeric',
         hour12: true
-      })}</p>
+      })}
+         </p>
+        </div>
+        <br>
+        <p>Message: ${contact.message}</p>
       </div>
     `,
-      showCloseButton: true,
-      confirmButtonText: 'Close',
+      confirmButtonText: "Reply",
+      denyButtonText: "Close",
+      showDenyButton: true,
       customClass: {
-        popup: 'swal-popup',
-        title: 'swal-title',
-        htmlContainer: 'swal-html',
-        confirmButton: 'swal-confirm'
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup-xl",
+        confirmButton: "swal-confirm",
+        denyButton: "swal-cancel"
       },
+      showClass: {
+        popup: 'swal-fade-in'
+      },
+      hideClass: {
+        popup: 'swal-fade-out'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleReply(contact)
+      }
     })
   }
 
   const handleReply = (contactData) => {
     Swal.fire({
       title: 'Reply to Contact',
-      html:
-        '<div class="mb-4">' +
-        `<p class="mb-2 text-sm">Replying to: ${contactData.firstName} ${contactData.lastName} (${contactData.email})</p>` +
-        '</div>' +
-        '<div class="mb-4">' +
-        '<label for="subject" class="block mb-2 text-sm font-medium">Subject</label>' +
-        '<input id="subject" class="swal2-input w-full" placeholder="Enter subject">' +
-        '</div>' +
-        '<div class="mb-4">' +
-        '<label for="message" class="block mb-2 text-sm font-medium">Message</label>' +
-        '<textarea id="message" class="swal2-textarea w-full" placeholder="Type your reply here..."></textarea>' +
-        '</div>',
+      html: `
+      <div class="mb-4">
+        <p class="mb-[2px] text-sm text-left">Replying to:</p>
+        <div class='flex flex-col justify-start items-start -space-y-[2px]'>
+          <span class='text-xl text-neutral-900 font-semibold'>${contactData.lastName}, ${contactData.firstName}</span>
+          <p>${contactData.email}</p>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label for="subject" class="block mb-2 text-left">Subject</label>
+        <input id="subject" class="swal-input w-full" placeholder="Enter subject">
+      </div>
+      <div class="mb-4">
+        <label for="message" class="block mb-2 text-left">Message</label>
+        <textarea id="message" class="swal-textarea w-full" placeholder="Type your reply here..."></textarea>
+      </div>
+      <div id="swal-validation-message" class="text-center text-red-500 text-base"></div>
+    `,
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup-xl",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel"
+      },
+      showClass: {
+        popup: 'swal-fade-in'
+      },
+      hideClass: {
+        popup: 'swal-fade-out'
+      },
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: 'Send Reply',
@@ -102,12 +137,20 @@ const Contact = () => {
       preConfirm: () => {
         const subject = document.getElementById('subject').value
         const message = document.getElementById('message').value
+        const errorDiv = document.getElementById('swal-validation-message')
 
         if (!subject || !message) {
-          Swal.showValidationMessage('Please fill in all fields')
+          errorDiv.innerHTML = `
+            <div class="flex items-center gap-1 justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+              </svg>
+              <span>Please fill in all fields</span>
+            </div>
+          `;
           return false
         }
-
+        errorDiv.textContent = ''
         return { subject, message }
       },
       allowOutsideClick: () => !Swal.isLoading()

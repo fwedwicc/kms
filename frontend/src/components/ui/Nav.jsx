@@ -13,19 +13,25 @@ const Nav = () => {
 
   const handleLogout = () => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You will be logged out of your account.",
       icon: "warning",
-      iconColor: "#f97316",
+      iconColor: "#ef4444",
+      title: "Are you sure?",
+      text: "You will be logged out of your account",
       showCancelButton: true,
-      confirmButtonText: "ilogout mo bhie",
+      confirmButtonText: "Yes, log me out",
       cancelButtonText: "Cancel",
       customClass: {
         title: "swal-title",
         text: "swal-text",
-        popup: "swal-popup",
+        popup: "swal-popup-sm",
         confirmButton: "swal-confirm",
-        cancelButton: "swal-cancel",
+        cancelButton: "swal-cancel"
+      },
+      showClass: {
+        popup: 'swal-fade-in'
+      },
+      hideClass: {
+        popup: 'swal-fade-out'
       },
     }).then((result) => {
       if (result.isConfirmed) {

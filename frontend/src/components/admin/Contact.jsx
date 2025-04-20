@@ -24,16 +24,22 @@ const Contact = () => {
         // Check if new data is added
         if (lastFetchData.length > 0 && newData.length > lastFetchData.length) {
           Swal.fire({
-            title: "New Contact added!",
-            text: "Check out the new Inquiry submitted by a user.",
             icon: "info",
-            iconColor: "#f97316",
-            confirmButtonText: "Sige bhie",
+            iconColor: "#3b82f6",
+            title: "New Contact Added",
+            text: "Check out the new Inquiry submitted by a user.",
             customClass: {
               title: "swal-title",
               text: "swal-text",
-              popup: "swal-popup",
-              confirmButton: "swal-confirm"
+              popup: "swal-popup-sm",
+              confirmButton: "swal-confirm",
+              cancelButton: "swal-cancel"
+            },
+            showClass: {
+              popup: 'swal-fade-in'
+            },
+            hideClass: {
+              popup: 'swal-fade-out'
             },
           })
         }
@@ -138,7 +144,6 @@ const Contact = () => {
         const subject = document.getElementById('subject').value
         const message = document.getElementById('message').value
         const errorDiv = document.getElementById('swal-validation-message')
-
         if (!subject || !message) {
           errorDiv.innerHTML = `
             <div class="flex items-center gap-1 justify-center">
@@ -171,18 +176,46 @@ const Contact = () => {
 
     emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
       .then((response) => {
-        console.log('Email sent successfully!', response.status, response.text)
+        console.log('Email Sent Successfully', response.status, response.text)
         Swal.fire({
           icon: 'success',
-          title: 'Reply Sent!',
+          iconColor: "#22c55e",
+          title: 'Reply Sent',
           text: `Your message has been sent to ${recipientName}`,
+          customClass: {
+            title: "swal-title",
+            text: "swal-text",
+            popup: "swal-popup-sm",
+            confirmButton: "swal-confirm",
+            cancelButton: "swal-cancel"
+          },
+          showClass: {
+            popup: 'swal-fade-in'
+          },
+          hideClass: {
+            popup: 'swal-fade-out'
+          },
         })
       }, (error) => {
         console.error('Failed to send email:', error)
         Swal.fire({
           icon: 'error',
+          iconColor: "#ef4444",
           title: 'Failed to Send',
           text: 'There was an error sending your reply. Please try again later.',
+          customClass: {
+            title: "swal-title",
+            text: "swal-text",
+            popup: "swal-popup-sm",
+            confirmButton: "swal-confirm",
+            cancelButton: "swal-cancel"
+          },
+          showClass: {
+            popup: 'swal-fade-in'
+          },
+          hideClass: {
+            popup: 'swal-fade-out'
+          },
         })
       })
   }

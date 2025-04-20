@@ -100,7 +100,8 @@ const Contact = () => {
           </fieldset>
           {/* Lastname */}
           <fieldset className='flex flex-col gap-1'>
-            <label htmlFor="lastName">Last name <span className='text-neutral-400 text-sm'>(Optional)</span></label>
+            {/* <span className='text-neutral-400 text-sm'>(Optional)</span> */}
+            <label htmlFor="lastName">Last name <span className='text-red-400'>*</span></label>
             <InputText
               type="text"
               name="lastName"

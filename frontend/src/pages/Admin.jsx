@@ -24,7 +24,7 @@ const Admin = () => {
         title: "swal-title",
         text: "swal-text",
         popup: "swal-popup-sm",
-        confirmButton: "swal-confirm",
+        confirmButton: "swal-danger",
         cancelButton: "swal-cancel"
       },
       showClass: {
@@ -65,7 +65,7 @@ const Admin = () => {
   const ButtonLink = ({ link, icon, label, isNavOpen }) => {
     return (
       <Link to={link} className='relative group'>
-        <Button className={`justify-start w-full ease-in-out transition-all duration-300 gap-3 ${location.pathname === link ? 'border border-neutral-200 bg-neutral-100/80 text-neutral-600' : 'border-none text-neutral-700'} ${!isNavOpen ? 'size-11.5 rounded-xl' : 'rounded-lg'}`}>
+        <Button className={`justify-start w-full ease-in-out transition-all duration-300 gap-3 ${location.pathname === link ? 'border border-neutral-200 bg-neutral-200/40 text-neutral-600' : 'border-none text-neutral-700'} ${!isNavOpen ? 'size-11.5 rounded-xl' : 'rounded-lg'}`}>
           <span>{icon}</span>
           {isNavOpen && <span>{label}</span>}
         </Button>

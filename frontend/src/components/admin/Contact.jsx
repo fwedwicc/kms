@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Button, InputText } from '../ui'
-import { HiOutlineArrowRight, HiOutlineSearch } from "react-icons/hi"
+import { HiOutlineArrowRight, HiOutlineSearch, HiOutlineReply } from "react-icons/hi"
 import api from '../../utils/api'
 import Swal from 'sweetalert2'
 import emailjs from '@emailjs/browser'
@@ -143,7 +143,7 @@ const Contact = () => {
         title: "swal-title",
         text: "swal-text",
         popup: "swal-popup-xl",
-        confirmButton: "swal-confirm",
+        confirmButton: "swal-info",
         cancelButton: "swal-cancel"
       },
       showClass: {
@@ -198,6 +198,7 @@ const Contact = () => {
           iconColor: "#22c55e",
           title: 'Reply Sent',
           text: `Your message has been sent to ${recipientName}`,
+          confirmButtonText: 'Got it',
           customClass: {
             title: "swal-title",
             text: "swal-text",
@@ -219,6 +220,7 @@ const Contact = () => {
           iconColor: "#ef4444",
           title: 'Failed to Send',
           text: 'There was an error sending your reply. Please try again later.',
+          confirmButtonText: 'Got it',
           customClass: {
             title: "swal-title",
             text: "swal-text",
@@ -261,7 +263,7 @@ const Contact = () => {
         </div>
       </div>
       <ul className='grid grid-cols-3 gap-4 mt-6'>
-        {filteredContacts.slice().reverse().map((contact) => (
+        {filteredContacts.map((contact) => (
           <div key={contact._id} onClick={() => handleViewContact(contact)} className="group p-4 border border-neutral-200/70 rounded-2xl space-y-4 transition-all duration-300 ease-in-out hover:shadow-lg shadow-neutral-200/50 cursor-pointer">
             <div className='flex justify-between items-start'>
               <div>
@@ -286,11 +288,12 @@ const Contact = () => {
                 <HiOutlineArrowRight className='-rotate-45 mt-[3px]' />
               </p>
               <Button
-                variant='secondary'
+                variant='info'
                 onClick={(e) => {
                   e.stopPropagation() // prevent card click
                   handleReply(contact)
                 }}>
+                <HiOutlineReply className='size-4.5 stroke-[1.5px]' />
                 Reply
               </Button>
             </div>

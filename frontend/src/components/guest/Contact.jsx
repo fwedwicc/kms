@@ -48,6 +48,7 @@ const Contact = () => {
         iconColor: "#22c55e",
         title: 'Inquiry Sent',
         text: `Your message has been sent to us. We will get back to you soon.`,
+        confirmButtonText: 'Got it',
         customClass: {
           title: "swal-title",
           text: "swal-text",

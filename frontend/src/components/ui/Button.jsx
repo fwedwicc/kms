@@ -5,8 +5,8 @@ const primaryButton = 'bg-neutral-900 hover:bg-neutral-950 disabled:hover:bg-neu
 const secondaryButton = 'bg-neutral-100 hover:bg-neutral-200 disabled:hover:bg-neutral-100 text-neutral-950' // temporary
 const ghostButton = 'hover:bg-neutral-100 disabled:hover:bg-neutral-200 text-neutral-950'
 const successButton = 'bg-neutral-900 hover:bg-neutral-950 disabled:hover:bg-neutral-900 text-white' // temporary
-const infoButton = 'bg-neutral-900 hover:bg-neutral-950 disabled:hover:bg-neutral-900 text-white' // temporary
-const dangerButton = 'bg-red-500/5 hover:bg-red-500/10 disabled:hover:bg-neutral-500/5 text-red-500'
+const infoButton = 'bg-blue-500/5 hover:bg-blue-500/10 disabled:hover:bg-neutral-500/5 text-blue-500 font-medium'
+const dangerButton = 'bg-red-500/5 hover:bg-red-500/10 disabled:hover:bg-neutral-500/5 text-red-500 font-medium'
 
 const Button = ({
   type = 'button',

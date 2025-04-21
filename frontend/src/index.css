@@ -92,6 +92,21 @@ h5 {
   @apply px-3 py-1.5 rounded-[9px] bg-neutral-100 text-neutral-950 cursor-pointer;
 }
 
+/* Success button styling */
+.swal-success {
+  @apply px-3 py-1.5 rounded-[9px] bg-green-500 text-white cursor-pointer;
+}
+
+/* Info button styling */
+.swal-info {
+  @apply px-3 py-1.5 rounded-[9px] bg-blue-500 text-white cursor-pointer;
+}
+
+/* Danger button styling */
+.swal-danger {
+  @apply px-3 py-1.5 rounded-[9px] bg-red-500 text-white cursor-pointer;
+}
+
 /* Swal Input */
 .swal-input {
   @apply px-3 py-1.5 border border-neutral-300/60 bg-neutral-100/60 rounded-lg focus:ring-2 ring-offset-1 focus:ring-neutral-800 focus:outline-none text-neutral-950 transition duration-300 ease-in-out;

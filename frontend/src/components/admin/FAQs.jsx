@@ -4,6 +4,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import api from '../../utils/api'
 import { Button } from '../ui'
 import Swal from 'sweetalert2'
+import { HiOutlineTrash, HiOutlinePencil, HiOutlinePlusSm } from "react-icons/hi"
 
 const FAQs = () => {
 
@@ -140,7 +141,7 @@ const FAQs = () => {
         title: "swal-title",
         text: "swal-text",
         popup: "swal-popup-xl",
-        confirmButton: "swal-confirm",
+        confirmButton: "swal-info",
         cancelButton: "swal-cancel"
       },
       showClass: {
@@ -237,7 +238,7 @@ const FAQs = () => {
         title: "swal-title",
         text: "swal-text",
         popup: "swal-popup-sm",
-        confirmButton: "swal-confirm",
+        confirmButton: "swal-danger",
         cancelButton: "swal-cancel"
       },
       showClass: {
@@ -304,6 +305,7 @@ const FAQs = () => {
           Reply
         >
           New FAQ
+          <HiOutlinePlusSm className='size-5 stroke-2' />
         </Button>
       </div>
       <ul className='grid grid-cols-3 gap-4 mt-6'>
@@ -315,17 +317,19 @@ const FAQs = () => {
             </div>
             <div className='flex justify-end gap-2'>
               <Button
-                variant='secondary'
+                variant='danger'
                 onClick={() => handleDelete(faq._id)}
                 Reply
               >
+                <HiOutlineTrash className='size-5 stroke-[1.5px]' />
                 Delete
               </Button>
               <Button
-                variant='secondary'
+                variant='info'
                 onClick={() => handleEdit(faq)}
                 Reply
               >
+                <HiOutlinePencil className='size-5 stroke-[1.5px]' />
                 Edit
               </Button>
             </div>

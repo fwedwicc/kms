@@ -24,7 +24,7 @@ const Nav = () => {
         title: "swal-title",
         text: "swal-text",
         popup: "swal-popup-sm",
-        confirmButton: "swal-confirm",
+        confirmButton: "swal-danger",
         cancelButton: "swal-cancel"
       },
       showClass: {

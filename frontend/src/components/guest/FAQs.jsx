@@ -47,37 +47,19 @@ const FAQs = () => {
   }
 
   useEffect(() => {
-    // Function to fetch FAQs
     const fetchFaqs = async () => {
       try {
         const response = await api.get('/faqs')
-        const newData = response.data.data
-
-        // Check if new data is added
-        if (lastFetchData.length > 0 && newData.length > lastFetchData.length) {
-          Swal.fire({
-            title: "New FAQ added!",
-            text: "Check out the new FAQ added by the admin.",
-            icon: "info",
-            iconColor: "#f97316",
-            confirmButtonText: "Sige bhie",
-            customClass: {
-              title: "swal-title",
-              text: "swal-text",
-              popup: "swal-popup",
-              confirmButton: "swal-confirm"
-            },
-          })
-        }
-        setLastFetchData(newData)
-        setFaqs(newData)
+        setFaqs(response.data.data)
       } catch (error) {
         console.error('Error fetching FAQs:', error)
       }
     }
 
     fetchFaqs()
-  }, [lastFetchData])
+    const interval = setInterval(fetchFaqs, 5000)
+    return () => clearInterval(interval)
+  }, [faqs])
 
   return (
     <section id='faqs' className='grid lg:grid-cols-2 grid-cols-1 lg:px-36 md:px-12 gap-4 px-4 p-4 md:pt-30 pt-20'>

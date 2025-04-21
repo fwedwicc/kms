@@ -227,7 +227,7 @@ const Contact = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h3>Inquiries</h3>
+      <h3>Contact Inquiries</h3>
       <p>{contact.length} total inquiry</p>
       <ul className='grid grid-cols-3 gap-4 mt-6'>
         {contact.map((contact) => (

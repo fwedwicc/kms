@@ -1,80 +1,109 @@
 import React, { useState, useEffect } from 'react'
-import api from '../../utils/api'
 import toast, { Toaster } from 'react-hot-toast'
+import api from '../../utils/api'
+import { Button } from '../ui'
 import Swal from 'sweetalert2'
 
 const FAQs = () => {
 
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
   const [faqs, setFaqs] = useState([])
-  const [lastFetchData, setLastFetchData] = useState([])
-  const [formData, setFormData] = useState({
-    question: '',
-    answer: ''
-  })
-
-  // Handle Change
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }))
-  }
-
-  // HandleSubmit
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
-
-    try {
-      await api.post(`/faqs`, formData)
-
-      setFormData({
-        question: '',
-        answer: ''
-      })
-    } catch (error) {
-      setError(error.response?.data?.message)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   useEffect(() => {
     // Function to fetch FAQs
     const fetchFaqs = async () => {
       try {
         const response = await api.get('/faqs')
-        const newData = response.data.data
-
-        // Check if new data is added
-        if (lastFetchData.length > 0 && newData.length > lastFetchData.length) {
-          toast.success('New FAQ added', {
-            style: {
-              border: "1px solid rgba(229, 231, 235, 0.8)", // border-neutral-200/80
-              boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
-              borderRadius: "12px",
-              padding: '10px',
-              color: '#22c55e',
-            },
-            iconTheme: {
-              primary: '#22c55e',
-              secondary: '#fff',
-            },
-          })
-        }
-        setLastFetchData(newData)
-        setFaqs(newData)
+        setFaqs(response.data.data)
       } catch (error) {
         console.error('Error fetching FAQs:', error)
       }
     }
 
     fetchFaqs()
-  }, [lastFetchData])
+    const interval = setInterval(fetchFaqs, 5000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Handle Add FAQ
+  const handleAddFaq = async () => {
+    const { value: formValues } = await Swal.fire({
+      title: 'Add New FAQ',
+      html: `
+      <div class="space-y-4 text-left">
+        <div class="mb-4">
+          <label class="block text-sm mb-2 font-medium text-gray-700">Question</label>
+          <input id="swal-question" class="swal-input w-full" placeholder="Enter your question" />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm mb-2 font-medium text-gray-700">Answer</label>
+          <textarea id="swal-answer" class="swal-textarea w-full" rows="3" placeholder="Provide the answer"></textarea>
+        </div>
+        <div id="swal-validation-message" class="text-center text-red-500 text-base"></div>
+      </div>
+    `,
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup-xl",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel"
+      },
+      showClass: {
+        popup: 'swal-fade-in'
+      },
+      hideClass: {
+        popup: 'swal-fade-out'
+      },
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Add FAQ',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        const question = document.getElementById('swal-question').value.trim()
+        const answer = document.getElementById('swal-answer').value.trim()
+        const errorDiv = document.getElementById('swal-validation-message')
+
+        if (!question || !answer) {
+          errorDiv.innerHTML = `
+          <div class="flex items-center gap-1 justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+            </svg>
+            <span>Please fill in all fields</span>
+          </div>
+        `
+          return false
+        }
+
+        errorDiv.textContent = ''
+        return { question, answer }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    })
+
+    if (formValues) {
+      try {
+        const response = await api.post('/faqs', formValues)
+        setFaqs(prev => [...prev, response.data.data])
+        toast.success('FAQ added successfully!', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#22c55e',
+          },
+          iconTheme: {
+            primary: '#22c55e',
+            secondary: '#fff',
+          },
+        })
+      } catch (error) {
+        console.error('Error adding FAQ:', error)
+        toast.error('Failed to add FAQ')
+      }
+    }
+  }
 
 
   // Handle Edit FAQs
@@ -82,26 +111,56 @@ const FAQs = () => {
     const { value: formValues } = await Swal.fire({
       title: 'Edit FAQ',
       html: `
-        <div class="space-y-4 text-left">
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Title</label>
-            <input id="swal-question" class="mt-1 block w-full p-2 border rounded-md" value="${faq.question}">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Body</label>
-            <textarea id="swal-answer" class="mt-1 block w-full p-2 border rounded-md" rows="3">${faq.answer}</textarea>
-          </div>
-          
+      <div class="space-y-4 text-left">
+        <div class="mb-4">
+          <label class="block text-sm mb-2 font-medium text-gray-700">Title</label>
+          <input id="swal-question" class="swal-input w-full" value="${faq.question}">
         </div>
-      `,
+        <div class="mb-4">
+          <label class="block text-sm mb-2 font-medium text-gray-700">Body</label>
+          <textarea id="swal-answer" class="swal-textarea w-full" rows="3">${faq.answer}</textarea>
+        </div>
+        <div id="swal-validation-message" class="text-center text-red-500 text-base"></div>
+      </div>
+    `,
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup-xl",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel"
+      },
+      showClass: {
+        popup: 'swal-fade-in'
+      },
+      hideClass: {
+        popup: 'swal-fade-out'
+      },
       focusConfirm: false,
       showCancelButton: true,
+      confirmButtonText: 'Update FAQ',
+      showLoaderOnConfirm: true,
       preConfirm: () => {
-        return {
-          question: document.getElementById('swal-question').value,
-          answer: document.getElementById('swal-answer').value
+        const question = document.getElementById('swal-question').value.trim()
+        const answer = document.getElementById('swal-answer').value.trim()
+        const errorDiv = document.getElementById('swal-validation-message')
+
+        if (!question || !answer) {
+          errorDiv.innerHTML = `
+          <div class="flex items-center gap-1 justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+            </svg>
+            <span>Please fill in all fields</span>
+          </div>
+        `
+          return false
         }
-      }
+
+        errorDiv.textContent = ''
+        return { question, answer }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
     })
 
     if (formValues) {
@@ -142,18 +201,38 @@ const FAQs = () => {
 
   // Handle Delete FAQ
   const handleDelete = async (id) => {
-    const isConfirmed = confirm("Are you sure you want to delete this FAQ?")
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "This action cannot be undone",
+      icon: "warning",
+      iconColor: "#ef4444",
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it',
+      cancelButtonText: 'Cancel',
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup-sm",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel"
+      },
+      showClass: {
+        popup: 'swal-fade-in'
+      },
+      hideClass: {
+        popup: 'swal-fade-out'
+      },
+    })
 
-    if (isConfirmed) {
+    if (result.isConfirmed) {
       try {
         await api.delete(`/faqs/${id}`)
-        toast.success('FAQ deleted successfuly!', {
+        toast.success('FAQ deleted successfully!', {
           style: {
-            border: "1px solid rgba(229, 231, 235, 0.8)", // border-neutral-200/80
-            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
             borderRadius: "12px",
             padding: '10px',
-            paddingY: '20px',
             color: '#22c55e',
           },
           iconTheme: {
@@ -164,60 +243,54 @@ const FAQs = () => {
         setFaqs((prevFaqs) => prevFaqs.filter((faq) => faq._id !== id))
       } catch (error) {
         console.error("Error deleting FAQ:", error)
+        toast.error('Failed to delete FAQ')
       }
     }
   }
 
+
   return (
     <>
       <Toaster position="top-right" />
-      <h1>ADMIN: FAQs</h1>
-      <div className='border'>
-        <ul className='divide-y'>
-          {faqs.map((faq) => (
-            <li key={faq._id}>
-              <h2>Question: {faq.question}</h2>
-              <p>Answer: {faq.answer}</p>
-              <button onClick={() => handleDelete(faq._id)} className="text-red-500">
-                Delete
-              </button>
-              <button onClick={() => handleEdit(faq)} className="text-blue-500">
-                Edit
-              </button>
-            </li>
-          ))}
-        </ul>
+      <div className='flex items-end justify-between'>
+        <div>
+          <h3>FAQs Management</h3>
+          <p>{faqs.length} total FAQs</p>
+        </div>
+        <Button
+          variant='primary'
+          onClick={handleAddFaq}
+          Reply
+        >
+          New FAQ
+        </Button>
       </div>
-      <form onSubmit={handleSubmit}>
-        {/* Question */}
-        <fieldset>
-          <legend>Question</legend>
-          <input
-            type="text"
-            name="question"
-            value={formData.question}
-            onChange={handleChange}
-            className="rounded-md px-3 py-1.5 border"
-          />
-        </fieldset>
-        {/* Answer */}
-        <fieldset>
-          <legend>Answer</legend>
-          <input
-            type="text"
-            name="answer"
-            value={formData.answer}
-            onChange={handleChange}
-            className="rounded-md px-3 py-1.5 border"
-          />
-        </fieldset>
-        {/* Error Message */}
-        {error && <p className='text-red-500'>{error}</p>}
-        {/* Submit Button */}
-        <button type="submit" disabled={loading} className='rounded-md px-3 py-1.5 border'>
-          {loading ? 'Submitting...' : 'Submit'}
-        </button>
-      </form>
+      <ul className='grid grid-cols-3 gap-4 mt-6'>
+        {faqs.map((faq) => (
+          <li key={faq._id} className='flex flex-col justify-between gap-4 p-4 border border-neutral-200/70 rounded-2xl'>
+            <div className='space-y-4'>
+              <h5>{faq.question}</h5>
+              <p>{faq.answer}</p>
+            </div>
+            <div className='flex justify-end gap-2'>
+              <Button
+                variant='secondary'
+                onClick={() => handleDelete(faq._id)}
+                Reply
+              >
+                Delete
+              </Button>
+              <Button
+                variant='secondary'
+                onClick={() => handleEdit(faq)}
+                Reply
+              >
+                Edit
+              </Button>
+            </div>
+          </li>
+        ))}
+      </ul>
     </>
   )
 }

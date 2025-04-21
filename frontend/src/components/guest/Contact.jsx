@@ -4,7 +4,7 @@ import { HiOutlineExclamationCircle, HiOutlinePaperAirplane, HiOutlineArrowRight
 import { SiFacebook, SiInstagram, SiX, SiLinkedin, SiYoutube } from "react-icons/si"
 import { InputText, Button, Badge, Spinner } from '../ui'
 import api from '../../utils/api'
-import toast, { Toaster } from 'react-hot-toast'
+import Swal from 'sweetalert2'
 
 const Contact = () => {
   const [loading, setLoading] = useState(false)
@@ -43,17 +43,23 @@ const Contact = () => {
         termsAgreed: false
       })
 
-      toast.success('Nasend na bhie', {
-        style: {
-          border: "1px solid rgba(229, 231, 235, 0.8)", // border-neutral-200/80
-          boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
-          borderRadius: "12px",
-          padding: '10px',
-          color: '#22c55e',
+      Swal.fire({
+        icon: 'success',
+        iconColor: "#22c55e",
+        title: 'Inquiry Sent',
+        text: `Your message has been sent to us. We will get back to you soon.`,
+        customClass: {
+          title: "swal-title",
+          text: "swal-text",
+          popup: "swal-popup-sm",
+          confirmButton: "swal-confirm",
+          cancelButton: "swal-cancel"
         },
-        iconTheme: {
-          primary: '#22c55e',
-          secondary: '#fff',
+        showClass: {
+          popup: 'swal-fade-in'
+        },
+        hideClass: {
+          popup: 'swal-fade-out'
         },
       })
     } catch (error) {
@@ -81,7 +87,6 @@ const Contact = () => {
 
   return (
     <section id='contact' className='grid lg:grid-cols-2 grid-cols-1 lg:px-36 md:px-12 md:gap-8 gap-4 px-4 p-4 md:pt-30 pt-20 md:mb-0 mb-8'>
-      <Toaster position="bottom-left" />
       {/* Left Content */}
       <div>
         <h3>Lorem ips dolrsit.</h3>
@@ -167,7 +172,6 @@ const Contact = () => {
             )}
             {/* Note */}
             <motion.div
-              layout
               className='mt-3 px-3 py-2 rounded-xl border border-neutral-300 bg-neutral-100'
             >
               <p>

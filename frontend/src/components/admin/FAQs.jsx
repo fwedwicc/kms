@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import toast, { Toaster } from 'react-hot-toast'
 import api from '../../utils/api'
 import { Button } from '../ui'
@@ -85,7 +86,7 @@ const FAQs = () => {
       try {
         const response = await api.post('/faqs', formValues)
         setFaqs(prev => [...prev, response.data.data])
-        toast.success('FAQ added successfully!', {
+        toast.success('FAQ added', {
           style: {
             border: "1px solid rgba(229, 231, 235, 0.8)",
             boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
@@ -100,7 +101,19 @@ const FAQs = () => {
         })
       } catch (error) {
         console.error('Error adding FAQ:', error)
-        toast.error('Failed to add FAQ')
+        toast.error('Failed to add FAQ', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#22c55e',
+          },
+          iconTheme: {
+            primary: '#22c55e',
+            secondary: '#fff',
+          },
+        })
       }
     }
   }
@@ -178,8 +191,7 @@ const FAQs = () => {
             item._id === faq._id ? response.data.data : item
           )
         )
-
-        toast.success('FAQ updated successfully!', {
+        toast.success('FAQ updated', {
           style: {
             border: "1px solid rgba(229, 231, 235, 0.8)",
             boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
@@ -194,7 +206,19 @@ const FAQs = () => {
         })
       } catch (error) {
         console.error("Error updating FAQ:", error)
-        toast.error('Failed to update FAQ')
+        toast.error('Failed to update FAQ', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#22c55e',
+          },
+          iconTheme: {
+            primary: '#22c55e',
+            secondary: '#fff',
+          },
+        })
       }
     }
   }
@@ -227,7 +251,7 @@ const FAQs = () => {
     if (result.isConfirmed) {
       try {
         await api.delete(`/faqs/${id}`)
-        toast.success('FAQ deleted successfully!', {
+        toast.success('FAQ deleted', {
           style: {
             border: "1px solid rgba(229, 231, 235, 0.8)",
             boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
@@ -243,14 +267,31 @@ const FAQs = () => {
         setFaqs((prevFaqs) => prevFaqs.filter((faq) => faq._id !== id))
       } catch (error) {
         console.error("Error deleting FAQ:", error)
-        toast.error('Failed to delete FAQ')
+        toast.error('Failed to delete FAQ', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#22c55e',
+          },
+          iconTheme: {
+            primary: '#22c55e',
+            secondary: '#fff',
+          },
+        })
       }
     }
   }
 
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Toaster position="top-right" />
       <div className='flex items-end justify-between'>
         <div>
@@ -291,7 +332,7 @@ const FAQs = () => {
           </li>
         ))}
       </ul>
-    </>
+    </motion.div>
   )
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Button } from '../ui'
-import { HiOutlineArrowRight } from "react-icons/hi"
+import { Button, InputText } from '../ui'
+import { HiOutlineArrowRight, HiOutlineSearch } from "react-icons/hi"
 import api from '../../utils/api'
 import Swal from 'sweetalert2'
 import emailjs from '@emailjs/browser'
@@ -12,6 +12,7 @@ const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY
 
 const Contact = () => {
   const [contact, setContact] = useState([])
+  const [search, setSearch] = useState("")
   const [lastFetchData, setLastFetchData] = useState([])
 
   // Fetch all Contacts
@@ -55,6 +56,21 @@ const Contact = () => {
     return () => clearInterval(interval)
   }, [lastFetchData])
 
+  // Filtered Contact
+  const filteredContacts = contact
+    .slice()
+    .reverse()
+    .filter(({ firstName, lastName, email, message }) => {
+      const query = search.toLowerCase()
+      return (
+        firstName.toLowerCase().includes(query) ||
+        lastName.toLowerCase().includes(query) ||
+        email.toLowerCase().includes(query) ||
+        message.toLowerCase().includes(query)
+      )
+    })
+
+  // View Contact
   const handleViewContact = (contact) => {
     Swal.fire({
       title: `Inquiry from ${contact.firstName}`,
@@ -227,10 +243,25 @@ const Contact = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h3>Contact Inquiries</h3>
-      <p>{contact.length} total inquiry</p>
+      <div className='flex justify-between items-end'>
+        <div>
+          <h3>Contact Inquiries</h3>
+          <p>{contact.length} total inquiry</p>
+        </div>
+        {/* Search Bar */}
+        <div className='relative w-full max-w-sm'>
+          <HiOutlineSearch className='size-5 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-600' />
+          <InputText
+            type="text"
+            placeholder="Search by name, email, or message"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-10 w-full max-w-sm"
+          />
+        </div>
+      </div>
       <ul className='grid grid-cols-3 gap-4 mt-6'>
-        {contact.map((contact) => (
+        {filteredContacts.slice().reverse().map((contact) => (
           <div key={contact._id} onClick={() => handleViewContact(contact)} className="group p-4 border border-neutral-200/70 rounded-2xl space-y-4 transition-all duration-300 ease-in-out hover:shadow-lg shadow-neutral-200/50 cursor-pointer">
             <div className='flex justify-between items-start'>
               <div>

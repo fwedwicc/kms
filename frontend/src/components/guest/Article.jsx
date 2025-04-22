@@ -71,9 +71,9 @@ const Article = () => {
           className="mt-8 grid md:grid-cols-3 grid-cols-1 gap-5"
         >
           {currentArticle.map((article) => (
-            <Link to={`/article/${article._id}`} className='p-2.5 border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 rounded-2xl transition duration-300 ease-in-out' key={article._id}>
+            <Link to={`/article/${article._id}`} className='p-2.5 border border-neutral-200/70 rounded-2xl transition-all duration-300 ease-in-out hover:shadow-lg shadow-neutral-200/50' key={article._id}>
               {/* Article Image */}
-              {/* {article.image ? (
+              {article.image ? (
                 <div className='border border-neutral-300 relative h-56 rounded-lg overflow-hidden'>
                   <img
                     src={`${SERVER_URL}${article.image}`}
@@ -81,13 +81,9 @@ const Article = () => {
                     className="absolute w-full h-full object-cover"
                   />
                 </div>
-              ) : <div className='border border-neutral-300 w-full h-56 rounded-lg'>
-                no imeyds to
-              </div>} */}
-              {/* Placeholder Image */}
-              <div className='border border-neutral-300 relative h-56 rounded-lg overflow-hidden'>
+              ) : <div className='border border-neutral-300 relative h-56 rounded-lg overflow-hidden'>
                 <img src="https://placehold.co/30x30" alt="Placeholder Image" className='absolute w-full h-full object-cover' />
-              </div>
+              </div>}
               {/* Article Infos */}
               <div className='space-y-2.5 p-4'>
                 <h4 className='break-all line-clamp-2 text-2xl font-medium'>{article.title}</h4>

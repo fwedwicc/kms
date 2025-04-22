@@ -285,7 +285,6 @@ const FAQs = () => {
     }
   }
 
-
   return (
     <motion.div
       initial={{ opacity: 0 }}

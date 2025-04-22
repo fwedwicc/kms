@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import api from '../../utils/api'
 import toast, { Toaster } from 'react-hot-toast'
 import { Button } from '../ui'
-import { HiOutlineLightBulb, HiOutlineArrowRight, HiOutlineTrash, HiOutlinePencil, HiOutlinePlusSm } from "react-icons/hi"
+import { HiOutlineArrowRight, HiOutlineTrash, HiOutlinePencil, HiOutlinePlusSm } from "react-icons/hi"
 import Swal from 'sweetalert2'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL
@@ -30,83 +30,14 @@ const Article = () => {
   }, [])
 
   // Handle Add Article
-  const handleAddArticle = async () => {
+  const handleAddArticle = async (existingValues = null) => {
     let selectedImageFile = null
+    let isDirty = false
 
-    const { value: formValues } = await Swal.fire({
-      title: 'Add New Article',
-      html: `
-      <div class="space-y-4 text-left">
-        <div>
-          <label class="block text-sm mb-1 font-medium text-gray-700">Title</label>
-          <input id="swal-title" class="swal-input w-full" placeholder="Article title" />
-        </div>
-        <div>
-          <label class="block text-sm mb-1 font-medium text-gray-700">Body</label>
-          <textarea id="swal-body" class="swal-textarea w-full" rows="3" placeholder="Article content"></textarea>
-        </div>
-        <div>
-          <label class="block text-sm mb-1 font-medium text-gray-700">Tags (comma separated)</label>
-          <input id="swal-tags" class="swal-input w-full" placeholder="tag1, tag2" />
-        </div>
-        <div>
-          <label class="block text-sm mb-1 font-medium text-gray-700">Image</label>
-          <input type="file" id="swal-image" accept="image/*" class="swal-input w-full" />
-          <img id="swal-image-preview" class="mt-2 rounded-md max-w-xs hidden" />
-        </div>
-        <div id="swal-validation-message" class="text-center text-red-500 text-base"></div>
-      </div>
-    `,
-      customClass: {
-        popup: "swal-popup-xl",
-        confirmButton: "swal-confirm",
-        cancelButton: "swal-cancel"
-      },
-      showCancelButton: true,
-      confirmButtonText: 'Add Article',
-      showLoaderOnConfirm: true,
-      focusConfirm: false,
-      didOpen: () => {
-        const fileInput = document.getElementById('swal-image')
-        const preview = document.getElementById('swal-image-preview')
+    // Function to process form submission
+    const processForm = async (formValues) => {
+      if (!formValues) return false
 
-        fileInput.addEventListener('change', () => {
-          const file = fileInput.files[0]
-          if (file) {
-            selectedImageFile = file
-            const reader = new FileReader()
-            reader.onload = e => {
-              preview.src = e.target.result
-              preview.classList.remove('hidden')
-            }
-            reader.readAsDataURL(file)
-          }
-        })
-      },
-      preConfirm: () => {
-        const title = document.getElementById('swal-title').value.trim()
-        const body = document.getElementById('swal-body').value.trim()
-        const tags = document.getElementById('swal-tags').value.trim()
-        const errorDiv = document.getElementById('swal-validation-message')
-
-        if (!title || !body || !tags) {
-          errorDiv.innerHTML = `
-          <div class="flex items-center gap-1 justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-            </svg>
-            <span>All fields are required</span>
-          </div>
-        `
-          return false
-        }
-
-        return { title, body, tags }
-      },
-      allowOutsideClick: () => !Swal.isLoading()
-    })
-
-    if (formValues) {
       const formData = new FormData()
       formData.append('title', formValues.title)
       formData.append('body', formValues.body)
@@ -114,6 +45,7 @@ const Article = () => {
       if (selectedImageFile) {
         formData.append('image', selectedImageFile)
       }
+
       try {
         await api.post('/article', formData, {
           headers: {
@@ -134,6 +66,8 @@ const Article = () => {
             secondary: '#fff',
           },
         })
+
+        return true // Success
       } catch (err) {
         console.error('Failed to add article:', err)
         toast.error('Failed to add article', {
@@ -149,8 +83,207 @@ const Article = () => {
             secondary: '#fff',
           },
         })
+
+        return false // Failed
       }
     }
+
+    // Store whether we're closing due to successful submission
+    let closeWithoutConfirm = false
+
+    // Start the main form
+    const modalResult = await Swal.fire({
+      title: 'Add New Article',
+      html: `
+    <script>
+      function autoResize(textarea) {
+        const scrollTop = window.scrollY
+        textarea.style.height = 'auto' // Reset height
+        textarea.style.height = textarea.scrollHeight + 'px' // Set to new height
+        window.scrollTo({ top: scrollTop }) // Restore scroll position
+      }
+    </script>
+    <div class="space-y-4 text-left">
+      <div>
+        <label class="block text-sm mb-1 font-medium text-gray-700">Title</label>
+        <input id="swal-title" class="swal-input w-full" placeholder="Article title" value="${existingValues?.title || ''}" />
+      </div>
+      <div>
+        <label class="block text-sm mb-1 font-medium text-gray-700">Body</label>
+        <textarea
+          id="swal-body"
+          class="swal-textarea w-full resize-none overflow-hidden"
+          rows="6"
+          placeholder="Article content"
+        >${existingValues?.body || ''}</textarea>
+      </div>
+      <div>
+        <label class="block text-sm mb-1 font-medium text-gray-700">Tags <span class='text-gray-500 font-normal'>(comma separated)</span></label>
+        <input id="swal-tags" class="swal-input w-full" placeholder="tag1, tag2" value="${existingValues?.tags || ''}" />
+      </div>
+      <div>
+        <label class="block text-sm mb-1 font-medium text-gray-700">Image</label>
+        <input type="file" id="swal-image" accept="image/*" class="swal-input w-full" />
+        <div class='flex items-center justify-center mt-6'>
+          <img id="swal-image-preview" class="mt-2 rounded-lg max-w-lg ${existingValues?.imagePreview ? '' : 'hidden'}" ${existingValues?.imagePreview ? `src="${existingValues.imagePreview}"` : ''} /> 
+        </div>
+      </div>
+      <div id="swal-validation-message" class="text-center text-red-500 text-base"></div>
+    </div>
+    `,
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup-5xl",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel"
+      },
+      showClass: {
+        popup: 'swal-fade-in'
+      },
+      hideClass: {
+        popup: 'swal-fade-out'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Add Article',
+      showLoaderOnConfirm: true,
+      focusConfirm: false,
+      didOpen: () => {
+        const fileInput = document.getElementById('swal-image')
+        const preview = document.getElementById('swal-image-preview')
+        const textarea = document.getElementById('swal-body')
+        const titleInput = document.getElementById('swal-title')
+        const tagsInput = document.getElementById('swal-tags')
+
+        if (textarea) {
+          const autoResize = (el) => {
+            const scrollTop = window.scrollY
+            el.style.height = 'auto'
+            el.style.height = el.scrollHeight + 'px'
+            window.scrollTo({ top: scrollTop })
+          }
+
+          // Initialize height for textarea if there's content
+          if (textarea.value) {
+            autoResize(textarea)
+          }
+
+          textarea.addEventListener('input', () => autoResize(textarea))
+        }
+
+        // Set isDirty based on initial values
+        const checkDirty = () => {
+          isDirty =
+            titleInput.value.trim() !== '' ||
+            textarea.value.trim() !== '' ||
+            tagsInput.value.trim() !== ''
+        }
+
+        // Check initial dirty state
+        checkDirty()
+
+        // Input listeners
+        titleInput.addEventListener('input', checkDirty)
+        tagsInput.addEventListener('input', checkDirty)
+        textarea.addEventListener('input', () => {
+          checkDirty()
+          autoResize(textarea)
+        })
+
+        fileInput.addEventListener('change', () => {
+          const file = fileInput.files[0]
+          if (file) {
+            selectedImageFile = file
+            const reader = new FileReader()
+            reader.onload = e => {
+              preview.src = e.target.result
+              preview.classList.remove('hidden')
+            }
+            reader.readAsDataURL(file)
+          }
+        })
+
+        // Restore image if it existed
+        if (existingValues?.selectedImageFile) {
+          selectedImageFile = existingValues.selectedImageFile
+        }
+      },
+      preConfirm: async () => {
+        const title = document.getElementById('swal-title').value.trim()
+        const body = document.getElementById('swal-body').value.trim()
+        const tags = document.getElementById('swal-tags').value.trim()
+        const errorDiv = document.getElementById('swal-validation-message')
+
+        if (!title || !body || !tags) {
+          errorDiv.innerHTML = `
+        <div class="flex items-center gap-1 justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+          </svg>
+          <span>Title, body, and tags are required</span>
+        </div>
+        `
+          return false
+        }
+
+        // Process form submission directly in preConfirm
+        const formData = { title, body, tags }
+        const success = await processForm(formData)
+
+        // Mark as successful to bypass confirmation on close
+        if (success) {
+          closeWithoutConfirm = true
+          return formData
+        } else {
+          // If submission failed, prevent closing
+          return false
+        }
+      },
+      willClose: async () => {
+        // Skip confirmation if the form was submitted successfully
+        if (isDirty && !closeWithoutConfirm) {
+          // Capture current form values before confirmation dialog
+          const currentValues = {
+            title: document.getElementById('swal-title').value,
+            body: document.getElementById('swal-body').value,
+            tags: document.getElementById('swal-tags').value,
+            imagePreview: document.getElementById('swal-image-preview').getAttribute('src'),
+            selectedImageFile: selectedImageFile
+          }
+
+          const result = await Swal.fire({
+            title: 'Discard changes?',
+            text: 'You have unsaved input. Are you sure you want to cancel?',
+            icon: 'warning',
+            iconColor: "#ef4444",
+            customClass: {
+              title: "swal-title",
+              text: "swal-text",
+              popup: "swal-popup-sm",
+              confirmButton: "swal-danger",
+              cancelButton: "swal-cancel"
+            },
+            showClass: {
+              popup: 'swal-fade-in'
+            },
+            hideClass: {
+              popup: 'swal-fade-out'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Yes, discard it',
+            cancelButtonText: 'No, keep editing',
+            reverseButtons: true
+          })
+
+          if (!result.isConfirmed) {
+            // Reopen the form with preserved values
+            setTimeout(() => handleAddArticle(currentValues), 0)
+            return false // Prevent closing
+          }
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    })
   }
 
   // Handle Edit Article
@@ -308,17 +441,21 @@ const Article = () => {
       transition={{ duration: 0.5 }}
     >
       <Toaster position="top-right" />
-      <h3>Article Management</h3>
-      <p>{article.length} total article</p>
-      <Button
-        variant='primary'
-        onClick={handleAddArticle}
-      >
-        New Article
-        <HiOutlinePlusSm className='size-5 stroke-2' />
-      </Button>
+      <div className='flex items-end justify-between'>
+        <div>
+          <h3>Article Management</h3>
+          <p>{article.length} total article</p>
+        </div>
+        <Button
+          variant='primary'
+          onClick={handleAddArticle}
+        >
+          New Article
+          <HiOutlinePlusSm className='size-5 stroke-2' />
+        </Button>
+      </div>
       <ul className='grid md:grid-cols-3 grid-cols-1 gap-4 mt-6'>
-        {article.map((article) => (
+        {[...article].reverse().map((article) => (
           <li key={article._id} className='p-2.5 border border-neutral-200 rounded-2xl'>
             {article.image ? (
               <div className='border border-neutral-300 relative h-56 rounded-lg overflow-hidden'>

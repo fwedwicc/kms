@@ -61,7 +61,7 @@ const ArticlePage = () => {
             className="mt-2 max-w-lg rounded-lg"
           />
         )}
-        <p className="mt-2">{article.body}</p>
+        <p className="mt-2 whitespace-pre-line">{article.body}</p>
         <p className="text-gray-600">Tags: {article.tags}</p>
         <Link to="/" className="mt-4 inline-block px-4 py-2 rounded-md">
           Back

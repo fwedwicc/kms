@@ -308,7 +308,7 @@ const FAQs = () => {
         </Button>
       </div>
       <ul className='grid grid-cols-3 gap-4 mt-6'>
-        {faqs.map((faq) => (
+        {[...faqs].reverse().map((faq) => (
           <li key={faq._id} className='flex flex-col justify-between gap-4 p-4 border border-neutral-200/70 rounded-2xl'>
             <div className='space-y-4'>
               <h5>{faq.question}</h5>

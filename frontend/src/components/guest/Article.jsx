@@ -42,12 +42,15 @@ const Article = () => {
     const fetchArticles = async () => {
       try {
         const response = await api.get('/article')
-        setArticles(response.data.data)
+        const reversedArticles = response.data.data.reverse()
+        setArticles(reversedArticles)
       } catch (error) {
         console.error('Error fetching articles:', error)
       }
     }
     fetchArticles()
+    const interval = setInterval(fetchArticles, 5000)
+    return () => clearInterval(interval)
   }, [])
 
 

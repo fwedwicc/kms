@@ -27,18 +27,65 @@ const FAQs = () => {
   }, [])
 
   // Handle Add FAQ
-  const handleAddFaq = async () => {
+  // Handle Add FAQ
+  const handleAddFaq = async (existingValues = null) => {
+    let isDirty = false
+    let closeWithoutConfirm = false
+
+    // Function to process form submission
+    const processForm = async (formValues) => {
+      if (!formValues) return false
+
+      try {
+        const response = await api.post('/faqs', formValues)
+        setFaqs(prev => [...prev, response.data.data])
+
+        toast.success('FAQ added', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#22c55e',
+          },
+          iconTheme: {
+            primary: '#22c55e',
+            secondary: '#fff',
+          },
+        })
+
+        return true // Success
+      } catch (error) {
+        console.error('Error adding FAQ:', error)
+        toast.error('Failed to add FAQ', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#ef4444',
+          },
+          iconTheme: {
+            primary: '#ef4444',
+            secondary: '#fff',
+          },
+        })
+
+        return false // Failed
+      }
+    }
+
     const { value: formValues } = await Swal.fire({
       title: 'Add New FAQ',
       html: `
       <div class="space-y-4 text-left">
-        <div class="mb-4">
-          <label class="block text-sm mb-2 font-medium text-gray-700">Question</label>
-          <input id="swal-question" class="swal-input w-full" placeholder="Enter your question" />
+        <div>
+          <label class="block text-sm mb-1 font-medium text-gray-700">Question</label>
+          <input id="swal-question" class="swal-input w-full" placeholder="Enter question" value="${existingValues?.question || ''}">
         </div>
-        <div class="mb-4">
-          <label class="block text-sm mb-2 font-medium text-gray-700">Answer</label>
-          <textarea id="swal-answer" class="swal-textarea w-full" rows="3" placeholder="Provide the answer"></textarea>
+        <div>
+          <label class="block text-sm mb-1 font-medium text-gray-700">Answer</label>
+          <textarea id="swal-answer" class="swal-textarea w-full" rows="6" placeholder="Enter answer">${existingValues?.answer || ''}</textarea>
         </div>
         <div id="swal-validation-message" class="text-center text-red-500 text-base"></div>
       </div>
@@ -60,7 +107,25 @@ const FAQs = () => {
       showCancelButton: true,
       confirmButtonText: 'Add FAQ',
       showLoaderOnConfirm: true,
-      preConfirm: () => {
+      didOpen: () => {
+        const questionInput = document.getElementById('swal-question')
+        const answerInput = document.getElementById('swal-answer')
+
+        // Set isDirty based on initial values
+        const checkDirty = () => {
+          isDirty =
+            questionInput.value.trim() !== '' ||
+            answerInput.value.trim() !== ''
+        }
+
+        // Check initial dirty state
+        checkDirty()
+
+        // Input listeners
+        questionInput.addEventListener('input', checkDirty)
+        answerInput.addEventListener('input', checkDirty)
+      },
+      preConfirm: async () => {
         const question = document.getElementById('swal-question').value.trim()
         const answer = document.getElementById('swal-answer').value.trim()
         const errorDiv = document.getElementById('swal-validation-message')
@@ -78,45 +143,62 @@ const FAQs = () => {
         }
 
         errorDiv.textContent = ''
-        return { question, answer }
+
+        // Process form submission directly in preConfirm
+        const formData = { question, answer }
+        const success = await processForm(formData)
+
+        // Mark as successful to bypass confirmation on close
+        if (success) {
+          closeWithoutConfirm = true
+          return formData
+        } else {
+          // If submission failed, prevent closing
+          return false
+        }
+      },
+      willClose: async () => {
+        // Skip confirmation if the form was submitted successfully
+        if (isDirty && !closeWithoutConfirm) {
+          // Capture current form values before confirmation dialog
+          const currentValues = {
+            question: document.getElementById('swal-question').value,
+            answer: document.getElementById('swal-answer').value
+          }
+
+          const result = await Swal.fire({
+            title: 'Discard changes?',
+            text: 'You have unsaved input. Are you sure you want to cancel?',
+            icon: 'warning',
+            iconColor: "#ef4444",
+            customClass: {
+              title: "swal-title",
+              text: "swal-text",
+              popup: "swal-popup-sm",
+              confirmButton: "swal-danger",
+              cancelButton: "swal-cancel"
+            },
+            showClass: {
+              popup: 'swal-fade-in'
+            },
+            hideClass: {
+              popup: 'swal-fade-out'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Yes, discard it',
+            cancelButtonText: 'No, keep editing',
+            reverseButtons: true
+          })
+
+          if (!result.isConfirmed) {
+            // Reopen the form with preserved values
+            setTimeout(() => handleAddFaq(currentValues), 0)
+            return false // Prevent closing
+          }
+        }
       },
       allowOutsideClick: () => !Swal.isLoading()
     })
-
-    if (formValues) {
-      try {
-        const response = await api.post('/faqs', formValues)
-        setFaqs(prev => [...prev, response.data.data])
-        toast.success('FAQ added', {
-          style: {
-            border: "1px solid rgba(229, 231, 235, 0.8)",
-            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
-            borderRadius: "12px",
-            padding: '10px',
-            color: '#22c55e',
-          },
-          iconTheme: {
-            primary: '#22c55e',
-            secondary: '#fff',
-          },
-        })
-      } catch (error) {
-        console.error('Error adding FAQ:', error)
-        toast.error('Failed to add FAQ', {
-          style: {
-            border: "1px solid rgba(229, 231, 235, 0.8)",
-            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
-            borderRadius: "12px",
-            padding: '10px',
-            color: '#22c55e',
-          },
-          iconTheme: {
-            primary: '#22c55e',
-            secondary: '#fff',
-          },
-        })
-      }
-    }
   }
 
 

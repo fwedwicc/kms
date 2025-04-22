@@ -288,43 +288,116 @@ const Article = () => {
 
   // Handle Edit Article
   const handleEdit = async (article) => {
+    let selectedImageFile = null
+
     const { value: formValues } = await Swal.fire({
       title: 'Edit Article',
       html: `
-        <div class="space-y-4 text-left">
-          <div>
-            <label class="block text-sm font-medium text-stone-700">Title</label>
-            <input id="swal-title" class="mt-1 block w-full p-2 border rounded-md" value="${article.title}">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-stone-700">Body</label>
-            <textarea id="swal-body" class="mt-1 block w-full p-2 border rounded-md" rows="3">${article.body}</textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-stone-700">Tags</label>
-            <input id="swal-tags" class="mt-1 block w-full p-2 border rounded-md" value="${article.tags}">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-stone-700">Image</label>
-            <input id="swal-image" type="file" class="mt-1 block w-full p-2 border rounded-md">
-          </div>
-          ${article.image ? `
-          <div>
-            <label class="block text-sm font-medium text-stone-700">Current Image</label>
-            <img src="${SERVER_URL}${article.image}" alt="Current image" class="mt-1 max-w-xs rounded-lg">
-          </div>` : ''}
-        </div>
-      `,
-      focusConfirm: false,
-      showCancelButton: true,
-      preConfirm: () => {
-        return {
-          title: document.getElementById('swal-title').value,
-          body: document.getElementById('swal-body').value,
-          tags: document.getElementById('swal-tags').value,
-          image: document.getElementById('swal-image').files[0]
-        }
+    <script>
+      function autoResize(textarea) {
+        const scrollTop = window.scrollY
+        textarea.style.height = 'auto' // Reset height
+        textarea.style.height = textarea.scrollHeight + 'px' // Set to new height
+        window.scrollTo({ top: scrollTop }) // Restore scroll position
       }
+    </script>
+    <div class="space-y-4 text-left">
+      <div>
+        <label class="block text-sm mb-1 font-medium text-gray-700">Title</label>
+        <input id="swal-title" class="swal-input w-full" placeholder="Article title" value="${article.title}" />
+      </div>
+      <div>
+        <label class="block text-sm mb-1 font-medium text-gray-700">Body</label>
+        <textarea id="swal-body" class="swal-textarea w-full resize-none overflow-hidden" rows="6" placeholder="Article content">${article.body}</textarea>
+      </div>
+      <div>
+        <label class="block text-sm mb-1 font-medium text-gray-700">Tags (comma separated)</label>
+        <input id="swal-tags" class="swal-input w-full" placeholder="tag1, tag2" value="${article.tags}" />
+      </div>
+      <div>
+        <label class="block text-sm mb-1 font-medium text-gray-700">Image</label>
+        <input type="file" id="swal-image" accept="image/*" class="swal-input w-full" />
+      </div>
+      ${article.image ? `
+      <div class='flex flex-col items-center justify-center mt-6'>
+        <label class="block text-sm mb-1 font-medium text-gray-700 text-center">Current Image</label>
+          <img src="${SERVER_URL}${article.image}" alt="Current image" class="rounded-lg max-w-lg w-full' /> 
+      </div>` : ''}
+      <div id="swal-validation-message" class="text-center text-red-500 text-base"></div>
+    </div>
+    `,
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup-5xl",
+        confirmButton: "swal-info",
+        cancelButton: "swal-cancel"
+      },
+      showClass: {
+        popup: 'swal-fade-in'
+      },
+      hideClass: {
+        popup: 'swal-fade-out'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Update Article',
+      showLoaderOnConfirm: true,
+      focusConfirm: false,
+      didOpen: () => {
+        const fileInput = document.getElementById('swal-image')
+        const preview = document.getElementById('swal-image-preview')
+        const textarea = document.getElementById('swal-body')
+
+        if (textarea) {
+          const autoResize = (el) => {
+            const scrollTop = window.scrollY
+            el.style.height = 'auto'
+            el.style.height = el.scrollHeight + 'px'
+            window.scrollTo({ top: scrollTop })
+          }
+
+          // Initialize height for textarea if there's content
+          if (textarea.value) {
+            autoResize(textarea)
+          }
+
+          textarea.addEventListener('input', () => autoResize(textarea))
+        }
+
+        fileInput.addEventListener('change', () => {
+          const file = fileInput.files[0]
+          if (file) {
+            selectedImageFile = file
+            const reader = new FileReader()
+            reader.onload = e => {
+              preview.src = e.target.result
+              preview.classList.remove('hidden')
+            }
+            reader.readAsDataURL(file)
+          }
+        })
+      },
+      preConfirm: () => {
+        const title = document.getElementById('swal-title').value.trim()
+        const body = document.getElementById('swal-body').value.trim()
+        const tags = document.getElementById('swal-tags').value.trim()
+        const errorDiv = document.getElementById('swal-validation-message')
+
+        if (!title || !body || !tags) {
+          errorDiv.innerHTML = `
+        <div class="flex items-center gap-1 justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+          </svg>
+          <span>All fields are required</span>
+        </div>
+      `
+          return false
+        }
+
+        return { title, body, tags }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
     })
 
     if (formValues) {
@@ -335,8 +408,8 @@ const Article = () => {
         updateFormData.append('body', formValues.body)
         updateFormData.append('tags', formValues.tags)
 
-        if (formValues.image) {
-          updateFormData.append('image', formValues.image)
+        if (selectedImageFile) {
+          updateFormData.append('image', selectedImageFile)
         }
 
         const response = await api.put(`/article/${article._id}`, updateFormData, {
@@ -352,7 +425,7 @@ const Article = () => {
           )
         )
 
-        toast.success('Article updated successfully!', {
+        toast.success('Article updated', {
           style: {
             border: "1px solid rgba(229, 231, 235, 0.8)",
             boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
@@ -367,7 +440,19 @@ const Article = () => {
         })
       } catch (error) {
         console.error("Error updating article:", error)
-        toast.error('Failed to update article')
+        toast.error('Failed to update Article', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#ef4444',
+          },
+          iconTheme: {
+            primary: '#ef4444',
+            secondary: '#fff',
+          },
+        })
       }
     }
   }

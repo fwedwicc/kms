@@ -118,26 +118,71 @@ const Contact = () => {
     })
   }
 
-  const handleReply = (contactData) => {
+  const handleReply = (contactData, existingValues = null) => {
+    let isDirty = false
+    let closeWithoutConfirm = false
+
+    // Function to process form submission
+    const processForm = async (formValues) => {
+      if (!formValues) return false
+
+      try {
+        await sendEmail(contactData.email, contactData.firstName, formValues.subject, formValues.message)
+
+        toast.success('Reply sent successfully', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#22c55e',
+          },
+          iconTheme: {
+            primary: '#22c55e',
+            secondary: '#fff',
+          },
+        })
+
+        return true // Success
+      } catch (err) {
+        console.error('Failed to send reply:', err)
+        toast.error('Failed to send reply', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#ef4444',
+          },
+          iconTheme: {
+            primary: '#ef4444',
+            secondary: '#fff',
+          },
+        })
+
+        return false // Failed
+      }
+    }
+
     Swal.fire({
       title: 'Reply to Contact',
       html: `
-      <div class="mb-4">
-        <p class="mb-[2px] text-sm text-left">Replying to:</p>
-        <div class='flex flex-col justify-start items-start -space-y-[2px]'>
-          <span class='text-xl text-neutral-900 font-semibold'>${contactData.lastName}, ${contactData.firstName}</span>
-          <p>${contactData.email}</p>
-        </div>
+    <div class="mb-4">
+      <p class="mb-[2px] text-sm text-left">Replying to:</p>
+      <div class='flex flex-col justify-start items-start -space-y-[2px]'>
+        <span class='text-xl text-neutral-900 font-semibold'>${contactData.lastName}, ${contactData.firstName}</span>
+        <p>${contactData.email}</p>
       </div>
-      <div class="mb-4">
-        <label for="subject" class="block mb-2 text-left">Subject</label>
-        <input id="subject" class="swal-input w-full" placeholder="Enter subject">
-      </div>
-      <div class="mb-4">
-        <label for="message" class="block mb-2 text-left">Message</label>
-        <textarea id="message" class="swal-textarea w-full" placeholder="Type your reply here..."></textarea>
-      </div>
-      <div id="swal-validation-message" class="text-center text-red-500 text-base"></div>
+    </div>
+    <div class="mb-4">
+      <label for="subject" class="block mb-2 text-left">Subject</label>
+      <input id="subject" class="swal-input w-full" placeholder="Enter subject" value="${existingValues?.subject || ''}">
+    </div>
+    <div class="mb-4">
+      <label for="message" class="block mb-2 text-left">Message</label>
+      <textarea id="message" class="swal-textarea w-full" placeholder="Type your reply here...">${existingValues?.message || ''}</textarea>
+    </div>
+    <div id="swal-validation-message" class="text-center text-red-500 text-base"></div>
     `,
       customClass: {
         title: "swal-title",
@@ -156,29 +201,97 @@ const Contact = () => {
       showCancelButton: true,
       confirmButtonText: 'Send Reply',
       showLoaderOnConfirm: true,
-      preConfirm: () => {
-        const subject = document.getElementById('subject').value
-        const message = document.getElementById('message').value
+      didOpen: () => {
+        const subjectInput = document.getElementById('subject')
+        const messageInput = document.getElementById('message')
+
+        // Set isDirty based on initial values
+        const checkDirty = () => {
+          isDirty =
+            subjectInput.value.trim() !== '' ||
+            messageInput.value.trim() !== ''
+        }
+
+        // Check initial dirty state
+        checkDirty()
+
+        // Input listeners
+        subjectInput.addEventListener('input', checkDirty)
+        messageInput.addEventListener('input', checkDirty)
+      },
+      preConfirm: async () => {
+        const subject = document.getElementById('subject').value.trim()
+        const message = document.getElementById('message').value.trim()
         const errorDiv = document.getElementById('swal-validation-message')
+
         if (!subject || !message) {
           errorDiv.innerHTML = `
-            <div class="flex items-center gap-1 justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-              </svg>
-              <span>Please fill in all fields</span>
-            </div>
-          `;
+          <div class="flex items-center gap-1 justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+            </svg>
+            <span>Please fill in all fields</span>
+          </div>
+        `
           return false
         }
+
         errorDiv.textContent = ''
-        return { subject, message }
+
+        // Process form submission directly in preConfirm
+        const formData = { subject, message }
+        const success = await processForm(formData)
+
+        // Mark as successful to bypass confirmation on close
+        if (success) {
+          closeWithoutConfirm = true
+          return formData
+        } else {
+          // If submission failed, prevent closing
+          return false
+        }
+      },
+      willClose: async () => {
+        // Skip confirmation if the form was submitted successfully
+        if (isDirty && !closeWithoutConfirm) {
+          // Capture current form values before confirmation dialog
+          const currentValues = {
+            subject: document.getElementById('subject').value,
+            message: document.getElementById('message').value
+          }
+
+          const result = await Swal.fire({
+            title: 'Discard changes?',
+            text: 'You have unsaved input. Are you sure you want to cancel?',
+            icon: 'warning',
+            iconColor: "#ef4444",
+            customClass: {
+              title: "swal-title",
+              text: "swal-text",
+              popup: "swal-popup-sm",
+              confirmButton: "swal-danger",
+              cancelButton: "swal-cancel"
+            },
+            showClass: {
+              popup: 'swal-fade-in'
+            },
+            hideClass: {
+              popup: 'swal-fade-out'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Yes, discard it',
+            cancelButtonText: 'No, keep editing',
+            reverseButtons: true
+          })
+
+          if (!result.isConfirmed) {
+            // Reopen the form with preserved values
+            setTimeout(() => handleReply(contactData, currentValues), 0)
+            return false // Prevent closing
+          }
+        }
       },
       allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-      if (result.isConfirmed) {
-        sendEmail(contactData.email, contactData.firstName, result.value.subject, result.value.message)
-      }
     })
   }
 

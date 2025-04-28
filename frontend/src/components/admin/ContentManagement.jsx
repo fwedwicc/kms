@@ -6,7 +6,7 @@ import { Button } from '../ui'
 import Swal from 'sweetalert2'
 import { HiOutlineTrash, HiOutlinePencil, HiOutlinePlusSm } from "react-icons/hi"
 
-const FAQs = () => {
+const ContentManagement = () => {
 
   const [faqs, setFaqs] = useState([])
 
@@ -26,7 +26,6 @@ const FAQs = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // Handle Add FAQ
   // Handle Add FAQ
   const handleAddFaq = async (existingValues = null) => {
     let isDirty = false
@@ -377,7 +376,7 @@ const FAQs = () => {
       <Toaster position="top-right" />
       <div className='flex items-end justify-between'>
         <div>
-          <h3>FAQs Management</h3>
+          <h3>Content Management</h3>
           <p>{faqs.length} total FAQs</p>
         </div>
         <Button
@@ -421,4 +420,4 @@ const FAQs = () => {
   )
 }
 
-export default FAQs
+export default ContentManagement

@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { Contact, FAQs, Article, Dashboard } from '../components/admin'
-import { HiLogout, HiOutlineMail, HiOutlineViewGrid, HiOutlineHome, HiOutlineBookmarkAlt, HiOutlineInformationCircle, HiOutlineChevronDoubleRight } from "react-icons/hi"
+import { Contact, ContentManagement, Article, Dashboard } from '../components/admin'
+import { HiLogout, HiOutlineMail, HiOutlineViewGrid, HiOutlineHome, HiOutlineBookmarkAlt, HiOutlineChevronDoubleRight, HiOutlineCollection } from "react-icons/hi"
 import { Button } from '../components/ui'
 
 const Admin = () => {
@@ -53,8 +53,8 @@ const Admin = () => {
     switch (location.pathname) {
       case '/admin/contact':
         return <Contact />
-      case '/admin/faqs':
-        return <FAQs />
+      case '/admin/content-management':
+        return <ContentManagement />
       case '/admin/article':
         return <Article />
       default:
@@ -69,7 +69,7 @@ const Admin = () => {
           <span>{icon}</span>
           {isNavOpen && <span>{label}</span>}
         </Button>
-        {!isNavOpen && <span className='border border-neutral-200 bg-white rounded-lg text-sm px-2 py-1 absolute opacity-0 group-hover:opacity-100 transform -translate-y-1/2 top-1/2 left-13 transition-opacity duration-200 ease-in-out pointer-events-none'>{label}</span>}
+        {!isNavOpen && <span className='z-50 border border-neutral-200 bg-white rounded-lg text-sm px-2 py-1 absolute opacity-0 group-hover:opacity-100 transform -translate-y-1/2 top-1/2 left-13 transition-opacity duration-200 ease-in-out pointer-events-none'>{label}</span>}
       </Link>
     )
   }
@@ -82,7 +82,7 @@ const Admin = () => {
       transition={{ duration: 0.5 }}
     >
       {/* Side Nav */}
-      <nav className={`lg:block hidden fixed p-3 h-screen ${isNavOpen ? 'w-56' : 'w-18'} transition-all duration-300`}>
+      <nav className={`z-50 lg:block hidden fixed p-3 h-screen ${isNavOpen ? 'w-56' : 'w-18'} transition-all duration-300`}>
         <div className='relative h-full flex flex-col justify-between'>
           <div>
             {/* Logo */}
@@ -108,9 +108,9 @@ const Admin = () => {
               {[
                 { 'label': 'Home', 'link': '/', 'icon': HiOutlineHome },
                 { 'label': 'Dashboard', 'link': '/admin', 'icon': HiOutlineViewGrid },
-                { 'label': 'Contact', 'link': '/admin/contact', 'icon': HiOutlineMail },
-                { 'label': 'FAQs', 'link': '/admin/faqs', 'icon': HiOutlineInformationCircle },
-                { 'label': 'Article', 'link': '/admin/article', 'icon': HiOutlineBookmarkAlt }
+                { 'label': 'Content', 'link': '/admin/content-management', 'icon': HiOutlineCollection },
+                { 'label': 'Article', 'link': '/admin/article', 'icon': HiOutlineBookmarkAlt },
+                { 'label': 'Contact', 'link': '/admin/contact', 'icon': HiOutlineMail }
               ].map((item, index) => (
                 <ButtonLink
                   key={index}

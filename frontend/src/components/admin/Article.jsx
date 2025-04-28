@@ -547,11 +547,11 @@ const Article = () => {
                 <img
                   src={`${SERVER_URL}${article.image}`}
                   alt={article.title}
-                  className="absolute w-full h-full object-cover"
+                  className="z-40 absolute w-full h-full object-cover"
                 />
               </div>
             ) : <div className='border border-neutral-300 relative h-56 rounded-lg overflow-hidden'>
-              <img src="https://placehold.co/30x30" alt="Placeholder Image" className='absolute w-full h-full object-cover' />
+              <img src="https://placehold.co/30x30" alt="Placeholder Image" className='z-40 absolute w-full h-full object-cover' />
             </div>}
             {/* Article Infos */}
             <div className='space-y-2.5 p-4'>

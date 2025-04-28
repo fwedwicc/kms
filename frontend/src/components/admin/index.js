@@ -1,12 +1,10 @@
 import Contact from "./Contact"
-import Notification from './Notification'
-import FAQs from './FAQs'
+import ContentManagement from './ContentManagement'
 import Article from './Article'
 import Dashboard from "./Dashboard"
 
 export {
-  FAQs,
-  Notification,
+  ContentManagement,
   Contact,
   Article,
   Dashboard

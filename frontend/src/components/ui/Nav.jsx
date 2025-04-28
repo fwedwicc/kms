@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Swal from 'sweetalert2'
 import { Link, useLocation } from 'react-router-dom'
-import { HiLogout, HiMenuAlt3, HiOutlineArrowRight, HiOutlineX } from "react-icons/hi"
+import { HiLogout, HiMenuAlt3, HiOutlineArrowRight, HiOutlineX, HiOutlineViewGrid } from "react-icons/hi"
 import { Button } from './index'
 
 const Nav = () => {
@@ -90,6 +90,7 @@ const Nav = () => {
             <Link to="/admin">
               <Button variant='primary' className={`${isForSideNav ? 'w-full' : ''}`}>
                 Dashboard
+                <HiOutlineViewGrid className='size-4' />
               </Button>
             </Link>
           </div>

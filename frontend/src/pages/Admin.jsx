@@ -115,7 +115,7 @@ const Admin = () => {
                 <ButtonLink
                   key={index}
                   link={item.link}
-                  icon={<item.icon className='size-6 stroke-[1.3px]' />}
+                  icon={<item.icon className={`size-6 ${location.pathname === item.link ? 'stroke-[1.7px] text-neutral-900' : 'stroke-[1.3px]'}`} />}
                   label={item.label}
                   isNavOpen={isNavOpen}
                 >

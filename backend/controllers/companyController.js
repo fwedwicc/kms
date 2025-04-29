@@ -21,12 +21,12 @@ export const getCompanyContent = async (req, res) => {
 export const updateCompanyContent = async (req, res) => {
   const { name, description } = req.body
 
-  try {
-    const company = await Company.findOne() // get the only company
+  if (!name || !description) {
+    return res.status(400).json({ success: false, message: "All fields are required" })
+  }
 
-    if (!company) {
-      return res.status(404).json({ success: false, message: "Company content not found" })
-    }
+  try {
+    const company = await Company.findOne()
 
     // Update fields
     if (name) company.name = name

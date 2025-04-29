@@ -4,12 +4,29 @@ import Swal from 'sweetalert2'
 import { Link, useLocation } from 'react-router-dom'
 import { HiLogout, HiMenuAlt3, HiOutlineArrowRight, HiOutlineX, HiOutlineViewGrid } from "react-icons/hi"
 import { Button } from './index'
+import api from '../../utils/api'
+
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
 
 const Nav = () => {
   const token = localStorage.getItem('token')
   const location = useLocation()
   const sidebarRef = useRef(null)
   const [isNavOpen, setIsNavOpen] = useState(false)
+  const [companyInfo, setCompanyInfo] = useState(null)
+
+  useEffect(() => {
+    const fetchCompanyInfo = async () => {
+      try {
+        const response = await api.get('/company')
+        setCompanyInfo(response.data.data)
+      } catch (error) {
+        console.error('Error fetching company info:', error)
+      }
+    }
+
+    fetchCompanyInfo()
+  }, [])
 
   const handleLogout = () => {
     Swal.fire({
@@ -120,10 +137,16 @@ const Nav = () => {
           <div className='w-full max-w-7xl flex items-center justify-between border border-neutral-300/60 shadow-xl shadow-neutral-400/5 bg-white md:p-3 p-2 rounded-[15px]'>
             {/* Start */}
             <div className='flex items-center gap-3'>
-              <div className='relative flex justify-center items-center size-9 bg-neutral-800 border rounded-lg'>
-                <span className='text-white font-bold'>S</span>
+              <div className='relative size-9 rounded-lg overflow-hidden'>
+                {companyInfo?.logo && !(companyInfo.logo instanceof File) && (
+                  <img
+                    src={`${SERVER_URL}${companyInfo.logo}`}
+                    alt={companyInfo?.name || 'Company Logo'}
+                    className="absolute w-full h-full object-cover"
+                  />
+                )}
               </div>
-              <h5>StaySuite</h5>
+              <h5>{companyInfo?.name}</h5>
             </div>
             {/* Mid */}
             <Links />

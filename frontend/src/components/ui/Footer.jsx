@@ -1,10 +1,27 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
+import api from '../../utils/api'
+
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
 
 const Footer = () => {
 
   const location = useLocation()
+  const [companyInfo, setCompanyInfo] = useState(null)
+
+  useEffect(() => {
+    const fetchCompanyInfo = async () => {
+      try {
+        const response = await api.get('/company')
+        setCompanyInfo(response.data.data)
+      } catch (error) {
+        console.error('Error fetching company info:', error)
+      }
+    }
+
+    fetchCompanyInfo()
+  }, [])
 
   return (
     <>
@@ -20,12 +37,18 @@ const Footer = () => {
           <div className='flex flex-wrap justify-between items-end gap-6 pb-3'>
             {/* Company Logo and Description */}
             <div className='flex items-center gap-6'>
-              <div className='relative flex flex-shrink-0 justify-center items-center size-24 ring-2 ring-neutral-400 ring-offset-2 bg-neutral-900 border rounded-2xl'>
-                <span className='text-white font-bold md:text-3xl text-2xl'>S</span>
+              <div className='relative overflow-hidden size-24 ring-2 ring-neutral-400 ring-offset-2 rounded-2xl'>
+                {companyInfo?.logo && !(companyInfo.logo instanceof File) && (
+                  <img
+                    src={`${SERVER_URL}${companyInfo.logo}`}
+                    alt={companyInfo?.name || 'Company Logo'}
+                    className="absolute w-full h-full object-cover"
+                  />
+                )}
               </div>
               <div>
-                <h5>StaySuite</h5>
-                <p className='max-w-sm'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque odit, at, porro tempora inventore tenetur.</p>
+                <h5>{companyInfo?.name || 'Company Name'}</h5>
+                <p className='max-w-sm'>{companyInfo?.description || 'Company Description'}</p>
               </div>
             </div>
             {/* Links */}
@@ -62,7 +85,7 @@ const Footer = () => {
           </div>
           {/* End Content */}
           <div className='flex justify-center items-start border-t border-neutral-300 pt-6'>
-            <span className='text-neutral-500 text-sm'>© StaySuite • 2024</span>
+            <span className='text-neutral-500 text-sm'>© {companyInfo?.name} • 2025</span>
           </div>
         </motion.footer>
       )}

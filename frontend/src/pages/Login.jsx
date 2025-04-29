@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { HiOutlineArrowRight, HiOutlineExclamationCircle } from "react-icons/hi"
 import { InputText, Button, Spinner } from '../components/ui'
 import { useNavigate, Navigate } from 'react-router-dom'
-import API from '../utils/api.js'
+import api from '../utils/api.js'
+
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -11,6 +13,20 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const [companyInfo, setCompanyInfo] = useState(null)
+
+  useEffect(() => {
+    const fetchCompanyInfo = async () => {
+      try {
+        const response = await api.get('/company')
+        setCompanyInfo(response.data.data)
+      } catch (error) {
+        console.error('Error fetching company info:', error)
+      }
+    }
+
+    fetchCompanyInfo()
+  }, [])
 
   const token = localStorage.getItem('token')
 
@@ -32,7 +48,7 @@ const Login = () => {
     setLoading(true)
 
     try {
-      const response = await API.post('/auth/login', { username, password })
+      const response = await api.post('/auth/login', { username, password })
       localStorage.setItem('token', response.data.token)
 
       navigate('/admin')
@@ -58,11 +74,17 @@ const Login = () => {
         <img src="https://images.unsplash.com/photo-1729858445581-82386c16aaa8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Sample Background" className='z-20 absolute w-full h-full object-cover saturate-0 opacity-50' />
         {/* Company Details */}
         <div className='z-40 flex items-start gap-4 lg:h-auto h-48 p-4'>
-          <div className='relative flex flex-shrink-0 justify-center items-center size-18 ring-2 ring-neutral-400 ring-offset-2 bg-neutral-900 border rounded-2xl'>
-            <span className='text-white font-bold md:text-2xl text-xl'>S</span>
+          <div className='relative size-18 ring-2 ring-neutral-400 ring-offset-2 rounded-2xl overflow-hidden'>
+            {companyInfo?.logo && !(companyInfo.logo instanceof File) && (
+              <img
+                src={`${SERVER_URL}${companyInfo.logo}`}
+                alt={companyInfo?.name || 'Company Logo'}
+                className="absolute w-full h-full object-cover"
+              />
+            )}
           </div>
           <div className='-space-y-1'>
-            <h5>Welcome to StaySuite!</h5>
+            <h5>Welcome to {companyInfo?.name}!</h5>
             <p>Lorem ipsum, dolor sit amet consectetur.</p>
           </div>
         </div>

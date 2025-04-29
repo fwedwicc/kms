@@ -1,15 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { Contact, ContentManagement, Article, Dashboard } from '../components/admin'
 import { HiLogout, HiOutlineMail, HiOutlineViewGrid, HiOutlineHome, HiOutlineBookmarkAlt, HiOutlineChevronDoubleRight, HiOutlineCollection } from "react-icons/hi"
 import { Button } from '../components/ui'
+import api from '../utils/api'
+
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
 
 const Admin = () => {
   const [isLoggedOut, setIsLoggedOut] = useState(false)
   const location = useLocation()
   const [isNavOpen, setIsNavOpen] = useState(false)
+  const [companyInfo, setCompanyInfo] = useState(null)
+
+  useEffect(() => {
+    const fetchCompanyInfo = async () => {
+      try {
+        const response = await api.get('/company')
+        setCompanyInfo(response.data.data)
+      } catch (error) {
+        console.error('Error fetching company info:', error)
+      }
+    }
+
+    fetchCompanyInfo()
+  }, [])
 
   const handleLogout = () => {
     Swal.fire({
@@ -87,8 +104,14 @@ const Admin = () => {
           <div>
             {/* Logo */}
             <div className='flex items-center gap-3'>
-              <div className='relative flex justify-center items-center shrink-0 size-12 bg-neutral-800 border rounded-xl'>
-                <span className='text-white font-bold'>S</span>
+              <div className='relative shrink-0 size-12 rounded-xl overflow-hidden'>
+                {companyInfo?.logo && !(companyInfo.logo instanceof File) && (
+                  <img
+                    src={`${SERVER_URL}${companyInfo.logo}`}
+                    alt={companyInfo?.name || 'Company Logo'}
+                    className="absolute w-full h-full object-cover"
+                  />
+                )}
               </div>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -98,7 +121,7 @@ const Admin = () => {
                   delay: isNavOpen ? 0.2 : 0
                 }}
               >
-                <h5>StaySuite</h5>
+                <h5>{companyInfo?.name}</h5>
               </motion.div>
             </div>
             <Button onClick={handleNavToggle} className={'absolute top-3 -right-12 size-7 bg-neutral-50 border border-neutral-100'}>

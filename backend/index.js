@@ -7,6 +7,7 @@ import contactRoutes from './routes/contactRoute.js'
 import authRoutes from './routes/authRoute.js'
 import articleRoutes from './routes/articleRoute.js'
 import companyRoutes from './routes/companyRoute.js'
+import contactInfoRoutes from './routes/contactInfoRoute.js'
 
 dotenv.config()
 
@@ -26,6 +27,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/contact", contactRoutes)
 app.use("/api/article", articleRoutes)
 app.use("/api/company", companyRoutes)
+app.use("/api/contactInfo", contactInfoRoutes)
 app.use('/uploads', express.static('uploads'))
 
 // MongoDB and Port connection

@@ -24,6 +24,24 @@ export const updateContactInfo = async (req, res) => {
       })
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email format.',
+      })
+    }
+
+    // Validate telephone num
+    const phoneRegex = /^(09|\+639)\d{9}$/
+    if (!phoneRegex.test(telephone)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid telephone format.',
+      })
+    }
+
     const contactInfo = await ContactInfo.findOne()
     if (!contactInfo) {
       return res.status(404).json({
@@ -49,3 +67,4 @@ export const updateContactInfo = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error.' })
   }
 }
+

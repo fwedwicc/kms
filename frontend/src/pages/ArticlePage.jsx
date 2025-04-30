@@ -3,10 +3,12 @@ import { motion } from 'framer-motion'
 import { Badge } from '../components/ui'
 import { useParams, Link } from 'react-router-dom'
 import api from '../utils/api'
+import useScrollToTop from '../hooks/useScrollToTop'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL
 
 const ArticlePage = () => {
+  useScrollToTop()
   const { id } = useParams()
   const [article, setArticle] = useState(null)
   const [loading, setLoading] = useState(true)

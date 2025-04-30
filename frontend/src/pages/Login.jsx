@@ -4,10 +4,12 @@ import { HiOutlineArrowRight, HiOutlineExclamationCircle } from "react-icons/hi"
 import { InputText, Button, Spinner } from '../components/ui'
 import { useNavigate, Navigate } from 'react-router-dom'
 import api from '../utils/api.js'
+import useScrollToTop from '../hooks/useScrollToTop'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL
 
 const Login = () => {
+  useScrollToTop()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { HiOutlineExclamationCircle, HiOutlinePaperAirplane, HiOutlineArrowRight, HiOutlineChat, HiOutlinePhone, HiOutlineLocationMarker } from "react-icons/hi"
 import { SiFacebook, SiInstagram, SiX, SiLinkedin, SiYoutube } from "react-icons/si"
@@ -16,6 +16,33 @@ const Contact = () => {
     message: '',
     termsAgreed: false
   })
+  const [contactInfo, setContactInfo] = useState(null)
+
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const response = await api.get('/contactInfo')
+        setContactInfo(response.data.data)
+      } catch (error) {
+        console.error('Error fetching contact info:', error)
+      }
+    }
+
+    fetchContactInfo()
+  }, [])
+
+  // For Dynamic Icons
+  const getIconData = (link) => {
+    if (!link) return { icon: null, color: '' }
+
+    if (link.includes('facebook')) return { icon: SiFacebook, color: 'text-blue-500' }
+    if (link.includes('instagram')) return { icon: SiInstagram, color: 'text-rose-500' }
+    if (link.includes('x.com') || link.includes('twitter')) return { icon: SiX, color: 'text-neutral-900' }
+    if (link.includes('youtube')) return { icon: SiYoutube, color: 'text-red-500' }
+    if (link.includes('linkedin')) return { icon: SiLinkedin, color: 'text-blue-500' }
+
+    return { icon: null, color: '' }
+  }
 
   // Handle Change
   const handleChange = (e) => {
@@ -192,18 +219,18 @@ const Contact = () => {
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, debitis consequatur quisquam veritatis eos repellat quam vitae, ex, ducimus dolorum quasi dolorem consectetur voluptates. Molestiae soluta beatae totam optio vitae:</p>
         {/* More */}
         <div className='grid md:grid-cols-3 grid-cols-2 gap-2 mt-6'>
-          <a href='mailto:' className='flex flex-col justify-between border border-neutral-300 hover:bg-neutral-100 p-2 rounded-xl h-24 transition duration-300 ease-in-out'>
-            <ContactInfo title='Chat with us!' label='company.test@email.com' link>
+          <a href={`mailto:${contactInfo?.email}`} className='flex flex-col justify-between border border-neutral-300 hover:bg-neutral-100 p-2 rounded-xl h-24 transition duration-300 ease-in-out'>
+            <ContactInfo title='Chat with us!' label={contactInfo?.email} link>
               <HiOutlineChat className='md:size-6 size-5 stroke-[1.3px]' />
             </ContactInfo>
           </a>
           <div className='flex flex-col justify-between border border-neutral-300 p-2 rounded-xl h-24'>
-            <ContactInfo title='Give us a call!' label='+121 3371 172'>
+            <ContactInfo title='Give us a call!' label={contactInfo?.telephone}>
               <HiOutlinePhone className='md:size-6 size-5 stroke-[1.3px]' />
             </ContactInfo>
           </div>
           <div className='flex flex-col justify-between border border-neutral-300 p-2 rounded-xl h-24'>
-            <ContactInfo title='Visit our office!' label='1990 Villa Street, Manila, Philippines'>
+            <ContactInfo title='Visit our office!' label={contactInfo?.location}>
               <HiOutlineLocationMarker className='md:size-6 size-5 stroke-[1.3px]' />
             </ContactInfo>
           </div>
@@ -212,16 +239,18 @@ const Contact = () => {
         <div className='space-y-2'>
           <p>Our Socials:</p>
           <div className='flex items-center gap-2'>
-            {[
-              { link: 'https://youtube.com', icon: SiYoutube },
-              { link: 'https://instagram.com', icon: SiInstagram },
-              { link: 'https://facebook.com', icon: SiFacebook },
-              { link: 'https://x.com', icon: SiX },
-            ].map((item, index) => (
-              <a href={item.link} target='_blank' className='hover:bg-neutral-100 flex items-center justify-center size-8 rounded-full transition duration-300 ease-in-out' key={index}>
-                <item.icon className={`size-4.5 ${item.link.includes('facebook') ? 'text-blue-500' : item.link.includes('instagram') ? 'text-rose-500' : item.link.includes('x.com') ? 'text-neutral-900' : item.link.includes('youtube') ? 'text-red-500' : null}`} />
-              </a>
-            ))}
+            {[contactInfo?.link1, contactInfo?.link2, contactInfo?.link3, contactInfo?.link4]
+              .filter(Boolean)
+              .map((link, index) => {
+                const { icon: Icon, color } = getIconData(link)
+                return (
+                  Icon && (
+                    <a href={link} target="_blank" rel="noopener noreferrer" key={index} className="hover:bg-neutral-100 flex items-center justify-center size-8 rounded-full transition duration-300 ease-in-out">
+                      <Icon className={`size-4.5 ${color}`} />
+                    </a>
+                  )
+                )
+              })}
           </div>
         </div>
       </div>

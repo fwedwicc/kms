@@ -92,14 +92,6 @@ const Article = () => {
                 <h4 className='break-all line-clamp-2 text-2xl font-medium'>{article.title}</h4>
                 <p className='break-all line-clamp-4'>{article.body}</p>
                 <div className='flex items-end justify-between gap-2 mt-6'>
-                  {/* Tags */}
-                  {/* <div className="flex flex-wrap gap-1">
-                  {article.tags?.split(' ').map((tag, index) => (
-                    <Badge key={index} variant='default'>
-                      {tag}
-                    </Badge>
-                  ))}
-                </div> */}
                   {/* Date */}
                   <p>
                     {new Date(article.createdAt).toLocaleDateString('en-PH', {

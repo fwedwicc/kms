@@ -11,6 +11,20 @@ const Hero = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [faqs, setFaqs] = useState([])
   const [articles, setArticles] = useState([])
+  const [companyInfo, setCompanyInfo] = useState(null)
+
+  useEffect(() => {
+    const fetchCompanyInfo = async () => {
+      try {
+        const response = await api.get('/company')
+        setCompanyInfo(response.data.data)
+      } catch (error) {
+        console.error('Error fetching company info:', error)
+      }
+    }
+
+    fetchCompanyInfo()
+  }, [])
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -137,7 +151,7 @@ const Hero = () => {
         })}</p>
                     <div class="flex items-center gap-[1px]">
                       <p class="text-nowrap">Read More</p>
-                      <svg xmlns="http://www.w3.org/2000/svg" class="size-4.5 -rotate-45 stroke-[1.5px] mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="size-5 -rotate-180 stroke-[1.5px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 7l-10 10m0 0h8m-8 0V9" />
                       </svg>
                     </div>
@@ -219,8 +233,8 @@ const Hero = () => {
           <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Illustration Image" className='-z-10 absolute w-full h-full object-cover' />
           <div className='-bottom-4 -left-4 blur-3xl w-[29rem] h-24 bg-neutral-950 absolute z-30'></div>
           <div className='absolute z-40 bottom-0 left-0 p-6'>
-            <span className='md:text-3xl text-2xl font-bold text-neutral-100'>StaySuite</span>
-            <span className='block w-full max-w-sm text-neutral-200 md:text-base text-sm'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint labore aliquam vitae dolorum</span>
+            <span className='md:text-3xl text-2xl font-bold text-neutral-100'>{companyInfo?.name}</span>
+            <span className='block w-full max-w-sm text-neutral-200 md:text-base text-sm'>{companyInfo?.description}</span>
           </div>
         </div>
       </div>

@@ -241,13 +241,14 @@ const Hero = () => {
       {/* Numbers kempampamru */}
       <div className='flex flex-wrap lg:gap-20 md:gap-12 gap-12 items-center justify-center mt-20'>
         {[
-          { title: 'Hello ward', desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores harum.' },
-          { title: 'Hello ward', desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores harum.' },
-          { title: 'Hello ward', desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores harum.' },
+          { digit: '10,000+', title: 'Happy Guests', desc: 'Thousands of travelers trust us for comfort, class, and unforgettable stays.' },
+          { digit: '150+', title: 'Luxurious Rooms', desc: 'From elegant suites to cozy retreats — your perfect room awaits.' },
+          { digit: '25+', title: 'Years of Hospitality', desc: 'A legacy of excellence in service, perfected over decades.' },
         ].map((item, index) => (
           <div className='w-full max-w-xs' key={index}>
-            <h3>{item.title}</h3>
-            <p>{item.desc}</p>
+            <h2>{item.digit}</h2>
+            <h5>{item.title}</h5>
+            <p className='mt-2'>{item.desc}</p>
           </div>
         ))}
       </div>

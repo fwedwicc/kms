@@ -12,6 +12,20 @@ const Hero = () => {
   const [faqs, setFaqs] = useState([])
   const [articles, setArticles] = useState([])
   const [companyInfo, setCompanyInfo] = useState(null)
+  const [heroContent, setHeroContent] = useState(null)
+
+  useEffect(() => {
+    const fetchHeroContent = async () => {
+      try {
+        const response = await api.get('/hero')
+        setHeroContent(response.data.data)
+      } catch (error) {
+        console.error('Error fetching company info:', error)
+      }
+    }
+
+    fetchHeroContent()
+  }, [])
 
   useEffect(() => {
     const fetchCompanyInfo = async () => {
@@ -192,11 +206,13 @@ const Hero = () => {
           </Badge>
           {/* Heading and Subheadings */}
           <div className='space-y-1'>
-            <h1>Seamless Stays,</h1>
+            <h1>{heroContent?.heading}</h1>
+            {/* Seamless Stays, Exceptional Value: Book Yours Now */}
+            {/* <h1>Seamless Stays,</h1>
             <h1>Exceptional Value:</h1>
-            <h1>Book Yours Now.</h1>
+            <h1>Book Yours Now.</h1> */}
           </div>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint labore aliquam vitae dolorum nihil? Autem temporibus, ex minima commodi dolor harum esse tempore iusto distinctio debitis voluptatem! Alias, eligendi laborum?</p>
+          <p>{heroContent?.description}</p>
           {/* Search */}
           <fieldset className='mt-8'>
             <label htmlFor="search">What do you want to know?</label>
@@ -225,12 +241,19 @@ const Hero = () => {
                 </span>
               ))}
             </div>
-            <p>5000+ ipsum dolor sit amet</p>
+            <p>Trusted by {heroContent?.totalGuests?.toLocaleString()}+ guests</p>
           </div>
         </div>
         {/* Illustration */}
         <div className='lg:h-full h-96 border relative rounded-3xl overflow-hidden'>
-          <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Illustration Image" className='-z-10 absolute w-full h-full object-cover' />
+          {heroContent?.illustration && !(heroContent.illustration instanceof File) && (
+            <img
+              src={`${SERVER_URL}${heroContent.illustration}`}
+              alt={heroContent?.name || 'Illustration Image'}
+              className="-z-10 absolute w-full h-full object-cover"
+            />
+          )}
+          {/* <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Illustration Image" className='' /> */}
           <div className='-bottom-4 -left-4 blur-3xl w-[29rem] h-24 bg-neutral-950 absolute z-30'></div>
           <div className='absolute z-40 bottom-0 left-0 p-6'>
             <span className='md:text-3xl text-2xl font-bold text-neutral-100'>{companyInfo?.name}</span>
@@ -241,9 +264,9 @@ const Hero = () => {
       {/* Numbers kempampamru */}
       <div className='flex flex-wrap lg:gap-20 md:gap-12 gap-12 items-center justify-center mt-20'>
         {[
-          { digit: '10,000+', title: 'Happy Guests', desc: 'Thousands of travelers trust us for comfort, class, and unforgettable stays.' },
-          { digit: '150+', title: 'Luxurious Rooms', desc: 'From elegant suites to cozy retreats — your perfect room awaits.' },
-          { digit: '25+', title: 'Years of Hospitality', desc: 'A legacy of excellence in service, perfected over decades.' },
+          { digit: `${heroContent?.totalGuests?.toLocaleString()}+`, title: 'Happy Guests', desc: 'Thousands of travelers trust us for comfort, class, and unforgettable stays.' },
+          { digit: `${heroContent?.totalRooms?.toLocaleString()}+`, title: 'Luxurious Rooms', desc: 'From elegant suites to cozy retreats — your perfect room awaits.' },
+          { digit: `${heroContent?.totalYears}+`, title: 'Years of Hospitality', desc: 'A legacy of excellence in service, perfected over decades.' },
         ].map((item, index) => (
           <div className='w-full max-w-xs' key={index}>
             <h2>{item.digit}</h2>

@@ -90,12 +90,34 @@ const About = () => {
   // Why Choose Us?
   const WhyChooseUs = () => {
     return (
-      <div className='border lg:px-36 md:px-12 gap-4 px-4 p-4 md:py-16 py-8'>
-        <Badge variant='default' styles='mb-2'>
-          <HiOutlineLightBulb className='size-4' />
-          Wow ganern
-        </Badge>
-        <h2>Why Choose Us?</h2>
+      <div className='lg:px-36 md:px-12 gap-4 px-4 p-4 md:pt-16 pt-8 grid md:grid-cols-2 grid-cols-1 gap-12'>
+        <div>
+          <Badge variant='default' styles='mb-2'>
+            <HiOutlineLightBulb className='size-4' />
+            Wow ganern
+          </Badge>
+          <h2>Why Choose Us?</h2>
+          <h5>Why Choose Us?</h5>
+          <p className='mt-8'>
+            <h5 className='mb-4'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil sit repellendus eveniet nesciunt quia aliquam atque recusandae aspernatur rerum suscipit. Ab a optio — </h5>
+            aliquam eum esse molestiae omnis odio.Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil sit repellendus eveniet nesciunt quia aliquam atque recusandae aspernatur rerum suscipit. Ab a optio consequuntur, aliquam eum esse molestiae omnis odio.Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil sit repellendus eveniet nesciunt quia aliquam atque recusandae aspernatur rerum suscipit. Ab a optio consequuntur, aliquam eum esse molestectetur adipisicing elit. Nihil sit repellendus eveniet nesciunt quia aliquam atque recusandae aspernatur rerum suscipitnis odio.</p>
+        </div>
+        <div className='flex flex-col gap-3'>
+          {[
+            {image: 'https://placehold.co/30x30', title: 'Hello World', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint dolor voluptatibus, culpa, nihil quibusdam incidunt ex unde sed repellendus eveniet.'},
+            {image: 'https://placehold.co/30x30', title: 'Hello World', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint dolor voluptatibus, culpa, nihil quibusdam incidunt ex unde sed repellendus eveniet.'},
+            {image: 'https://placehold.co/30x30', title: 'Hello World', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint dolor voluptatibus, culpa, nihil quibusdam incidunt ex unde sed repellendus eveniet.'},
+          ].map((item, index) => (
+            <div className='grid grid-cols-2 gap-4 p-2 rounded-3xl border border-neutral-300/60' key={index}>
+              <div className='relative h-full w-full rounded-xl overflow-hidden'>
+                <img src={item.image} alt="Image" className='w-full h-full object-cover absolute' />
+              </div>
+              <div className='p-3'>
+                <p>{item.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     )
   }

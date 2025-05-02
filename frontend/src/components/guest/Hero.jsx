@@ -197,7 +197,7 @@ const Hero = () => {
 
   return (
     <section id='home' className='lg:px-36 md:px-12 gap-4 px-4 p-4 md:pt-30 pt-20'>
-      <div className='grid lg:grid-cols-2 grid-cols-1 gap-6'>
+      <div className='grid lg:grid-cols-2 grid-cols-1 gap-10'>
         {/* Hero Infos */}
         <div className='space-y-3'>
           <Badge variant='default' styles='mb-2'>
@@ -245,7 +245,7 @@ const Hero = () => {
           </div>
         </div>
         {/* Illustration */}
-        <div className='lg:h-full h-96 border relative rounded-3xl overflow-hidden'>
+        <div className='lg:h-full h-96 relative rounded-3xl overflow-hidden'>
           {heroContent?.illustration && !(heroContent.illustration instanceof File) && (
             <img
               src={`${SERVER_URL}${heroContent.illustration}`}

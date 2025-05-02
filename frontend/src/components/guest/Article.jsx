@@ -61,7 +61,7 @@ const Article = () => {
         <HiOutlineLightBulb className='size-4' />
         Wow ganern
       </Badge>
-      <h1>Articles</h1>
+      <h2>Articles</h2>
       <p className='w-full max-w-xl mt-1'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis omnis molestiae, fugiat dolore totam repudiandae culpa at veniam dol.</p>
       {/* Articles */}
       <AnimatePresence mode="wait">

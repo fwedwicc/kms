@@ -9,6 +9,7 @@ import articleRoutes from './routes/articleRoute.js'
 import companyRoutes from './routes/companyRoute.js'
 import contactInfoRoutes from './routes/contactInfoRoute.js'
 import heroRoutes from './routes/heroRoute.js'
+import aboutRoutes from './routes/aboutRoute.js'
 
 dotenv.config()
 
@@ -30,6 +31,7 @@ app.use("/api/article", articleRoutes)
 app.use("/api/company", companyRoutes)
 app.use("/api/contactInfo", contactInfoRoutes)
 app.use("/api/hero", heroRoutes)
+app.use("/api/about", aboutRoutes)
 app.use('/uploads', express.static('uploads'))
 
 // MongoDB and Port connection

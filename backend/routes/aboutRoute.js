@@ -1,5 +1,5 @@
 import express from "express"
-import { getAboutContent, addAboutContent } from "../controllers/aboutController.js"
+import { getAboutContent, updateAboutContent, addAboutContent } from "../controllers/aboutController.js"
 import { authenticate } from '../middlewares/authMiddleware.js'
 import { upload } from '../middlewares/uploadMiddleware.js'
 
@@ -12,6 +12,6 @@ router.get('/', getAboutContent)
 router.post('/', authenticate, upload.single('illustration'), addAboutContent)
 
 // Update About Content - ADMIN ONLY
-// router.put('/', authenticate, upload.single('logo'), updateCompanyContent)
+router.put('/', authenticate, upload.single('illustration'), updateAboutContent)
 
 export default router

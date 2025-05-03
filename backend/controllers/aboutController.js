@@ -27,6 +27,10 @@ export const updateAboutContent = async (req, res) => {
       highlights
     } = req.body
 
+    // Parse services and highlights from JSON string if needed
+    let parsedServices = services ? JSON.parse(services) : []
+    let parsedHighlights = highlights ? JSON.parse(highlights) : []
+
     const illustration = req.file ? `/uploads/${req.file.filename}` : undefined
 
     // Validate required fields
@@ -34,12 +38,12 @@ export const updateAboutContent = async (req, res) => {
       !description ||
       !highlightContent ||
       !content ||
-      !services ||
-      !Array.isArray(services) ||
-      services.length === 0 ||
-      !highlights ||
-      !Array.isArray(highlights) ||
-      highlights.length !== 3
+      !parsedServices ||
+      !Array.isArray(parsedServices) ||
+      parsedServices.length === 0 ||
+      !parsedHighlights ||
+      !Array.isArray(parsedHighlights) ||
+      parsedHighlights.length !== 3
     ) {
       return res.status(400).json({
         success: false,
@@ -55,10 +59,10 @@ export const updateAboutContent = async (req, res) => {
 
     // Update fields
     existingAbout.description = description
-    existingAbout.services = services
+    existingAbout.services = parsedServices
     existingAbout.highlightContent = highlightContent
     existingAbout.content = content
-    existingAbout.highlights = highlights
+    existingAbout.highlights = parsedHighlights
 
     if (illustration) {
       existingAbout.illustration = illustration

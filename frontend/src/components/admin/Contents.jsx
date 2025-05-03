@@ -212,14 +212,238 @@ const Contents = () => {
   }
 
   const AboutContent = () => {
+
+    const [formData, setFormData] = useState({
+      description: '',
+      illustration: '', // can be string (URL) or File
+      services: [{ title: '', description: '' }], // should be an array
+      highlightContent: '',
+      content: '',
+      highlights: [{ description: '' }]
+    })
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+
+    // Fetch About Content
+    useEffect(() => {
+      const fetchAboutContent = async () => {
+        try {
+          const response = await api.get(`/about`)
+          const about = response.data.data
+
+          setFormData({
+            description: about.description || '',
+            illustration: about.illustration || '',
+            services: about.services?.length ? about.services : [{ title: '', description: '' }],
+            highlightContent: about.highlightContent || '',
+            content: about.content || '',
+            highlights: about.highlights?.length ? about.highlights : [{ description: '' }]
+          })
+        } catch (err) {
+          console.error(err)
+        }
+      }
+
+      fetchAboutContent()
+    }, [])
+
+    // Handle Text Change
+    const handleChange = (e) => {
+      const { name, value, type, checked } = e.target
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: type === 'checkbox' ? checked : value
+      }))
+    }
+
+    // Handle File Change
+    const handleFileChange = (e) => {
+      const file = e.target.files[0]
+      if (file) {
+        setFormData((prevData) => ({
+          ...prevData,
+          illustration: file
+        }))
+      }
+    }
+
+    const handleSubmit = async (e) => {
+      e.preventDefault()
+      try {
+        setLoading(true)
+        setError('')
+
+        const form = new FormData()
+
+        // Append text fields
+        form.append('description', formData.description)
+        form.append('highlightContent', formData.highlightContent)
+        form.append('content', formData.content)
+
+        // Handle illustration file if it exists
+        if (formData.illustration instanceof File) {
+          form.append('illustration', formData.illustration)
+        }
+
+        // Append services and highlights as JSON strings
+        form.append('services', JSON.stringify(formData.services))
+        form.append('highlights', JSON.stringify(formData.highlights))
+
+        // Send the form data to the API
+        const response = await api.put('/about', form, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Necessary for file uploads
+          },
+        })
+
+        toast.success('Content updated', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#22c55e',
+          },
+          iconTheme: {
+            primary: '#22c55e',
+            secondary: '#fff',
+          },
+        })
+
+      } catch (error) {
+        setError(error.response?.data?.message || 'Something went wrong')
+      } finally {
+        setLoading(false)
+      }
+    }
+
     return (
-      <form className='w-full max-w-2xl pt-10'>
+      <form onSubmit={handleSubmit} className='w-full max-w-2xl pt-10'>
         <h5>About Content</h5>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-        {/* Form */}
-        <div className='grid grid-cols-2 gap-4 mt-10 border'>
+
+        <div className='grid grid-cols-2 gap-4 mt-10 border p-4 rounded-md'>
+
+          {/* Description */}
+          <fieldset className='col-span-full flex flex-col gap-1'>
+            <label htmlFor="description">Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows="3"
+              className="px-3 py-1.5 border border-neutral-300/60 bg-neutral-100/60 rounded-lg focus:ring-2 ring-offset-1 focus:ring-neutral-800 focus:outline-none"
+            />
+          </fieldset>
+
+          {/* Illustration */}
+          <fieldset className='col-span-full flex flex-col gap-1'>
+            <label htmlFor="illustration">Illustration</label>
+            <input
+              type="file"
+              name="illustration"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="w-full px-3 py-1.5 border border-neutral-300/60 bg-neutral-100/60 rounded-lg focus:ring-2 ring-offset-1 focus:ring-neutral-800 focus:outline-none"
+            />
+            {typeof formData.illustration === 'string' && formData.illustration && (
+              <img src={formData.illustration} alt="Current" className="mt-2 w-40 h-auto rounded-md border" />
+            )}
+          </fieldset>
+
+          {/* Highlight Content */}
+          <fieldset className='col-span-full flex flex-col gap-1'>
+            <label htmlFor="highlightContent">Highlight Content</label>
+            <textarea
+              name="highlightContent"
+              value={formData.highlightContent}
+              onChange={handleChange}
+              rows="2"
+              className="px-3 py-1.5 border border-neutral-300/60 bg-neutral-100/60 rounded-lg focus:ring-2 ring-offset-1 focus:ring-neutral-800 focus:outline-none"
+            />
+          </fieldset>
+
+          {/* Content */}
+          <fieldset className='col-span-full flex flex-col gap-1'>
+            <label htmlFor="content">Content</label>
+            <textarea
+              name="content"
+              value={formData.content}
+              onChange={handleChange}
+              rows="3"
+              className="px-3 py-1.5 border border-neutral-300/60 bg-neutral-100/60 rounded-lg focus:ring-2 ring-offset-1 focus:ring-neutral-800 focus:outline-none"
+            />
+          </fieldset>
+
+          {/* Services */}
+          <div className='col-span-full'>
+            <span className='font-medium text-lg'>Services</span>
+            {formData.services.map((service, index) => (
+              <div key={index} className='grid grid-cols-2 gap-4 my-2'>
+                <fieldset className='flex flex-col gap-1'>
+                  <label>Title</label>
+                  <input
+                    type="text"
+                    value={service.title}
+                    onChange={(e) => {
+                      const newServices = [...formData.services]
+                      newServices[index].title = e.target.value
+                      setFormData({ ...formData, services: newServices })
+                    }}
+                    className="px-3 py-1.5 border bg-neutral-100/60 border-neutral-300/60 rounded-lg focus:ring-2 ring-offset-1 focus:ring-neutral-800"
+                  />
+                </fieldset>
+                <fieldset className='flex flex-col gap-1'>
+                  <label>Description</label>
+                  <input
+                    type="text"
+                    value={service.description}
+                    onChange={(e) => {
+                      const newServices = [...formData.services]
+                      newServices[index].description = e.target.value
+                      setFormData({ ...formData, services: newServices })
+                    }}
+                    className="px-3 py-1.5 border bg-neutral-100/60 border-neutral-300/60 rounded-lg focus:ring-2 ring-offset-1 focus:ring-neutral-800"
+                  />
+                </fieldset>
+              </div>
+            ))}
+          </div>
+
+          {/* Highlights */}
+          <div className='col-span-full'>
+            <span className='font-medium text-lg'>Highlights</span>
+            {formData.highlights.map((highlight, index) => (
+              <fieldset key={index} className='flex flex-col gap-1 my-2'>
+                <label>Description</label>
+                <input
+                  type="text"
+                  value={highlight.description}
+                  onChange={(e) => {
+                    const newHighlights = [...formData.highlights]
+                    newHighlights[index].description = e.target.value
+                    setFormData({ ...formData, highlights: newHighlights })
+                  }}
+                  className="px-3 py-1.5 border bg-neutral-100/60 border-neutral-300/60 rounded-lg focus:ring-2 ring-offset-1 focus:ring-neutral-800"
+                />
+              </fieldset>
+            ))}
+          </div>
+
+          {/* Submit Button */}
+          <div className='col-span-full mt-4'>
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition"
+            >
+              {loading ? 'Saving...' : 'Save Changes'}
+            </button>
+            {error && <p className="text-red-600 mt-2">{error}</p>}
+          </div>
         </div>
       </form>
+
     )
   }
 

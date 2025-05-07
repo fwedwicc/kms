@@ -322,7 +322,7 @@ const Contents = () => {
         <h5>About Content</h5>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
 
-        <div className='grid grid-cols-2 gap-4 mt-10 border p-4 rounded-md'>
+        <div className='grid grid-cols-2 gap-4 mt-10 rounded-md'>
 
           {/* Description */}
           <fieldset className='col-span-full flex flex-col gap-1'>
@@ -331,7 +331,7 @@ const Contents = () => {
               name="description"
               value={formData.description}
               onChange={handleChange}
-              rows="3"
+              rows="6"
               className="px-3 py-1.5 border border-neutral-300/60 bg-neutral-100/60 rounded-lg focus:ring-2 ring-offset-1 focus:ring-neutral-800 focus:outline-none"
             />
           </fieldset>
@@ -346,9 +346,6 @@ const Contents = () => {
               onChange={handleFileChange}
               className="w-full px-3 py-1.5 border border-neutral-300/60 bg-neutral-100/60 rounded-lg focus:ring-2 ring-offset-1 focus:ring-neutral-800 focus:outline-none"
             />
-            {typeof formData.illustration === 'string' && formData.illustration && (
-              <img src={formData.illustration} alt="Current" className="mt-2 w-40 h-auto rounded-md border" />
-            )}
           </fieldset>
 
           {/* Highlight Content */}
@@ -370,7 +367,7 @@ const Contents = () => {
               name="content"
               value={formData.content}
               onChange={handleChange}
-              rows="3"
+              rows="6"
               className="px-3 py-1.5 border border-neutral-300/60 bg-neutral-100/60 rounded-lg focus:ring-2 ring-offset-1 focus:ring-neutral-800 focus:outline-none"
             />
           </fieldset>
@@ -430,16 +427,27 @@ const Contents = () => {
             ))}
           </div>
 
+          <div className='flex justify-center mt-2'>
+            {/* Error Message */}
+            {error && (
+              <motion.div
+                className='flex items-center justify-center gap-1.5 p-2 rounded-md text-red-500'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <HiOutlineExclamationCircle className='size-4' />
+                {error}
+              </motion.div>
+            )}
+          </div>
           {/* Submit Button */}
-          <div className='col-span-full mt-4'>
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition"
-            >
-              {loading ? 'Saving...' : 'Save Changes'}
-            </button>
-            {error && <p className="text-red-600 mt-2">{error}</p>}
+          <div className='mt-4 flex justify-end gap-4'>
+            <Button type="submit" disabled={loading} variant='primary'>
+              {loading ? 'Updating' : 'Update content'}
+              {loading ? <Spinner /> : null}
+            </Button>
           </div>
         </div>
       </form>

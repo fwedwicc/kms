@@ -117,8 +117,8 @@ const Contact = () => {
     <section id='contact' className='grid lg:grid-cols-2 grid-cols-1 lg:px-36 md:px-12 md:gap-8 gap-4 px-4 p-4 md:pt-30 pt-20 md:mb-0 mb-8'>
       {/* Left Content */}
       <div>
-        <h3>Lorem ips dolrsit.</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        <h4>Kindly fill out the form.</h4>
+        <p>We’re here to assist you with any questions or concerns you may have.</p>
         <form onSubmit={handleSubmit} className='mt-4 grid md:grid-cols-2 grid-cols-1 gap-y-2 gap-x-3'>
           {/* Firstname */}
           <fieldset className='flex flex-col gap-1'>
@@ -203,7 +203,7 @@ const Contact = () => {
               className='mt-3 px-3 py-2 rounded-xl border border-neutral-300 bg-neutral-100'
             >
               <p>
-                Note: Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum optio, amet ipsam odio similique ut eius eaque nam.
+                Note: Please include your first name, last name, and an active email address, and ensure that your message is clear and concise, and you confirm that you have read and agree to our Terms and Conditions.
               </p>
             </motion.div>
           </motion.div>
@@ -215,8 +215,8 @@ const Contact = () => {
           <HiOutlineChat className='size-4' />
           Reach out to us
         </Badge>
-        <h1>Lorem ipsum dol it, met cons semp.</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, debitis consequatur quisquam veritatis eos repellat quam vitae, ex, ducimus dolorum quasi dolorem consectetur voluptates. Molestiae soluta beatae totam optio vitae:</p>
+        <h1>Get in Touch with Us Today Easily</h1>
+        <p>If you have any questions, comments, or concerns, please don't hesitate to reach out to us. We're always happy to hear from you and look forward to helping you plan your stay with us. You can contact us by phone, email, or by filling out the form..</p>
         {/* More */}
         <div className='grid md:grid-cols-3 grid-cols-2 gap-2 mt-6'>
           <a href={`mailto:${contactInfo?.email}`} className='flex flex-col justify-between border border-neutral-300 hover:bg-neutral-100 p-2 rounded-xl h-24 transition duration-300 ease-in-out'>

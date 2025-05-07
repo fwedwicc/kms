@@ -202,7 +202,7 @@ const Hero = () => {
         <div className='space-y-3'>
           <Badge variant='default' styles='mb-2'>
             <HiOutlineLightBulb className='size-4' />
-            Wow ganern
+            Discover Amenities
           </Badge>
           {/* Heading and Subheadings */}
           <div className='space-y-1'>
@@ -221,7 +221,7 @@ const Hero = () => {
                 id="search"
                 type="text"
                 name="search"
-                placeholder="E.g. What are the benefits of using React?"
+                placeholder="Search articles, FAQs, and more..."
                 className="w-full"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { HiOutlineLightBulb, HiOutlineLightningBolt, HiOutlineFire, HiOutlineHeart, HiOutlineSparkles, HiOutlineStar, } from "react-icons/hi"
+import { HiOutlineLightBulb, HiSparkles, HiOutlineLightningBolt, HiOutlineFire, HiOutlineHeart, HiOutlineSparkles, HiOutlineStar, } from "react-icons/hi"
 import { FaUtensils, FaHandSparkles } from "react-icons/fa6"
 import { RiCustomerService2Fill } from "react-icons/ri"
 import { FaSwimmingPool } from "react-icons/fa"
@@ -107,11 +107,11 @@ const About = () => {
     return (
       <div className='lg:px-36 md:px-12 gap-4 px-4 p-4 md:py-16 py-8'>
         <Badge variant='default' styles='mb-2'>
-          <HiOutlineLightBulb className='size-4' />
-          Wow ganern
+          <HiSparkles className='size-4' />
+          Our Services
         </Badge>
-        <h2>Our Services</h2>
-        <p className='w-full max-w-xl mt-1'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis omnis molestiae, fugiat dolore totam repudiandae culpa at veniam dol.</p>
+        <h2>Services, Just for You</h2>
+        <p className='w-full max-w-xl mt-1'>From personalized concierge services to luxurious room amenities, we provide tailored experiences to meet your needs. Whether for relaxation or business, we ensure every moment is exceptional.</p>
         {/*  */}
         <div className='grid grid-cols-3 gap-4 mt-10 md:mx-14 mx-0'>
           {ourServices?.services?.map((item, index) => {
@@ -151,11 +151,11 @@ const About = () => {
       <div className='lg:px-36 md:px-12 px-4 p-4 md:pt-16 pt-8 grid md:grid-cols-2 grid-cols-1 gap-12'>
         <div>
           <Badge variant='default' styles='mb-2'>
-            <HiOutlineLightBulb className='size-4' />
-            Wow ganern
+            <HiSparkles className='size-4' />
+            Where Comfort Meets Class
           </Badge>
           <h2>Why Choose Us?</h2>
-          <h5>Why Choose Us?</h5>
+          <h5>Experience the Best in Hospitality</h5>
           <p className='mt-8'>
             <h5 className='mb-4'>{whyUsContent?.highlightContent} — </h5>
             {whyUsContent?.content}</p>

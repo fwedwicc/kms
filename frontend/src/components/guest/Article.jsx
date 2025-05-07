@@ -59,10 +59,10 @@ const Article = () => {
       {/* Headings */}
       <Badge variant='default' styles='mb-2'>
         <HiOutlineLightBulb className='size-4' />
-        Wow ganern
+        Site's Articles
       </Badge>
-      <h2>Articles</h2>
-      <p className='w-full max-w-xl mt-1'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis omnis molestiae, fugiat dolore totam repudiandae culpa at veniam dol.</p>
+      <h2>Insightful Articles, Just for You</h2>
+      <p className='w-full max-w-xl mt-1'>  Stay informed and inspired with our collection of articles. We cover a wide range of topics to provide valuable insights and knowledge that cater to your interests and needs.</p>
       {/* Articles */}
       <AnimatePresence mode="wait">
         <motion.div

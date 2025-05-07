@@ -103,7 +103,7 @@ const GeneralInfo = () => {
     return (
       <form onSubmit={handleSubmit} className='w-full max-w-2xl pb-10 border-b border-neutral-200'>
         <h5>Company Content</h5>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+        <p>Update your company’s description and key details displayed across the site.</p>
         {/* Form */}
         <div className='flex items-start gap-8 mt-10'>
           {/* Logo */}
@@ -255,7 +255,7 @@ const GeneralInfo = () => {
     return (
       <form onSubmit={handleSubmit} className='w-full max-w-2xl pt-10'>
         <h5>Contact Information</h5>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+        <p>Manage your contact details including email, phone, and address for public display.</p>
         {/* Form */}
         <div className='grid grid-cols-2 gap-4 mt-10'>
           {/* Email */}

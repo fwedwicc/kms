@@ -64,21 +64,23 @@ const FAQs = () => {
   return (
     <section id='faqs' className='grid lg:grid-cols-2 grid-cols-1 lg:px-36 md:px-12 gap-4 px-4 p-4 md:pt-30 pt-20'>
       {/* Left Content */}
-      <div className='flex flex-col justify-between border border-neutral-300 rounded-2xl md:space-y-36 space-y-12 p-4'>
-        <div className='space-y-3'>
-          <h3>Lorem ipsum dolor sit, amet consectetur adipi.</h3>
-          <a href='#contact' className='inline-flex'>
+      <div className='relative overflow-hidden flex flex-col justify-between border border-neutral-300 rounded-2xl md:space-y-36 space-y-12 p-6'>
+        <div className='-top-4 -left-4 blur-3xl w-[35rem] h-56 bg-neutral-950/80 absolute z-30'></div>
+        <img src="https://images.unsplash.com/photo-1611892441796-ae6af0ec2cc8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" className='top-0 left-0 absolute w-full h-full object-cover' />
+        <div className='z-40 space-y-2'>
+          <span className='block mb-2 text-4xl text-neutral-200 font-semibold'>StaySuite at Your Service</span>
+          <span className='block w-full max-w-lg text-neutral-300'>Experience seamless support and answers to all your inquiries. Our team is here to help ensure your stay—and your access to information—is effortless and satisfying.</span>
+          <a href='#contact' className='inline-flex mt-3'>
             <Button variant='primary'>
               Get in touch
             </Button>
           </a>
         </div>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus quidem optio labore magni eveniet repellat harum recusandae ut itaque, aliquam inventore eos officias.</p>
       </div>
       {/* Right Content */}
       <div>
         <h2>FAQs</h2>
-        <span>Lorem ipsum dolor sit amet.</span>
+        <span>Find quick answers to common questions.</span>
         <AnimatePresence mode="wait">
           <motion.div
             key={currentPage}

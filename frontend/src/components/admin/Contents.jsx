@@ -112,7 +112,7 @@ const Contents = () => {
     return (
       <form onSubmit={handleSubmit} className='w-full max-w-2xl pb-10 border-b border-neutral-200'>
         <h5>Hero Content</h5>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+        <p>Edit the main heading and description that appear on the homepage banner.</p>
         {/* Form */}
         <div className='grid grid-cols-2 gap-4 mt-10'>
           {/* Heading */}
@@ -320,7 +320,7 @@ const Contents = () => {
     return (
       <form onSubmit={handleSubmit} className='w-full max-w-2xl pt-10'>
         <h5>About Content</h5>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+        <p>Update the section that highlights your hotel’s story, values, and mission.</p>
 
         <div className='grid grid-cols-2 gap-4 mt-10 rounded-md'>
 
